@@ -9,6 +9,7 @@ import { Search } from "lucide-react";
 const q = queryOptions({ queryKey: ["spaces"], queryFn: () => getSpaces() });
 
 export const Route = createFileRoute("/spaces/")({
+  validateSearch: (s: Record<string, unknown>) => ({ city: typeof s.city === "string" ? s.city : undefined }),
   head: () => ({
     meta: [
       { title: "Coworking Spaces , The Coworking Dispatch" },
@@ -24,9 +25,11 @@ export const Route = createFileRoute("/spaces/")({
 
 function SpacesPage() {
   const { data } = useSuspenseQuery(q);
+  const { city: cityParam } = Route.useSearch();
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState<"all" | "india" | "global">("all");
-  const [city, setCity] = useState<string>("all");
+  const [city, setCity] = useState<string>(cityParam ?? "all");
+
 
   const cities = useMemo(() => Array.from(new Set(data.map((s) => s.city_name).filter(Boolean) as string[])).sort(), [data]);
   const filtered = data.filter((s) => {
