@@ -35,8 +35,6 @@ function Home() {
         <MapReveal />
       </section>
 
-      <RedFlags />
-
       {data.spaceOfWeek?.space && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
           <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title={`${data.spaceOfWeek.space.name}, ${data.spaceOfWeek.space.city_name ?? ""}`} href="/spaces" />
@@ -88,6 +86,8 @@ function Home() {
       )}
 
       <SalesQuestions items={data.salesQuestions} />
+
+      <RedFlags />
 
       <section className="mx-auto max-w-7xl px-6 mt-20">
         <SectionHeader eyebrow="Latest dispatches" title="Fresh from the wire" href="/dispatches" />
@@ -252,7 +252,7 @@ function RedFlags() {
           <AlertTriangle className="h-4 w-4 text-destructive" />
           <div className="text-xs uppercase tracking-widest text-destructive font-semibold">Red flags</div>
         </div>
-        <h2 className="mt-2 font-display text-2xl md:text-3xl">Walk out if you spot two of these</h2>
+        <h2 className="mt-2 font-display text-2xl md:text-3xl text-iris">Walk out if you spot two of these</h2>
         <ul className="mt-5 grid gap-x-6 gap-y-2 md:grid-cols-2 text-sm">
           {RED_FLAGS.map((f, i) => (
             <li key={f} className="flex gap-2.5 items-baseline py-1.5 border-b border-border/40 last:border-0 md:[&:nth-last-child(2)]:border-0">
@@ -273,6 +273,12 @@ function MapReveal() {
       <>
         <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
         <div className="mt-6"><IndiaHeatmap /></div>
+        <button
+          onClick={() => setOpen(false)}
+          className="mt-4 mx-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-iris transition-colors"
+        >
+          Collapse map <ArrowRight className="h-3.5 w-3.5 rotate-[-90deg]" />
+        </button>
       </>
     );
   }
