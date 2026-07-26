@@ -273,6 +273,12 @@ function MapReveal() {
       <>
         <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
         <div className="mt-6"><IndiaHeatmap /></div>
+        <button
+          onClick={() => setOpen(false)}
+          className="mt-4 mx-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-iris transition-colors"
+        >
+          Collapse map <ArrowRight className="h-3.5 w-3.5 rotate-[-90deg]" />
+        </button>
       </>
     );
   }
