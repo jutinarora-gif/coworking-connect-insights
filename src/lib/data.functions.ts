@@ -330,24 +330,38 @@ export const getQuestions = createServerFn({ method: "GET" }).handler(async () =
     .limit(50);
   const spaceIds = Array.from(new Set((questions ?? []).map((q) => q.space_id).filter(Boolean) as string[]));
   const profIds = Array.from(new Set((questions ?? []).map((q) => q.profile_id)));
-  const [{ data: spaces }, { data: profs }, { data: ansCounts }] = await Promise.all([
+  const [{ data: spaces }, { data: profs }, { data: allAns }] = await Promise.all([
     spaceIds.length
       ? supabase.from("spaces").select("id,slug,name").in("id", spaceIds)
       : Promise.resolve({ data: [] as any[] }),
     profIds.length
       ? supabase.from("profiles").select("id,display_name,avatar_url").in("id", profIds)
       : Promise.resolve({ data: [] as any[] }),
-    supabase.from("answers").select("question_id"),
+    supabase
+      .from("answers")
+      .select("id,question_id,body,is_founder_reply,created_at,profile_id")
+      .eq("is_hidden", false)
+      .order("created_at", { ascending: true }),
   ]);
+  const ansProfIds = Array.from(new Set((allAns ?? []).map((a) => a.profile_id)));
+  const { data: ansProfs } = ansProfIds.length
+    ? await supabase.from("profiles").select("id,display_name,avatar_url").in("id", ansProfIds)
+    : { data: [] as any[] };
+  const ansProfMap = new Map((ansProfs ?? []).map((p) => [p.id, p]));
   const spaceMap = new Map((spaces ?? []).map((s) => [s.id, s]));
   const profMap = new Map((profs ?? []).map((p) => [p.id, p]));
-  const countMap = new Map<string, number>();
-  (ansCounts ?? []).forEach((a) => countMap.set(a.question_id, (countMap.get(a.question_id) ?? 0) + 1));
+  const ansByQ = new Map<string, any[]>();
+  (allAns ?? []).forEach((a) => {
+    const arr = ansByQ.get(a.question_id) ?? [];
+    arr.push({ ...a, author: ansProfMap.get(a.profile_id) ?? null });
+    ansByQ.set(a.question_id, arr);
+  });
   return (questions ?? []).map((q) => ({
     ...q,
     space: q.space_id ? spaceMap.get(q.space_id) ?? null : null,
     author: profMap.get(q.profile_id) ?? null,
-    answer_count: countMap.get(q.id) ?? 0,
+    answers: ansByQ.get(q.id) ?? [],
+    answer_count: (ansByQ.get(q.id) ?? []).length,
   }));
 });
 
