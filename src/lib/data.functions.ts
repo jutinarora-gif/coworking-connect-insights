@@ -131,6 +131,14 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
     }),
   );
 
+  const { data: salesQs } = await supabase
+    .from("sales_questions")
+    .select("id,text,category")
+    .eq("approved", true)
+    .eq("is_global", true)
+    .order("upvotes_denorm", { ascending: false })
+    .limit(8);
+
   return {
     dispatches: mixed.slice(0, 15),
     spaceOfWeek: sotwSpaceId
@@ -141,8 +149,10 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
       score: Number(w.score),
       space: spaceById.get(w.space_id) ?? null,
     })).filter((w) => w.space),
+    salesQuestions: (salesQs ?? []) as { id: string; text: string; category: string | null }[],
   };
 });
+
 
 export const getDispatches = createServerFn({ method: "GET" })
   .inputValidator((data: { region?: "india" | "global" | "all" }) => data)

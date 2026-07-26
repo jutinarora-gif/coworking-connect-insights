@@ -33,8 +33,9 @@ export function Footer() {
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground mb-3">About</div>
           <p className="text-sm text-muted-foreground">
-            Made in Bangalore, by coworkers, for coworkers.
+            Made in India, by coworkers, for coworkers.
           </p>
+
         </div>
       </div>
       <div className="border-t border-border/40 py-6 text-center text-xs text-muted-foreground">
