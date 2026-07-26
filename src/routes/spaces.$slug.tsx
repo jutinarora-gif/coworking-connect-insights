@@ -16,9 +16,9 @@ export const Route = createFileRoute("/spaces/$slug")({
   },
   head: ({ loaderData }) => ({
     meta: loaderData ? [
-      { title: `${loaderData.space.name} — Reviews & pricing | The Coworking Dispatch` },
+      { title: `${loaderData.space.name} , Reviews & pricing | The Coworking Dispatch` },
       { name: "description", content: loaderData.space.description ?? `Reviews and details for ${loaderData.space.name}` },
-      { property: "og:title", content: `${loaderData.space.name} — The Coworking Dispatch` },
+      { property: "og:title", content: `${loaderData.space.name} , The Coworking Dispatch` },
       { property: "og:description", content: loaderData.space.description ?? "" },
       ...(loaderData.space.cover_url ? [{ property: "og:image", content: loaderData.space.cover_url }, { name: "twitter:image", content: loaderData.space.cover_url }] : []),
     ] : [{ title: "Space" }],
@@ -97,7 +97,7 @@ function SpacePage() {
                 ].map(({ l, v, i: Icon }) => (
                   <div key={l} className="text-center">
                     <Icon className="h-5 w-5 mx-auto text-muted-foreground" />
-                    <div className="mt-2 font-display text-2xl">{v ?? "—"}</div>
+                    <div className="mt-2 font-display text-2xl">{v ?? "-"}</div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{l}</div>
                   </div>
                 ))}

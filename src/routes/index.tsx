@@ -2,11 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
 import { DispatchCard } from "@/components/site/dispatch-card";
-import { SpaceCard } from "@/components/site/space-card";
+import { IndiaHeatmap } from "@/components/site/india-heatmap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Sparkles, Trophy, Search } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Sparkles, Trophy, Search, MapPin } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData() });
@@ -14,7 +14,7 @@ const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData(
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Coworking Dispatch — India-first coworking news & reviews" },
+      { title: "The Coworking Dispatch , India-first coworking news & reviews" },
       { name: "description", content: "News, real-user reviews, Space of the Week, weekly winners, and a community Q&A for India's coworking scene." },
       { property: "og:title", content: "The Coworking Dispatch" },
       { property: "og:description", content: "India-first coworking news & community." },
@@ -57,6 +57,11 @@ function Home() {
         </section>
       )}
 
+      <section className="mx-auto max-w-7xl px-6 mt-20">
+        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="The coworking heatmap" href="/spaces" />
+        <div className="mt-6"><IndiaHeatmap /></div>
+      </section>
+
       {data.winners.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
           <SectionHeader eyebrow="Top winners this week" icon={<Trophy className="h-4 w-4" />} title="The five spaces India is talking about" href="/winners" />
@@ -94,29 +99,94 @@ function Home() {
   );
 }
 
+const ROTATING_WORDS = ["coworking", "coffee culture", "founder scene", "hybrid week", "hot desk hunt"];
+const FLOATING_CHIPS = [
+  { label: "Bangalore", x: "8%", y: "18%", delay: 0 },
+  { label: "hot desk ₹8k", x: "82%", y: "14%", delay: 0.4 },
+  { label: "Mumbai", x: "88%", y: "62%", delay: 0.8 },
+  { label: "quiet zones", x: "4%", y: "68%", delay: 1.2 },
+  { label: "Goa remote", x: "72%", y: "78%", delay: 1.6 },
+  { label: "AMA Fri", x: "14%", y: "44%", delay: 2.0 },
+];
+
 function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 50, y: 40 });
+  const [wordIdx, setWordIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setWordIdx((i) => (i + 1) % ROTATING_WORDS.length), 2200);
+    return () => clearInterval(t);
+  }, []);
+
+  const onMove = (e: React.MouseEvent) => {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
+  };
+
   return (
-    <section className="relative overflow-hidden pt-16 pb-16">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 h-[500px] w-[900px] rounded-full blur-3xl opacity-40" style={{ background: "linear-gradient(120deg,var(--iris-1),var(--iris-2),var(--iris-3))" }} />
-      </div>
-      <div className="mx-auto max-w-5xl px-6 text-center">
+    <section
+      ref={ref}
+      onMouseMove={onMove}
+      className="relative overflow-hidden pt-20 pb-20 cursor-crosshair"
+    >
+      <div
+        className="absolute inset-0 -z-10 transition-[background-position] duration-300 ease-out"
+        style={{
+          background: `radial-gradient(600px 400px at ${pos.x}% ${pos.y}%, oklch(0.78 0.14 340 / 0.45), transparent 60%),
+                       radial-gradient(500px 350px at ${100 - pos.x}% ${100 - pos.y}%, oklch(0.75 0.15 220 / 0.40), transparent 60%),
+                       radial-gradient(700px 500px at 50% 0%, oklch(0.68 0.18 295 / 0.25), transparent 65%)`,
+        }}
+      />
+
+      {FLOATING_CHIPS.map((c) => {
+        const dx = (pos.x - 50) / 8;
+        const dy = (pos.y - 50) / 8;
+        return (
+          <div
+            key={c.label}
+            className="absolute hidden md:block glass rounded-full px-3 py-1 text-xs font-display transition-transform duration-500 ease-out pointer-events-none select-none"
+            style={{
+              left: c.x,
+              top: c.y,
+              transform: `translate(${dx}px, ${dy}px)`,
+              animation: `float 6s ease-in-out ${c.delay}s infinite`,
+            }}
+          >
+            {c.label}
+          </div>
+        );
+      })}
+
+      <div className="mx-auto max-w-5xl px-6 text-center relative">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs uppercase tracking-widest text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live · 70% India · 30% world
+          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live, 70% India, 30% world
         </div>
         <h1 className="mt-6 font-display text-5xl md:text-7xl leading-[1.05]">
-          The pulse of <span className="text-iris">India's coworking</span> scene.
+          The pulse of India's{" "}
+          <span key={wordIdx} className="text-iris inline-block animate-in fade-in slide-in-from-bottom-2 duration-500">
+            {ROTATING_WORDS[wordIdx]}
+          </span>
+          .
         </h1>
         <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
           Aggregated news, real reviews from real coworkers, weekly winners, and the questions you should actually ask the salesperson before you sign.
         </p>
-        <form onSubmit={(e) => e.preventDefault()} className="mt-8 max-w-xl mx-auto flex items-center gap-2 glass rounded-2xl p-2">
+        <form onSubmit={(e) => e.preventDefault()} className="mt-8 max-w-xl mx-auto flex items-center gap-2 glass rounded-2xl p-2 relative z-10">
           <Search className="h-5 w-5 ml-3 text-muted-foreground" />
           <Input placeholder="Search 'WeWork Galaxy', 'Koramangala', 'quiet'…" className="border-0 bg-transparent focus-visible:ring-0 text-base" onFocus={(e) => { (e.target as HTMLInputElement).blur(); document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true })); }} />
           <Button className="gradient-iris text-primary-foreground">Search</Button>
         </form>
-        <div className="mt-4 text-xs text-muted-foreground">Press <kbd className="rounded bg-muted px-1.5 py-0.5">⌘K</kbd> anywhere</div>
+        <div className="mt-4 text-xs text-muted-foreground">Press <kbd className="rounded bg-muted px-1.5 py-0.5">⌘K</kbd> anywhere, or wiggle your cursor.</div>
       </div>
+
+      <style>{`
+        @keyframes float {
+          0%, 100% { translate: 0 0; }
+          50% { translate: 0 -12px; }
+        }
+      `}</style>
     </section>
   );
 }

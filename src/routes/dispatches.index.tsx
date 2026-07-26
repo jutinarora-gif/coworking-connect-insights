@@ -13,9 +13,9 @@ const searchSchema = z.object({
 export const Route = createFileRoute("/dispatches/")({
   head: () => ({
     meta: [
-      { title: "Dispatches — The Coworking Dispatch" },
+      { title: "Dispatches , The Coworking Dispatch" },
       { name: "description", content: "Aggregated coworking news, weighted 70% India, 30% the rest of the world." },
-      { property: "og:title", content: "Dispatches — Coworking news, India-first" },
+      { property: "og:title", content: "Dispatches , Coworking news, India-first" },
       { property: "og:description", content: "Aggregated coworking news from India and around the world." },
     ],
   }),
@@ -60,7 +60,7 @@ function DispatchesPage() {
       <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {data.map((d, i) => <DispatchCard key={d.id} d={d} featured={i === 0 && region !== "global"} />)}
       </div>
-      {data.length === 0 && <div className="mt-16 text-center text-muted-foreground">No dispatches yet — polling the wire…</div>}
+      {data.length === 0 && <div className="mt-16 text-center text-muted-foreground">No dispatches yet , polling the wire…</div>}
     </div>
   );
 }

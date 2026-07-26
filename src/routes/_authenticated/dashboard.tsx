@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Your Dashboard — The Coworking Dispatch" }] }),
+  head: () => ({ meta: [{ title: "Your Dashboard , The Coworking Dispatch" }] }),
   component: Dashboard,
 });
 

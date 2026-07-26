@@ -8,7 +8,7 @@ const q = queryOptions({ queryKey: ["winners"], queryFn: () => getWinners() });
 export const Route = createFileRoute("/winners")({
   head: () => ({
     meta: [
-      { title: "Top Winners — The Coworking Dispatch" },
+      { title: "Top Winners , The Coworking Dispatch" },
       { name: "description", content: "This week's top coworking spaces in India, ranked by reviews, community activity, and mentions." },
       { property: "og:title", content: "Top Coworking Spaces this week" },
       { property: "og:description", content: "The five spaces India is talking about." },
