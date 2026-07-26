@@ -4,7 +4,7 @@ import { getDispatches } from "@/lib/data.functions";
 import { DispatchCard } from "@/components/site/dispatch-card";
 import { z } from "zod";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
-import { useNavigate } from "@tanstack/react-router";
+
 
 const searchSchema = z.object({
   region: fallback(z.enum(["india", "global", "all"]), "all").default("all"),
