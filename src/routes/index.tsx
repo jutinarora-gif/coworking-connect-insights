@@ -57,6 +57,11 @@ function Home() {
         </section>
       )}
 
+      <section className="mx-auto max-w-7xl px-6 mt-20">
+        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="The coworking heatmap" href="/spaces" />
+        <div className="mt-6"><IndiaHeatmap /></div>
+      </section>
+
       {data.winners.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
           <SectionHeader eyebrow="Top winners this week" icon={<Trophy className="h-4 w-4" />} title="The five spaces India is talking about" href="/winners" />
