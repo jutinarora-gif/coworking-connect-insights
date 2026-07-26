@@ -9,7 +9,7 @@ const q = queryOptions({ queryKey: ["questions"], queryFn: () => getQuestions() 
 export const Route = createFileRoute("/questions")({
   head: () => ({
     meta: [
-      { title: "Community Q&A — The Coworking Dispatch" },
+      { title: "Community Q&A , The Coworking Dispatch" },
       { name: "description", content: "Ask coworkers and founders. Real answers, real experience." },
       { property: "og:title", content: "Coworking Q&A and AMAs" },
       { property: "og:description", content: "Ask coworkers and founders. Real answers, real experience." },

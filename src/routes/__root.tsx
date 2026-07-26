@@ -48,7 +48,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Coworking Dispatch — India-first coworking news & reviews" },
+      { title: "The Coworking Dispatch , India-first coworking news & reviews" },
       { name: "description", content: "News, real-user reviews, and community for India's coworking scene. 70% India, 30% world." },
       { property: "og:title", content: "The Coworking Dispatch" },
       { property: "og:description", content: "India-first coworking news, reviews, and community." },

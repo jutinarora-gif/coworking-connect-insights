@@ -14,7 +14,7 @@ const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData(
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Coworking Dispatch — India-first coworking news & reviews" },
+      { title: "The Coworking Dispatch , India-first coworking news & reviews" },
       { name: "description", content: "News, real-user reviews, Space of the Week, weekly winners, and a community Q&A for India's coworking scene." },
       { property: "og:title", content: "The Coworking Dispatch" },
       { property: "og:description", content: "India-first coworking news & community." },

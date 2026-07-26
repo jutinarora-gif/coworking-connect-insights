@@ -14,7 +14,7 @@ export const Route = createFileRoute("/dispatches/$slug")({
   },
   head: ({ loaderData }) => ({
     meta: loaderData ? [
-      { title: `${loaderData.title} — The Coworking Dispatch` },
+      { title: `${loaderData.title} , The Coworking Dispatch` },
       { name: "description", content: loaderData.excerpt ?? "A dispatch from The Coworking Dispatch." },
       { property: "og:title", content: loaderData.title },
       { property: "og:description", content: loaderData.excerpt ?? "" },
