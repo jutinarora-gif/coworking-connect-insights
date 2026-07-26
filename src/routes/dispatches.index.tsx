@@ -49,7 +49,7 @@ function DispatchesPage() {
           {(["all", "india", "global"] as const).map((r) => (
             <button
               key={r}
-              onClick={() => navigate({ search: { region: r } })}
+              onClick={() => navigate({ to: ".", search: (prev) => ({ ...prev, region: r }) })}
               className={`px-4 py-1.5 rounded-full text-sm capitalize transition-all ${region === r ? "gradient-iris text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               {r === "india" ? "🇮🇳 India" : r === "global" ? "🌏 Global" : "All"}
