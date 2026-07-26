@@ -32,8 +32,7 @@ function Home() {
       <Hero />
 
       <section className="mx-auto max-w-7xl px-6 mt-16">
-        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
-        <div className="mt-6"><IndiaHeatmap /></div>
+        <MapReveal />
       </section>
 
       <RedFlags />
