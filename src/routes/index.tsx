@@ -86,6 +86,8 @@ function Home() {
         </section>
       )}
 
+      <SalesQuestions items={data.salesQuestions} />
+
       <section className="mx-auto max-w-7xl px-6 mt-20">
         <SectionHeader eyebrow="Latest dispatches" title="Fresh from the wire" href="/dispatches" />
         <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -94,6 +96,10 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <RedFlags />
+
+
 
       <NewsletterCTA />
     </div>
