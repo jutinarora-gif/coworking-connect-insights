@@ -252,7 +252,7 @@ function RedFlags() {
           <AlertTriangle className="h-4 w-4 text-destructive" />
           <div className="text-xs uppercase tracking-widest text-destructive font-semibold">Red flags</div>
         </div>
-        <h2 className="mt-2 font-display text-2xl md:text-3xl text-iris">Walk out if you spot two of these</h2>
+        <h2 className="mt-2 font-display text-2xl md:text-3xl text-iris">Spot two of these? Time to rethink your coworking space</h2>
         <ul className="mt-5 grid gap-x-6 gap-y-2 md:grid-cols-2 text-sm">
           {RED_FLAGS.map((f, i) => (
             <li key={f} className="flex gap-2.5 items-baseline py-1.5 border-b border-border/40 last:border-0 md:[&:nth-last-child(2)]:border-0">
