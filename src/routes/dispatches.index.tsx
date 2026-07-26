@@ -35,7 +35,7 @@ const dispatchesQuery = (region: "india" | "global" | "all") =>
 function DispatchesPage() {
   const { region } = Route.useSearch();
   const { data } = useSuspenseQuery(dispatchesQuery(region));
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
