@@ -200,3 +200,73 @@ function NewsletterCTA() {
     </section>
   );
 }
+
+function SalesQuestions({ items }: { items: { id: string; text: string; category: string | null }[] }) {
+  if (!items?.length) return null;
+  return (
+    <section className="mx-auto max-w-7xl px-6 mt-20">
+      <SectionHeader
+        eyebrow="Before you sign"
+        icon={<HelpCircle className="h-4 w-4" />}
+        title="Questions to ask the salesperson"
+        href="/questions"
+      />
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        {items.map((q, i) => (
+          <div key={q.id} className="glass rounded-2xl p-5 flex gap-4 hover-glow">
+            <div className="h-9 w-9 shrink-0 rounded-xl gradient-iris flex items-center justify-center font-display text-primary-foreground">
+              {String(i + 1).padStart(2, "0")}
+            </div>
+            <div>
+              <p className="font-display text-lg leading-snug">{q.text}</p>
+              {q.category && (
+                <div className="mt-1 text-xs uppercase tracking-widest text-iris">{q.category}</div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-4 text-sm text-muted-foreground">
+        Save the full checklist on any space page before your tour.
+      </p>
+    </section>
+  );
+}
+
+const RED_FLAGS = [
+  "The wi-fi keeps dropping mid-call",
+  "The washrooms smell, and nobody owns cleaning",
+  "Your complaint disappears into a WhatsApp group",
+  "It is always noisy, phone booths are permanently booked",
+  "The community manager plays favourites with a few clients",
+  "Printers, coffee, or meeting rooms are always 'out of order'",
+  "Contracts have quiet auto-renewal and steep exit fees",
+];
+
+function RedFlags() {
+  return (
+    <section className="mx-auto max-w-5xl px-6 mt-20">
+      <div className="glass-strong rounded-3xl p-8 md:p-10 border border-destructive/20 relative overflow-hidden">
+        <div className="absolute -top-16 -left-16 h-56 w-56 rounded-full blur-3xl opacity-30 bg-destructive" />
+        <div className="relative">
+          <div className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-destructive">
+            <AlertTriangle className="h-4 w-4" /> Watch out
+          </div>
+          <h2 className="mt-2 font-display text-3xl md:text-4xl">Red flags in your coworking</h2>
+          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+            If you spot two or more of these on your tour, walk out and read the reviews again.
+          </p>
+          <ul className="mt-6 grid gap-3 md:grid-cols-2">
+            {RED_FLAGS.map((f) => (
+              <li key={f} className="flex gap-3 items-start text-sm">
+                <span className="mt-1 h-2 w-2 rounded-full bg-destructive shrink-0" />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
