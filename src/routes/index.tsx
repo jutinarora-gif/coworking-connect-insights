@@ -2,11 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
 import { DispatchCard } from "@/components/site/dispatch-card";
-import { SpaceCard } from "@/components/site/space-card";
+import { IndiaHeatmap } from "@/components/site/india-heatmap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Sparkles, Trophy, Search } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Sparkles, Trophy, Search, MapPin } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData() });
