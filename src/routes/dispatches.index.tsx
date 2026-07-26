@@ -4,7 +4,7 @@ import { getDispatches } from "@/lib/data.functions";
 import { DispatchCard } from "@/components/site/dispatch-card";
 import { z } from "zod";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
-import { useNavigate } from "@tanstack/react-router";
+
 
 const searchSchema = z.object({
   region: fallback(z.enum(["india", "global", "all"]), "all").default("all"),
@@ -35,7 +35,7 @@ const dispatchesQuery = (region: "india" | "global" | "all") =>
 function DispatchesPage() {
   const { region } = Route.useSearch();
   const { data } = useSuspenseQuery(dispatchesQuery(region));
-  const navigate = useNavigate();
+  const navigate = Route.useNavigate();
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -49,7 +49,7 @@ function DispatchesPage() {
           {(["all", "india", "global"] as const).map((r) => (
             <button
               key={r}
-              onClick={() => navigate({ search: { region: r } })}
+              onClick={() => navigate({ to: ".", search: { region: r } })}
               className={`px-4 py-1.5 rounded-full text-sm capitalize transition-all ${region === r ? "gradient-iris text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               {r === "india" ? "🇮🇳 India" : r === "global" ? "🌏 Global" : "All"}
