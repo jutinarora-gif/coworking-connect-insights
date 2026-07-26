@@ -30,9 +30,15 @@ function Home() {
   return (
     <div>
       <Hero />
+
+      <section className="mx-auto max-w-7xl px-6 mt-16">
+        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
+        <div className="mt-6"><IndiaHeatmap /></div>
+      </section>
+
       {data.spaceOfWeek?.space && (
-        <section className="mx-auto max-w-7xl px-6 mt-16">
-          <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title="myCube Madhapur, Hyderabad" href="/spaces" />
+        <section className="mx-auto max-w-7xl px-6 mt-20">
+          <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title={`${data.spaceOfWeek.space.name}, ${data.spaceOfWeek.space.city_name ?? ""}`} href="/spaces" />
           <div className="mt-6 glass rounded-3xl overflow-hidden grid md:grid-cols-2">
             {data.spaceOfWeek.space.cover_url && (
               <div className="relative aspect-[4/3] md:aspect-auto">
@@ -56,11 +62,6 @@ function Home() {
           </div>
         </section>
       )}
-
-      <section className="mx-auto max-w-7xl px-6 mt-20">
-        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="The coworking heatmap" href="/spaces" />
-        <div className="mt-6"><IndiaHeatmap /></div>
-      </section>
 
       {data.winners.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
@@ -100,14 +101,6 @@ function Home() {
 }
 
 const ROTATING_WORDS = ["coworking", "coffee culture", "founder scene", "hybrid week", "hot desk hunt"];
-const FLOATING_CHIPS = [
-  { label: "Bangalore", x: "8%", y: "18%", delay: 0 },
-  { label: "hot desk ₹8k", x: "82%", y: "14%", delay: 0.4 },
-  { label: "Mumbai", x: "88%", y: "62%", delay: 0.8 },
-  { label: "quiet zones", x: "4%", y: "68%", delay: 1.2 },
-  { label: "Goa remote", x: "72%", y: "78%", delay: 1.6 },
-  { label: "AMA Fri", x: "14%", y: "44%", delay: 2.0 },
-];
 
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -140,25 +133,6 @@ function Hero() {
         }}
       />
 
-      {FLOATING_CHIPS.map((c) => {
-        const dx = (pos.x - 50) / 8;
-        const dy = (pos.y - 50) / 8;
-        return (
-          <div
-            key={c.label}
-            className="absolute hidden md:block glass rounded-full px-3 py-1 text-xs font-display transition-transform duration-500 ease-out pointer-events-none select-none"
-            style={{
-              left: c.x,
-              top: c.y,
-              transform: `translate(${dx}px, ${dy}px)`,
-              animation: `float 6s ease-in-out ${c.delay}s infinite`,
-            }}
-          >
-            {c.label}
-          </div>
-        );
-      })}
-
       <div className="mx-auto max-w-5xl px-6 text-center relative">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs uppercase tracking-widest text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live, 70% India, 30% world
@@ -181,12 +155,6 @@ function Hero() {
         <div className="mt-4 text-xs text-muted-foreground">Press <kbd className="rounded bg-muted px-1.5 py-0.5">⌘K</kbd> anywhere, or wiggle your cursor.</div>
       </div>
 
-      <style>{`
-        @keyframes float {
-          0%, 100% { translate: 0 0; }
-          50% { translate: 0 -12px; }
-        }
-      `}</style>
     </section>
   );
 }
