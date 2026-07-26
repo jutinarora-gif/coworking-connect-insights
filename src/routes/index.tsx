@@ -247,25 +247,32 @@ const RED_FLAGS = [
 
 function RedFlags() {
   return (
-    <section className="mx-auto max-w-5xl px-6 mt-20">
-      <div className="glass-strong rounded-3xl p-8 md:p-10 border border-destructive/20 relative overflow-hidden">
-        <div className="absolute -top-16 -left-16 h-56 w-56 rounded-full blur-3xl opacity-30 bg-destructive" />
-        <div className="relative">
-          <div className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-destructive">
-            <AlertTriangle className="h-4 w-4" /> Watch out
+    <section className="mx-auto max-w-6xl px-6 mt-20">
+      <div className="relative rounded-3xl p-[2px] gradient-iris shadow-[0_20px_80px_-20px_oklch(0.60_0.22_25_/_0.45)]">
+        <div className="rounded-[calc(1.5rem-2px)] bg-background/95 p-8 md:p-12 relative overflow-hidden">
+          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full blur-3xl opacity-40 bg-destructive" />
+          <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full blur-3xl opacity-30 bg-destructive" />
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/30 text-xs uppercase tracking-widest text-destructive font-semibold">
+              <AlertTriangle className="h-4 w-4" /> Watch out
+            </div>
+            <h2 className="mt-3 font-display text-4xl md:text-5xl">
+              Red flags in your <span className="text-destructive">coworking</span>
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground max-w-2xl">
+              If you spot two or more of these on your tour, walk out and read the reviews again.
+            </p>
+            <ul className="mt-8 grid gap-4 md:grid-cols-2">
+              {RED_FLAGS.map((f, i) => (
+                <li key={f} className="flex gap-3 items-start p-4 rounded-xl bg-destructive/5 border border-destructive/15 hover:border-destructive/40 transition-colors">
+                  <span className="shrink-0 h-7 w-7 rounded-lg bg-destructive/15 text-destructive flex items-center justify-center text-xs font-display font-semibold">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm md:text-base leading-snug">{f}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <h2 className="mt-2 font-display text-3xl md:text-4xl">Red flags in your coworking</h2>
-          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
-            If you spot two or more of these on your tour, walk out and read the reviews again.
-          </p>
-          <ul className="mt-6 grid gap-3 md:grid-cols-2">
-            {RED_FLAGS.map((f) => (
-              <li key={f} className="flex gap-3 items-start text-sm">
-                <span className="mt-1 h-2 w-2 rounded-full bg-destructive shrink-0" />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>
