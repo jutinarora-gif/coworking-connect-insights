@@ -35,8 +35,6 @@ function Home() {
         <MapReveal />
       </section>
 
-      <RedFlags />
-
       {data.spaceOfWeek?.space && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
           <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title={`${data.spaceOfWeek.space.name}, ${data.spaceOfWeek.space.city_name ?? ""}`} href="/spaces" />
