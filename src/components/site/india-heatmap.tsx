@@ -91,9 +91,9 @@ export function IndiaHeatmap() {
         </svg>
       </div>
       <div>
-        <div className="text-xs uppercase tracking-widest text-iris">Live density map</div>
-        <h3 className="mt-1 font-display text-2xl md:text-3xl">Where India works</h3>
-        <p className="mt-2 text-sm text-muted-foreground">Bubble size grows with review volume from real coworkers. Hover a city to focus.</p>
+        <div className="text-xs uppercase tracking-widest text-iris">Live density</div>
+        <h3 className="mt-1 font-display text-2xl">Reviews by city</h3>
+        <p className="mt-2 text-sm text-muted-foreground">Bubble size grows with review volume from real coworkers. Hover to focus.</p>
         <ul className="mt-5 space-y-1.5 text-sm">
           {CITIES.slice(0, 8).map((c, i) => (
             <li
