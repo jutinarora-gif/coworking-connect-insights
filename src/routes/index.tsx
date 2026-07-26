@@ -154,12 +154,6 @@ function Hero() {
         <div className="mt-4 text-xs text-muted-foreground">Press <kbd className="rounded bg-muted px-1.5 py-0.5">⌘K</kbd> anywhere, or wiggle your cursor.</div>
       </div>
 
-      <style>{`
-        @keyframes float {
-          0%, 100% { translate: 0 0; }
-          50% { translate: 0 -12px; }
-        }
-      `}</style>
     </section>
   );
 }
