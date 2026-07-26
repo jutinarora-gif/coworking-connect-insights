@@ -9,38 +9,167 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WinnersRouteImport } from './routes/winners'
+import { Route as QuestionsRouteImport } from './routes/questions'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SpacesIndexRouteImport } from './routes/spaces.index'
+import { Route as DispatchesIndexRouteImport } from './routes/dispatches.index'
+import { Route as SpacesSlugRouteImport } from './routes/spaces.$slug'
+import { Route as DispatchesSlugRouteImport } from './routes/dispatches.$slug'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
+const WinnersRoute = WinnersRouteImport.update({
+  id: '/winners',
+  path: '/winners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuestionsRoute = QuestionsRouteImport.update({
+  id: '/questions',
+  path: '/questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SpacesIndexRoute = SpacesIndexRouteImport.update({
+  id: '/spaces/',
+  path: '/spaces/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DispatchesIndexRoute = DispatchesIndexRouteImport.update({
+  id: '/dispatches/',
+  path: '/dispatches/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpacesSlugRoute = SpacesSlugRouteImport.update({
+  id: '/spaces/$slug',
+  path: '/spaces/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DispatchesSlugRoute = DispatchesSlugRouteImport.update({
+  id: '/dispatches/$slug',
+  path: '/dispatches/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/_authenticated/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/questions': typeof QuestionsRoute
+  '/winners': typeof WinnersRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dispatches/$slug': typeof DispatchesSlugRoute
+  '/spaces/$slug': typeof SpacesSlugRoute
+  '/dispatches/': typeof DispatchesIndexRoute
+  '/spaces/': typeof SpacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/questions': typeof QuestionsRoute
+  '/winners': typeof WinnersRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dispatches/$slug': typeof DispatchesSlugRoute
+  '/spaces/$slug': typeof SpacesSlugRoute
+  '/dispatches': typeof DispatchesIndexRoute
+  '/spaces': typeof SpacesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/questions': typeof QuestionsRoute
+  '/winners': typeof WinnersRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/dispatches/$slug': typeof DispatchesSlugRoute
+  '/spaces/$slug': typeof SpacesSlugRoute
+  '/dispatches/': typeof DispatchesIndexRoute
+  '/spaces/': typeof SpacesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/questions'
+    | '/winners'
+    | '/dashboard'
+    | '/dispatches/$slug'
+    | '/spaces/$slug'
+    | '/dispatches/'
+    | '/spaces/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/questions'
+    | '/winners'
+    | '/dashboard'
+    | '/dispatches/$slug'
+    | '/spaces/$slug'
+    | '/dispatches'
+    | '/spaces'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/questions'
+    | '/winners'
+    | '/_authenticated/dashboard'
+    | '/dispatches/$slug'
+    | '/spaces/$slug'
+    | '/dispatches/'
+    | '/spaces/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  QuestionsRoute: typeof QuestionsRoute
+  WinnersRoute: typeof WinnersRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  DispatchesSlugRoute: typeof DispatchesSlugRoute
+  SpacesSlugRoute: typeof SpacesSlugRoute
+  DispatchesIndexRoute: typeof DispatchesIndexRoute
+  SpacesIndexRoute: typeof SpacesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/winners': {
+      id: '/winners'
+      path: '/winners'
+      fullPath: '/winners'
+      preLoaderRoute: typeof WinnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/questions': {
+      id: '/questions'
+      path: '/questions'
+      fullPath: '/questions'
+      preLoaderRoute: typeof QuestionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +177,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/spaces/': {
+      id: '/spaces/'
+      path: '/spaces'
+      fullPath: '/spaces/'
+      preLoaderRoute: typeof SpacesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dispatches/': {
+      id: '/dispatches/'
+      path: '/dispatches'
+      fullPath: '/dispatches/'
+      preLoaderRoute: typeof DispatchesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spaces/$slug': {
+      id: '/spaces/$slug'
+      path: '/spaces/$slug'
+      fullPath: '/spaces/$slug'
+      preLoaderRoute: typeof SpacesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dispatches/$slug': {
+      id: '/dispatches/$slug'
+      path: '/dispatches/$slug'
+      fullPath: '/dispatches/$slug'
+      preLoaderRoute: typeof DispatchesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  QuestionsRoute: QuestionsRoute,
+  WinnersRoute: WinnersRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  DispatchesSlugRoute: DispatchesSlugRoute,
+  SpacesSlugRoute: SpacesSlugRoute,
+  DispatchesIndexRoute: DispatchesIndexRoute,
+  SpacesIndexRoute: SpacesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
