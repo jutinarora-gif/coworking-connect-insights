@@ -32,8 +32,7 @@ function Home() {
       <Hero />
 
       <section className="mx-auto max-w-7xl px-6 mt-16">
-        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
-        <div className="mt-6"><IndiaHeatmap /></div>
+        <MapReveal />
       </section>
 
       <RedFlags />
@@ -247,35 +246,54 @@ const RED_FLAGS = [
 
 function RedFlags() {
   return (
-    <section className="mx-auto max-w-6xl px-6 mt-20">
-      <div className="relative rounded-3xl p-[2px] gradient-iris shadow-[0_20px_80px_-20px_oklch(0.60_0.22_25_/_0.45)]">
-        <div className="rounded-[calc(1.5rem-2px)] bg-background/95 p-8 md:p-12 relative overflow-hidden">
-          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full blur-3xl opacity-40 bg-destructive" />
-          <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full blur-3xl opacity-30 bg-destructive" />
-          <div className="relative">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/30 text-xs uppercase tracking-widest text-destructive font-semibold">
-              <AlertTriangle className="h-4 w-4" /> Watch out
-            </div>
-            <h2 className="mt-3 font-display text-4xl md:text-5xl">
-              Red flags in your <span className="text-destructive">coworking</span>
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground max-w-2xl">
-              If you spot two or more of these on your tour, walk out and read the reviews again.
-            </p>
-            <ul className="mt-8 grid gap-4 md:grid-cols-2">
-              {RED_FLAGS.map((f, i) => (
-                <li key={f} className="flex gap-3 items-start p-4 rounded-xl bg-destructive/5 border border-destructive/15 hover:border-destructive/40 transition-colors">
-                  <span className="shrink-0 h-7 w-7 rounded-lg bg-destructive/15 text-destructive flex items-center justify-center text-xs font-display font-semibold">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-sm md:text-base leading-snug">{f}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <section className="mx-auto max-w-6xl px-6 mt-16">
+      <div className="glass rounded-2xl p-6 md:p-8 border border-destructive/20">
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4 text-destructive" />
+          <div className="text-xs uppercase tracking-widest text-destructive font-semibold">Red flags</div>
         </div>
+        <h2 className="mt-2 font-display text-2xl md:text-3xl">Walk out if you spot two of these</h2>
+        <ul className="mt-5 grid gap-x-6 gap-y-2 md:grid-cols-2 text-sm">
+          {RED_FLAGS.map((f, i) => (
+            <li key={f} className="flex gap-2.5 items-baseline py-1.5 border-b border-border/40 last:border-0 md:[&:nth-last-child(2)]:border-0">
+              <span className="text-xs font-display text-destructive/70 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-muted-foreground leading-snug">{f}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
+  );
+}
+
+function MapReveal() {
+  const [open, setOpen] = useState(false);
+  if (open) {
+    return (
+      <>
+        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
+        <div className="mt-6"><IndiaHeatmap /></div>
+      </>
+    );
+  }
+  return (
+    <button
+      onClick={() => setOpen(true)}
+      className="w-full glass rounded-2xl px-6 py-5 flex items-center justify-between hover-glow hover:hover-glow-hover text-left group"
+    >
+      <div className="flex items-center gap-4">
+        <div className="h-10 w-10 rounded-xl gradient-iris flex items-center justify-center">
+          <MapPin className="h-5 w-5 text-primary-foreground" />
+        </div>
+        <div>
+          <div className="text-xs uppercase tracking-widest text-iris">India, mapped</div>
+          <div className="font-display text-lg md:text-xl">Explore coworking density across 12 cities</div>
+        </div>
+      </div>
+      <span className="text-sm text-muted-foreground group-hover:text-iris flex items-center gap-1">
+        Show map <ArrowRight className="h-4 w-4" />
+      </span>
+    </button>
   );
 }
 
