@@ -100,14 +100,6 @@ function Home() {
 }
 
 const ROTATING_WORDS = ["coworking", "coffee culture", "founder scene", "hybrid week", "hot desk hunt"];
-const FLOATING_CHIPS = [
-  { label: "Bangalore", x: "8%", y: "18%", delay: 0 },
-  { label: "hot desk ₹8k", x: "82%", y: "14%", delay: 0.4 },
-  { label: "Mumbai", x: "88%", y: "62%", delay: 0.8 },
-  { label: "quiet zones", x: "4%", y: "68%", delay: 1.2 },
-  { label: "Goa remote", x: "72%", y: "78%", delay: 1.6 },
-  { label: "AMA Fri", x: "14%", y: "44%", delay: 2.0 },
-];
 
 function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -139,25 +131,6 @@ function Hero() {
                        radial-gradient(700px 500px at 50% 0%, oklch(0.68 0.18 295 / 0.25), transparent 65%)`,
         }}
       />
-
-      {FLOATING_CHIPS.map((c) => {
-        const dx = (pos.x - 50) / 8;
-        const dy = (pos.y - 50) / 8;
-        return (
-          <div
-            key={c.label}
-            className="absolute hidden md:block glass rounded-full px-3 py-1 text-xs font-display transition-transform duration-500 ease-out pointer-events-none select-none"
-            style={{
-              left: c.x,
-              top: c.y,
-              transform: `translate(${dx}px, ${dy}px)`,
-              animation: `float 6s ease-in-out ${c.delay}s infinite`,
-            }}
-          >
-            {c.label}
-          </div>
-        );
-      })}
 
       <div className="mx-auto max-w-5xl px-6 text-center relative">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs uppercase tracking-widest text-muted-foreground">
