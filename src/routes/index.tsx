@@ -211,17 +211,21 @@ function SalesQuestions({ items }: { items: { id: string; text: string; category
       />
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         {items.map((q, i) => (
-          <div key={q.id} className="glass rounded-2xl p-5 flex gap-4 hover-glow">
+          <Link
+            key={q.id}
+            to="/questions"
+            className="glass rounded-2xl p-5 flex gap-4 hover-glow hover:hover-glow-hover group"
+          >
             <div className="h-9 w-9 shrink-0 rounded-xl gradient-iris flex items-center justify-center font-display text-primary-foreground">
               {String(i + 1).padStart(2, "0")}
             </div>
             <div>
-              <p className="font-display text-lg leading-snug">{q.text}</p>
+              <p className="font-display text-lg leading-snug group-hover:text-iris transition-colors">{q.text}</p>
               {q.category && (
                 <div className="mt-1 text-xs uppercase tracking-widest text-iris">{q.category}</div>
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <p className="mt-4 text-sm text-muted-foreground">
