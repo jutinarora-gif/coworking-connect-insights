@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import indiaMap from "@svg-maps/india";
+
 
 const CITIES: { name: string; lat: number; lng: number; spaces: number; reviews: number }[] = [
   { name: "Bangalore", lat: 12.97, lng: 77.59, spaces: 4, reviews: 22 },
