@@ -69,7 +69,13 @@ export function IndiaHeatmap() {
             const r = 12 + scale * 30;
             const active = hover === i;
             return (
-              <g key={c.name} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} style={{ cursor: "pointer" }}>
+              <a
+                key={c.name}
+                href={`/spaces?city=${encodeURIComponent(c.name)}`}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                style={{ cursor: "pointer" }}
+              >
                 <circle cx={x} cy={y} r={r} fill="url(#dotGrad)" opacity={active ? 0.95 : 0.65}>
                   <animate attributeName="r" values={`${r};${r + 3};${r}`} dur={`${2.5 + i * 0.2}s`} repeatCount="indefinite" />
                 </circle>
@@ -87,9 +93,10 @@ export function IndiaHeatmap() {
                     {c.name}
                   </text>
                 )}
-              </g>
+              </a>
             );
           })}
+
         </svg>
       </div>
       <div>
@@ -98,16 +105,20 @@ export function IndiaHeatmap() {
         <p className="mt-2 text-sm text-muted-foreground">Bubble size grows with review volume from real coworkers. Hover to focus.</p>
         <ul className="mt-5 space-y-1.5 text-sm">
           {CITIES.slice(0, 8).map((c, i) => (
-            <li
-              key={c.name}
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-              className={`flex items-center justify-between rounded-lg px-3 py-2 transition-colors ${hover === i ? "bg-accent" : ""}`}
-            >
-              <span className="font-display">{c.name}</span>
-              <span className="text-xs text-muted-foreground">{c.spaces} spaces · {c.reviews} reviews</span>
+            <li key={c.name}>
+              <Link
+                to="/spaces"
+                search={{ city: c.name }}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                className={`flex items-center justify-between rounded-lg px-3 py-2 transition-colors ${hover === i ? "bg-accent" : "hover:bg-accent/60"}`}
+              >
+                <span className="font-display">{c.name}</span>
+                <span className="text-xs text-muted-foreground">{c.spaces} spaces · {c.reviews} reviews</span>
+              </Link>
             </li>
           ))}
+
         </ul>
       </div>
     </div>
