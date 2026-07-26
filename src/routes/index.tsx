@@ -30,9 +30,15 @@ function Home() {
   return (
     <div>
       <Hero />
+
+      <section className="mx-auto max-w-7xl px-6 mt-16">
+        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
+        <div className="mt-6"><IndiaHeatmap /></div>
+      </section>
+
       {data.spaceOfWeek?.space && (
-        <section className="mx-auto max-w-7xl px-6 mt-16">
-          <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title="myCube Madhapur, Hyderabad" href="/spaces" />
+        <section className="mx-auto max-w-7xl px-6 mt-20">
+          <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title={`${data.spaceOfWeek.space.name}, ${data.spaceOfWeek.space.city_name ?? ""}`} href="/spaces" />
           <div className="mt-6 glass rounded-3xl overflow-hidden grid md:grid-cols-2">
             {data.spaceOfWeek.space.cover_url && (
               <div className="relative aspect-[4/3] md:aspect-auto">
@@ -56,11 +62,6 @@ function Home() {
           </div>
         </section>
       )}
-
-      <section className="mx-auto max-w-7xl px-6 mt-20">
-        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="The coworking heatmap" href="/spaces" />
-        <div className="mt-6"><IndiaHeatmap /></div>
-      </section>
 
       {data.winners.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 mt-20">
