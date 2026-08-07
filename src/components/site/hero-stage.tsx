@@ -20,7 +20,7 @@ export function HeroStage() {
       </div>
 
       <h1 className="mt-8 max-w-[16ch] font-display text-[14vw] font-bold leading-[0.82] tracking-[-0.055em] sm:text-[10vw] lg:text-[7.4vw]">
-        Coworking, reported from the <span className="box-decoration-clone bg-flare px-[0.12em]">desks</span>.
+        Coworking, reported from the <span className="box-decoration-clone bg-flare px-[0.12em] text-flare-ink">desks</span>.
       </h1>
     </div>
   );
