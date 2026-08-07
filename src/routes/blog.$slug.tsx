@@ -170,7 +170,7 @@ function BlogPostPage() {
         <section className="mt-16">
           <PageHeading eyebrow="Read next" title="More long reads" sub="" />
           <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {related.map((p) => (
+            {related.map((p: Post) => (
               <Link
                 key={p.slug}
                 to="/blog/$slug"
