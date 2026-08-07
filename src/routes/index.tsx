@@ -386,7 +386,7 @@ function NewsletterCTA() {
   });
   return (
     <section className={`${WRAP} mt-28`}>
-      <div className="section-ink p-10 sm:p-16">
+      <div className="border border-border p-10 sm:p-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
