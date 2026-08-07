@@ -61,7 +61,7 @@ function Hero() {
           <HeroStage />
         </div>
       </div>
-      <div className=" grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+      <div className={`${WRAP} mt-10 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end`}>
         <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
           Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
         </p>
