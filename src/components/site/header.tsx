@@ -16,6 +16,16 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const overMist = path === "/" && !scrolled;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
