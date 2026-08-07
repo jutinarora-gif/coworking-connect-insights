@@ -81,8 +81,8 @@
   --ring: oklch(0.5 0.006 285);
   --signal: oklch(0.55 0.18 28);
   /* flare: a warm ink-orange, the single live colour */
-  --flare: oklch(0.63 0.19 42);
-  --flare-soft: oklch(0.9 0.07 62);
+  --flare: oklch(0.64 0.25 30);
+  --flare-soft: oklch(0.86 0.13 45);
   --acid: var(--flare);
   --acid-ink: oklch(0.99 0.004 80);
 
@@ -181,4 +181,15 @@
 }
 @utility acid-underline-hover {
   background-size: 100% 2px;
+}
+
+@keyframes hero-steam {
+  0% { opacity: 0; transform: translateY(6px) scaleY(0.6); }
+  40% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-18px) scaleY(1.2); }
+}
+@keyframes hero-page {
+  0% { transform: translate(-50%, 26px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translate(-50%, -14px); opacity: 0; }
 }
