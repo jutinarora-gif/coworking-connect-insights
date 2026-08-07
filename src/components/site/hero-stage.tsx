@@ -39,32 +39,32 @@ export function HeroStage() {
   );
 }
 
-/** Oversized wi-fi arcs sweeping out from the bottom-right corner. */
+/** Oversized wi-fi arcs broadcasting from a solid mark on the right. */
 function Broadcast() {
-  const R = [70, 130, 190, 250, 310, 370];
+  const R = [64, 116, 168, 220, 272];
   return (
     <svg
-      viewBox="0 0 400 400"
+      viewBox="0 0 300 300"
       aria-hidden
-      className="pointer-events-none absolute bottom-0 right-0 h-full w-[70%]"
-      preserveAspectRatio="xMaxYMax slice"
+      className="pointer-events-none absolute right-2 top-1/2 hidden h-[300px] w-[300px] -translate-y-1/2 lg:block xl:right-10 xl:h-[380px] xl:w-[380px]"
     >
       <g fill="none" stroke="var(--flare)" strokeLinecap="round">
         {R.map((r, i) => (
           <path
             key={r}
-            d={`M ${400 - r} 400 A ${r} ${r} 0 0 1 400 ${400 - r}`}
-            strokeWidth={i === 0 ? 12 : 3}
+            d={`M ${150 - r * 0.7071} ${290 - r * 0.7071} A ${r} ${r} 0 0 1 ${150 + r * 0.7071} ${290 - r * 0.7071}`}
+            strokeWidth={7 - i}
             style={{
               opacity: 0,
-              transformOrigin: "400px 400px",
-              animation: `hero-broadcast 2.2s cubic-bezier(0.22,1,0.36,1) ${i * 0.13}s both`,
+              transformOrigin: "150px 290px",
+              animation: `hero-broadcast 2.2s cubic-bezier(0.22,1,0.36,1) ${i * 0.14}s both`,
             }}
           />
         ))}
-        <circle cx="400" cy="400" r="16" fill="var(--flare)" stroke="none" />
+        <circle cx="150" cy="285" r="14" fill="var(--flare)" stroke="none" />
       </g>
     </svg>
   );
 }
+
 
