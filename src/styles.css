@@ -49,6 +49,7 @@
   --color-iris-4: var(--iris-4);
   --color-signal: var(--signal);
   --color-acid: var(--acid);
+  --color-flare: var(--flare);
   --color-paper: var(--paper);
   --font-display: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
@@ -79,9 +80,11 @@
   --input: oklch(0.9 0.004 90);
   --ring: oklch(0.5 0.006 285);
   --signal: oklch(0.55 0.18 28);
-  /* acid lime, used sparingly as the one live colour */
-  --acid: oklch(0.9 0.23 128);
-  --acid-ink: oklch(0.28 0.09 128);
+  /* flare: a warm ink-orange, the single live colour */
+  --flare: oklch(0.63 0.19 42);
+  --flare-soft: oklch(0.9 0.07 62);
+  --acid: var(--flare);
+  --acid-ink: oklch(0.99 0.004 80);
 
   /* legacy accent tokens kept neutral so older pages stay on-brand */
   --iris-1: oklch(0.18 0.005 285);
@@ -157,24 +160,25 @@
   border-top: 1px solid var(--border);
 }
 
-::selection { background: var(--acid); color: var(--acid-ink); }
+::selection { background: var(--flare-soft); color: var(--foreground); }
 
+/* no highlighter blocks: emphasis is a hairline flare rule under the words */
 @utility acid-mark {
-  background-color: var(--acid);
-  color: var(--acid-ink);
+  color: var(--flare);
+  box-shadow: inset 0 -0.08em 0 color-mix(in oklab, var(--flare) 45%, transparent);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 @utility acid-dot {
-  background-color: var(--acid);
+  background-color: var(--flare);
 }
 @utility acid-underline {
-  background-image: linear-gradient(var(--acid), var(--acid));
+  background-image: linear-gradient(var(--flare), var(--flare));
   background-repeat: no-repeat;
-  background-size: 0% 0.32em;
-  background-position: 0 88%;
+  background-size: 0% 2px;
+  background-position: 0 100%;
   transition: background-size 320ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 @utility acid-underline-hover {
-  background-size: 100% 0.32em;
+  background-size: 100% 2px;
 }

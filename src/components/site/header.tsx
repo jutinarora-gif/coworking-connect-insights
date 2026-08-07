@@ -34,10 +34,13 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 glass-strong">
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <Link to="/" className="flex min-w-0 items-center gap-2">
-          <span className="h-3 w-3 shrink-0 bg-foreground" />
+        <Link to="/" className="group flex min-w-0 items-center gap-2.5">
+          <span className="grid h-8 w-8 shrink-0 place-items-center bg-foreground font-display text-[11px] font-semibold tracking-[0.04em] text-background transition-colors group-hover:bg-flare">
+            TCD
+          </span>
           <span className="truncate font-display text-base tracking-tight">The Coworking Dispatch</span>
         </Link>
+
 
         <nav className="hidden items-center justify-center gap-7 md:flex">
           {nav.map((n) => {
