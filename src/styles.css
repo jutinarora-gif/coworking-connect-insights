@@ -48,6 +48,7 @@
   --color-iris-3: var(--iris-3);
   --color-iris-4: var(--iris-4);
   --color-signal: var(--signal);
+  --color-acid: var(--acid);
   --color-paper: var(--paper);
   --font-display: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
@@ -78,6 +79,9 @@
   --input: oklch(0.9 0.004 90);
   --ring: oklch(0.5 0.006 285);
   --signal: oklch(0.55 0.18 28);
+  /* acid lime, used sparingly as the one live colour */
+  --acid: oklch(0.9 0.23 128);
+  --acid-ink: oklch(0.28 0.09 128);
 
   /* legacy accent tokens kept neutral so older pages stay on-brand */
   --iris-1: oklch(0.18 0.005 285);
