@@ -20,6 +20,7 @@ import { Route as SpacesIndexRouteImport } from './routes/spaces.index'
 import { Route as DispatchesIndexRouteImport } from './routes/dispatches.index'
 import { Route as SpacesSlugRouteImport } from './routes/spaces.$slug'
 import { Route as DispatchesSlugRouteImport } from './routes/dispatches.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
 const WinnersRoute = WinnersRouteImport.update({
@@ -76,6 +77,11 @@ const DispatchesSlugRoute = DispatchesSlugRouteImport.update({
   path: '/dispatches/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -85,11 +91,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRoute
   '/questions': typeof QuestionsRoute
   '/winners': typeof WinnersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
   '/dispatches/': typeof DispatchesIndexRoute
@@ -98,11 +105,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRoute
   '/questions': typeof QuestionsRoute
   '/winners': typeof WinnersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
   '/dispatches': typeof DispatchesIndexRoute
@@ -113,11 +121,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRoute
   '/questions': typeof QuestionsRoute
   '/winners': typeof WinnersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
   '/dispatches/': typeof DispatchesIndexRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/questions'
     | '/winners'
     | '/dashboard'
+    | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
     | '/dispatches/'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/questions'
     | '/winners'
     | '/dashboard'
+    | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
     | '/dispatches'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/questions'
     | '/winners'
     | '/_authenticated/dashboard'
+    | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
     | '/dispatches/'
@@ -170,7 +182,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   CareersRoute: typeof CareersRoute
   QuestionsRoute: typeof QuestionsRoute
   WinnersRoute: typeof WinnersRoute
@@ -259,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DispatchesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -280,11 +299,21 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   CareersRoute: CareersRoute,
   QuestionsRoute: QuestionsRoute,
   WinnersRoute: WinnersRoute,
