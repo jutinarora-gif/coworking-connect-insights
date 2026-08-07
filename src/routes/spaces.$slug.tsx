@@ -39,7 +39,7 @@ function SpacePage() {
         {space.cover_url && <img src={space.cover_url} alt={space.name} className="absolute inset-0 h-full w-full object-cover" />}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-background/20" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-8">
-          <Link to="/spaces" search={{ city: undefined }} className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-1"><ArrowLeft className="h-3 w-3" />All spaces</Link>
+          <Link to="/spaces" search={{ city: undefined }} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><ArrowLeft className="h-3 w-3" />All spaces</Link>
           <div className="flex flex-wrap items-end justify-between gap-4 mt-3">
             <div>
               <h1 className="font-display text-4xl md:text-6xl">{space.name}</h1>
@@ -87,21 +87,33 @@ function SpacePage() {
           {agg && (
             <section className="glass rounded-2xl p-6">
               <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Ratings breakdown</div>
-              <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[
+              {(() => {
+                const rows = [
                   { l: "Wifi", v: agg.wifi, i: Wifi },
                   { l: "Quiet", v: agg.quiet, i: Volume2 },
                   { l: "Community", v: agg.community, i: Users },
                   { l: "Coffee", v: agg.coffee, i: Coffee },
                   { l: "Value", v: agg.value, i: IndianRupee },
-                ].map(({ l, v, i: Icon }) => (
-                  <div key={l} className="text-center">
-                    <Icon className="h-5 w-5 mx-auto text-muted-foreground" />
-                    <div className="mt-2 font-display text-2xl">{v ?? "-"}</div>
-                    <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{l}</div>
+                ];
+                const best = Math.max(...rows.map((r) => Number(r.v ?? 0)));
+                return (
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
+                    {rows.map(({ l, v, i: Icon }) => {
+                      const top = v != null && Number(v) === best && best > 0;
+                      return (
+                        <div key={l} className="text-center">
+                          <Icon className={`h-5 w-5 mx-auto ${top ? "text-foreground" : "text-muted-foreground"}`} />
+                          <div className="mt-2 font-display text-2xl">{v ?? "-"}</div>
+                          <div className="mx-auto mt-2 h-1.5 w-full max-w-[72px] overflow-hidden rounded-full bg-muted">
+                            <span className={`block h-full rounded-full ${top ? "bg-flare" : "bg-foreground/25"}`} style={{ width: `${((Number(v ?? 0)) / 5) * 100}%` }} />
+                          </div>
+                          <div className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground">{l}</div>
+                        </div>
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
+                );
+              })()}
             </section>
           )}
 
@@ -121,7 +133,7 @@ function SpacePage() {
                       <div>
                         <div className="text-sm font-medium flex items-center gap-1.5">
                           {r.author?.display_name}
-                          {r.author?.is_verified_coworker && <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-flare text-flare-ink">Verified</span>}
+                          {r.author?.is_verified_coworker && <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-flare text-flare-ink">Verified</span>}
                         </div>
                         <div className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</div>
                       </div>
@@ -158,7 +170,7 @@ function SpacePage() {
                 </li>
               ))}
             </ol>
-            <Button className="mt-4 w-full" variant="secondary" onClick={() => {
+            <Button className="mt-4 w-full" variant="mint" size="lg" onClick={() => {
               const text = salesQuestions.map((q: any, i: number) => `${i + 1}. ${q.text}`).join("\n");
               navigator.clipboard.writeText(text);
             }}>Copy all questions</Button>

@@ -62,9 +62,10 @@ export function Header() {
               <Link
                 key={n.to}
                 to={n.to}
-                className={`text-sm transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                className={`relative text-sm transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 {n.label}
+                {active && <span className="absolute -bottom-2 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-flare" />}
               </Link>
             );
           })}
@@ -74,7 +75,7 @@ export function Header() {
           <button
             onClick={() => setOpen(true)}
             aria-label="Search"
-            className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:border-flare hover:text-foreground"
           >
             <Search className="h-4 w-4" />
             <span className="hidden lg:inline">Search</span>
@@ -85,7 +86,7 @@ export function Header() {
               <Link to="/dashboard">Dashboard</Link>
             </Button>
           ) : (
-            <Button asChild size="sm" className="rounded-full">
+            <Button asChild size="sm" variant="mint">
               <Link to="/auth"><LogIn className="mr-1 h-4 w-4" />Sign in</Link>
             </Button>
           )}

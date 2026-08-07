@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getDispatches } from "@/lib/data.functions";
+import { PageHeading } from "@/components/site/page-heading";
 import { DispatchCard } from "@/components/site/dispatch-card";
 import { z } from "zod";
 import { zodValidator, fallback } from "@tanstack/zod-adapter";
@@ -40,11 +41,11 @@ function DispatchesPage() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       <div className="flex items-end justify-between flex-wrap gap-4">
-        <div>
-          <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />The wire</div>
-          <h1 className="mt-1 font-display text-4xl md:text-5xl">Dispatches</h1>
-          <p className="mt-2 text-muted-foreground">Aggregated from {["YourStory","Inc42","ET Startups","Coworker","AllWork.Space"].join(" · ")} and more.</p>
-        </div>
+        <PageHeading
+          eyebrow="The wire"
+          title="Dispatches"
+          sub={`Aggregated from ${["YourStory","Inc42","ET Startups","Coworker","AllWork.Space"].join(" · ")} and more.`}
+        />
         <div className="inline-flex glass rounded-full p-1">
           {(["all", "india", "global"] as const).map((r) => (
             <button

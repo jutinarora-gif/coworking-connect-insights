@@ -3,6 +3,8 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getQuestions } from "@/lib/data.functions";
 import { MessagesSquare, Sparkles, CornerDownRight, BadgeCheck } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { PageHeading } from "@/components/site/page-heading";
+import { Button } from "@/components/ui/button";
 
 const q = queryOptions({ queryKey: ["questions"], queryFn: () => getQuestions() });
 
@@ -24,15 +26,19 @@ function QuestionsPage() {
   const { data } = useSuspenseQuery(q);
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
-      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><MessagesSquare className="h-3.5 w-3.5" />Community</div>
-      <h1 className="mt-1 font-display text-4xl md:text-5xl">Questions & AMAs</h1>
-      <p className="mt-2 text-muted-foreground">Real coworkers. Real answers. No affiliate links.</p>
+      <PageHeading
+        eyebrow="Community"
+        icon={<MessagesSquare className="h-3.5 w-3.5" />}
+        title="Questions & AMAs"
+        sub="Real coworkers. Real answers. No affiliate links."
+        right={<Button variant="mint" size="lg" asChild><Link to="/auth">Ask a question</Link></Button>}
+      />
       <div className="mt-10 space-y-4">
         {data.map((qq) => (
           <div key={qq.id} className="glass rounded-2xl p-5 md:p-6 hover-glow hover:hover-glow-hover">
             <div className="flex items-start gap-3">
               {qq.is_ama && (
-                <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-flare text-flare-ink">
+                <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-flare text-flare-ink">
                   <Sparkles className="h-3 w-3" />AMA
                 </span>
               )}
