@@ -44,24 +44,24 @@ function Broadcast() {
   const R = [64, 116, 168, 220, 272];
   return (
     <svg
-      viewBox="0 0 300 300"
+      viewBox="0 0 420 300"
       aria-hidden
-      className="pointer-events-none absolute right-2 top-1/2 hidden h-[300px] w-[300px] -translate-y-1/2 lg:block xl:right-10 xl:h-[380px] xl:w-[380px]"
+      className="pointer-events-none absolute right-0 top-1/2 hidden h-[300px] w-[420px] -translate-y-1/2 lg:block xl:right-6"
     >
       <g fill="none" stroke="var(--flare)" strokeLinecap="round">
         {R.map((r, i) => (
           <path
             key={r}
-            d={`M ${150 - r * 0.7071} ${290 - r * 0.7071} A ${r} ${r} 0 0 1 ${150 + r * 0.7071} ${290 - r * 0.7071}`}
+            d={`M ${210 - r * 0.7071} ${290 - r * 0.7071} A ${r} ${r} 0 0 1 ${210 + r * 0.7071} ${290 - r * 0.7071}`}
             strokeWidth={7 - i}
             style={{
               opacity: 0,
-              transformOrigin: "150px 290px",
+              transformOrigin: "210px 290px",
               animation: `hero-broadcast 2.2s cubic-bezier(0.22,1,0.36,1) ${i * 0.14}s both`,
             }}
           />
         ))}
-        <circle cx="150" cy="285" r="14" fill="var(--flare)" stroke="none" />
+        <circle cx="210" cy="285" r="14" fill="var(--flare)" stroke="none" />
       </g>
     </svg>
   );
