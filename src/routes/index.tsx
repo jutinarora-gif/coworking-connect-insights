@@ -195,7 +195,7 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className="section-ink mt-24 py-16 sm:py-20">
+    <section className="mt-24 border-y border-border py-16 sm:py-20">
       <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
