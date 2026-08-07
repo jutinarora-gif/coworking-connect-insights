@@ -3,28 +3,6 @@ import { ArrowLeft, Clock, Mail } from "lucide-react";
 import { PageHeading } from "@/components/site/page-heading";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/blog/$slug")({
-  head: ({ params }) => {
-    const post = posts.find((p) => p.slug === params.slug);
-    return {
-      meta: [
-        { title: post ? `${post.title} , The Coworking Dispatch` : "Post , The Coworking Dispatch" },
-        { name: "description", content: post?.excerpt ?? "A long read from The Coworking Dispatch." },
-        { property: "og:title", content: post?.title ?? "The Coworking Dispatch" },
-        { property: "og:description", content: post?.excerpt ?? "" },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
-  },
-  loader: ({ params }) => {
-    const post = posts.find((p) => p.slug === params.slug);
-    if (!post) throw notFound();
-    return { post, related: posts.filter((p) => p.slug !== post.slug).slice(0, 2) };
-  },
-  component: BlogPostPage,
-});
-
 type Post = {
   slug: string;
   title: string;
@@ -99,6 +77,28 @@ const posts: Post[] = [
     image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1600&q=80",
   },
 ];
+
+export const Route = createFileRoute("/blog/$slug")({
+  head: ({ params }) => {
+    const post = posts.find((p) => p.slug === params.slug);
+    return {
+      meta: [
+        { title: post ? `${post.title} , The Coworking Dispatch` : "Post , The Coworking Dispatch" },
+        { name: "description", content: post?.excerpt ?? "A long read from The Coworking Dispatch." },
+        { property: "og:title", content: post?.title ?? "The Coworking Dispatch" },
+        { property: "og:description", content: post?.excerpt ?? "" },
+        { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
+  loader: ({ params }) => {
+    const post = posts.find((p) => p.slug === params.slug);
+    if (!post) throw notFound();
+    return { post, related: posts.filter((p) => p.slug !== post.slug).slice(0, 2) };
+  },
+  component: BlogPostPage,
+});
 
 function BlogPostPage() {
   const { post, related } = Route.useLoaderData();
