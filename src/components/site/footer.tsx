@@ -38,6 +38,10 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             Made in India, by coworkers, for coworkers.
           </p>
+          <ul className="mt-2 space-y-2 text-sm">
+            <li><Link to="/careers" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Careers</Link></li>
+          </ul>
+
 
         </div>
       </div>
