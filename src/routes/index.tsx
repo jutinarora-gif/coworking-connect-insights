@@ -78,43 +78,62 @@ function Hero() {
   );
 }
 
-function Leaderboard({ categories }: { categories: { label: string; leaders: { slug: string; name: string; city_name: string | null; score: number; reviews: number }[] }[] }) {
+type Leader = { slug: string; name: string; city_name: string | null; score: number; reviews: number };
+
+function Leaderboard({ categories }: { categories: { label: string; leaders: Leader[] }[] }) {
+  const [active, setActive] = useState(0);
   if (!categories?.length) return null;
+  const current = categories[Math.min(active, categories.length - 1)];
+
   return (
     <section className={`${WRAP} mt-20`}>
-      <SectionHead eyebrow="India leaderboard" title="Who's actually winning, by category" href="/winners" cta="All winners" />
-      <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((c) => (
-          <div key={c.label}>
-            <div className="flex items-center gap-2 border-b border-foreground pb-2">
-              <span className="h-2 w-2 acid-dot" />
-              <h3 className="font-display text-lg">{c.label}</h3>
-            </div>
-            <ol className="mt-1">
-              {c.leaders.map((s, i) => (
-                <li key={s.slug}>
-                  <Link
-                    to="/spaces/$slug"
-                    params={{ slug: s.slug }}
-                    className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
-                  >
-                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "acid-mark" : "text-muted-foreground"}`}>{i + 1}</span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
-                      <span className="label">{s.city_name}</span>
-                    </span>
-                    <span className="text-xs tabular-nums text-muted-foreground">{s.score.toFixed(1)}</span>
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          </div>
+      <SectionHead eyebrow="India leaderboard" title="Pick a category. See who wins." href="/winners" cta="All winners" />
+
+      <div className="mt-6 flex flex-wrap gap-2">
+        {categories.map((c, i) => (
+          <button
+            key={c.label}
+            onClick={() => setActive(i)}
+            className={`rounded-full border px-4 py-2 text-sm transition-colors ${
+              i === active
+                ? "border-foreground bg-foreground text-background"
+                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+            }`}
+          >
+            {c.label}
+          </button>
         ))}
       </div>
-      <p className="label mt-6">Based on community reviews on The Coworking Dispatch. Rankings update as more reviews come in.</p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        {current.leaders.map((s, i) => (
+          <Link
+            key={s.slug}
+            to="/spaces/$slug"
+            params={{ slug: s.slug }}
+            className={`group relative overflow-hidden rounded-2xl border border-border p-6 transition-all hover:-translate-y-0.5 hover:border-foreground ${
+              i === 0 ? "bg-flare text-flare-ink" : "bg-card"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="font-display text-5xl font-bold leading-none tabular-nums opacity-90">{i + 1}</span>
+              <span className="rounded-full border border-current/25 px-3 py-1 text-xs tabular-nums opacity-80">
+                {s.score.toFixed(1)}
+              </span>
+            </div>
+            <div className="mt-8 font-display text-xl leading-tight">{s.name}</div>
+            <div className={`mt-1 text-xs uppercase tracking-widest ${i === 0 ? "opacity-70" : "text-muted-foreground"}`}>
+              {s.city_name} · {s.reviews} reviews
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <p className="label mt-6">Based on community reviews. Rankings update as more reviews come in.</p>
     </section>
   );
 }
+
 
 function ReviewCTA() {
   return (
