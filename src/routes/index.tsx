@@ -162,15 +162,17 @@ function ReviewCTA() {
 function ImageStrip({ items }: { items: { slug: string; name: string; cover_url: string | null; city_name: string | null }[] }) {
   if (!items.length) return null;
   return (
-    <section className={`${WRAP} mt-6`}>
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-6">
+    <section className={`${WRAP} mt-12`}>
+      <SectionHead eyebrow="Talk of the week" title="Five spaces people are talking about" href="/spaces" cta="All spaces" />
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-6">
         {items.map((s, i) => (
           <Link
             key={s.slug}
             to="/spaces/$slug"
             params={{ slug: s.slug }}
-            className={`group relative overflow-hidden bg-muted ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
+            className={`group relative overflow-hidden rounded-2xl bg-muted ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
           >
+
             {s.cover_url && (
               <img
                 src={s.cover_url}
