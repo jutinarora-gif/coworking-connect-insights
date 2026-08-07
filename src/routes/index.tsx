@@ -216,12 +216,12 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className="mt-24 border-y border-border py-16 sm:py-20">
+    <section className="section-ink mt-24 py-16 sm:py-20">
       <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         {s.cover_url && (
-          <div className="aspect-[16/11] overflow-hidden bg-muted">
+          <div className="aspect-[16/11] overflow-hidden rounded-3xl bg-muted">
             <img src={s.cover_url} alt={s.name} className="h-full w-full object-cover" />
           </div>
         )}
@@ -232,12 +232,13 @@ function SpaceOfWeek({ data }: { data: any }) {
           <Link
             to="/spaces/$slug"
             params={{ slug: s.slug }}
-            className="mt-8 inline-flex items-center gap-2 border-b border-foreground pb-1 text-sm font-medium"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-flare px-5 py-2.5 text-sm font-medium text-flare-ink transition-transform hover:-translate-y-0.5"
           >
             Visit the profile <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
+
       </div>
     </section>
 
