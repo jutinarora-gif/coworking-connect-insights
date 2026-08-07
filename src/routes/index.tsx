@@ -217,7 +217,9 @@ function SpaceOfWeek({ data }: { data: any }) {
           </Link>
         </div>
       </div>
+      </div>
     </section>
+
   );
 }
 
