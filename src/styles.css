@@ -172,19 +172,47 @@
 
 ::selection { background: var(--flare); color: var(--flare-ink); }
 
-/* emphasis is a thick flare rule under the words, never a highlighter block */
+/* Dark editorial slab. Flips every semantic token inside, so child components
+   keep using bg-background / text-muted-foreground / border-border unchanged. */
+@utility section-ink {
+  background-color: var(--ink-surface);
+  color: var(--ink-surface-foreground);
+  --background: var(--ink-surface);
+  --foreground: var(--ink-surface-foreground);
+  --card: oklch(0.205 0.004 90);
+  --card-foreground: var(--ink-surface-foreground);
+  --muted: oklch(0.225 0.004 90);
+  --muted-foreground: oklch(0.72 0.008 92);
+  --accent: oklch(0.235 0.004 90);
+  --accent-foreground: var(--ink-surface-foreground);
+  --border: oklch(0.32 0.004 90);
+  --input: oklch(0.32 0.004 90);
+  --primary: var(--flare);
+  --primary-foreground: var(--flare-ink);
+  --secondary: oklch(0.235 0.004 90);
+  --secondary-foreground: var(--ink-surface-foreground);
+  --ring: oklch(0.6 0.008 92);
+}
+
+/* emphasis: a filled block. Ink on cream, sulphur inside dark slabs. */
 @utility acid-mark {
-  background-image: linear-gradient(var(--flare), var(--flare));
-  background-repeat: no-repeat;
-  background-size: 100% 0.14em;
-  background-position: 0 100%;
-  padding-bottom: 0.06em;
+  background-color: var(--foreground);
+  color: var(--background);
+  padding: 0 0.18em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
+.section-ink .acid-mark {
+  background-color: var(--flare);
+  color: var(--flare-ink);
+}
 @utility acid-dot {
+  background-color: var(--foreground);
+}
+.section-ink .acid-dot {
   background-color: var(--flare);
 }
+
 @utility acid-underline {
   background-image: linear-gradient(var(--foreground), var(--foreground));
   background-repeat: no-repeat;
