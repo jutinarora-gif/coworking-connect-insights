@@ -42,7 +42,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 glass-strong">
+    <header className={`sticky top-0 z-40 transition-colors duration-300 ${overMist ? "bg-transparent" : "glass-strong"}`}>
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
           <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-foreground transition-colors duration-300 group-hover:bg-flare">
