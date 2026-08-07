@@ -56,7 +56,7 @@ function Home() {
 function Hero() {
   return (
     <section>
-      <div className="section-ink">
+      <div className="section-mist">
         <div className={WRAP}>
           <HeroStage />
         </div>
