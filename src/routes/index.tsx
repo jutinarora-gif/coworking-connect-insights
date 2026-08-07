@@ -66,7 +66,7 @@ function Hero() {
             <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="rounded-full">
-            <Link to="/spaces">Browse spaces</Link>
+            <Link to="/spaces" search={{}}>Browse spaces</Link>
           </Button>
         </div>
       </div>
@@ -129,7 +129,7 @@ function ReviewCTA() {
           </p>
         </div>
         <Button asChild size="lg" className="rounded-full">
-          <Link to="/spaces">Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
+          <Link to="/spaces" search={{}}>Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
         </Button>
       </div>
     </section>
