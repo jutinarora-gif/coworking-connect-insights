@@ -313,7 +313,7 @@ const RED_FLAGS = [
 function RedFlags() {
   return (
     <section className={`${WRAP} mt-24`}>
-      <div className="border border-border p-7 sm:p-10">
+      <div className="rounded-3xl border border-border p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
