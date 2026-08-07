@@ -184,7 +184,7 @@ function Marquee() {
         {words.map((w) => (
           <span key={w} className="flex items-center gap-10">
             {w}
-            <span className="h-1 w-1 rounded-full bg-border" />
+            <span className="h-1.5 w-1.5 rounded-full acid-dot" />
           </span>
         ))}
       </div>
@@ -250,13 +250,13 @@ function Winners({ winners }: { winners: any[] }) {
               params={{ slug: w.space.slug }}
               className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 border-b border-border py-5 transition-colors hover:bg-accent/50"
             >
-              <span className="w-8 font-display text-sm tabular-nums text-muted-foreground">{String(w.rank).padStart(2, "0")}</span>
+              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "acid-mark px-1.5 py-0.5" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
               <div className="flex min-w-0 items-center gap-4">
                 {w.space.cover_url && (
                   <img src={w.space.cover_url} alt="" loading="lazy" className="hidden h-14 w-20 shrink-0 object-cover sm:block" />
                 )}
                 <div className="min-w-0">
-                  <div className="truncate font-display text-xl sm:text-2xl">{w.space.name}</div>
+                  <div className="truncate font-display text-xl acid-underline group-hover:acid-underline-hover sm:text-2xl">{w.space.name}</div>
                   <div className="label mt-0.5">{w.space.city_name}</div>
                 </div>
               </div>
@@ -345,7 +345,7 @@ function Dispatches({ items }: { items: any[] }) {
               <span>/</span>
               <span className="truncate">{d.source_name}</span>
             </div>
-            <h3 className="mt-2 font-display text-xl leading-snug">{d.title}</h3>
+            <h3 className="mt-2 font-display text-xl leading-snug acid-underline group-hover:acid-underline-hover">{d.title}</h3>
             {d.excerpt && <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{d.excerpt}</p>}
             <div className="label mt-3">{formatDistanceToNow(new Date(d.published_at), { addSuffix: true })}</div>
           </Link>
@@ -413,7 +413,7 @@ function NewsletterCTA() {
               onChange={(e) => setEmail(e.target.value)}
               className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
             />
-            <Button type="submit" disabled={mut.isPending} variant="secondary" className="h-12 rounded-none px-6">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-acid px-6 text-[var(--acid-ink)] hover:bg-acid/90">
               Subscribe
             </Button>
           </form>
