@@ -86,13 +86,13 @@ function ImageStrip({ items }: { items: { slug: string; name: string; cover_url:
   if (!items.length) return null;
   return (
     <section className={`${WRAP} mt-6`}>
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-6">
         {items.map((s, i) => (
           <Link
             key={s.slug}
             to="/spaces/$slug"
             params={{ slug: s.slug }}
-            className={`group relative overflow-hidden bg-muted ${i === 0 ? "col-span-2 md:col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
+            className={`group relative overflow-hidden bg-muted ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
           >
             {s.cover_url && (
               <img
