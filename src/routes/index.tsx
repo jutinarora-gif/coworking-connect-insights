@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
+import { HeroStage } from "@/components/site/hero-stage";
 import { IndiaHeatmap } from "@/components/site/india-heatmap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,32 +55,19 @@ function Home() {
 
 function Hero() {
   return (
-    <section className={`${WRAP} pt-14 sm:pt-20 pb-10`}>
-      <div className="inline-flex items-center gap-2 border border-border px-3 py-1 text-[11px] uppercase tracking-[0.14em]">
-        <span className="h-1.5 w-1.5 acid-dot rounded-full" /> Live , 70% India, 30% world
-      </div>
-      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-        <div className="min-w-0">
-          <h1 className="font-display text-[12vw] leading-[0.9] tracking-[-0.045em] sm:text-[8vw] lg:text-[6.4vw]">
-            Coworking news, reviews,
-            <br />
-            and <span className="acid-mark px-2">real talk</span> from
-            <br />
-            everywhere.
-          </h1>
-        </div>
-        <div className="max-w-sm lg:pb-3">
-          <p className="text-base leading-relaxed text-muted-foreground">
-            Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="rounded-full">
-              <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="rounded-full">
-              <Link to="/spaces">Browse spaces</Link>
-            </Button>
-          </div>
+    <section className={`${WRAP} pt-8 sm:pt-12`}>
+      <HeroStage />
+      <div className="mt-8 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+        <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
+          Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild size="lg" className="rounded-full">
+            <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
+          </Button>
+          <Button asChild size="lg" variant="outline" className="rounded-full">
+            <Link to="/spaces">Browse spaces</Link>
+          </Button>
         </div>
       </div>
     </section>
@@ -106,7 +94,7 @@ function Leaderboard({ categories }: { categories: { label: string; leaders: { s
                     params={{ slug: s.slug }}
                     className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
                   >
-                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "acid-mark px-1" : "text-muted-foreground"}`}>{i + 1}</span>
+                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "text-flare" : "text-muted-foreground"}`}>{i + 1}</span>
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
                       <span className="label">{s.city_name}</span>
@@ -129,10 +117,13 @@ function ReviewCTA() {
     <section className={`${WRAP} mt-20`}>
       <div className="grid items-center gap-6 border-y border-border py-10 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
-          <div className="label">Been to a space this month?</div>
-          <h2 className="mt-2 font-display text-3xl leading-tight sm:text-4xl">
-            Leave a review. It takes <span className="acid-mark px-1.5">under two minutes.</span>
+          <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
+            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+            Been to a space this month?
           </h2>
+          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+            Leave a review. It takes <span className="acid-mark">under two minutes.</span>
+          </p>
           <p className="mt-3 max-w-xl text-sm text-muted-foreground">
             The more coworkers who weigh in, the more useful this gets for the next person choosing a desk.
           </p>
@@ -194,10 +185,13 @@ function Marquee() {
 
 function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-border pb-5">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-foreground pb-4">
       <div className="min-w-0">
-        <div className="label">{eyebrow}</div>
-        <h2 className="mt-2 font-display text-3xl leading-none sm:text-5xl">{title}</h2>
+        <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
+          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+          {eyebrow}
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground sm:text-base">{title}</p>
       </div>
       {href && (
         <Link to={href} className="shrink-0 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline">
@@ -250,7 +244,7 @@ function Winners({ winners }: { winners: any[] }) {
               params={{ slug: w.space.slug }}
               className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 border-b border-border py-5 transition-colors hover:bg-accent/50"
             >
-              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "acid-mark px-1.5 py-0.5" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
+              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "text-flare" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
               <div className="flex min-w-0 items-center gap-4">
                 {w.space.cover_url && (
                   <img src={w.space.cover_url} alt="" loading="lazy" className="hidden h-14 w-20 shrink-0 object-cover sm:block" />
@@ -308,15 +302,18 @@ function RedFlags() {
       <div className="border border-border bg-card p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
-            <div className="label text-signal">Red flags</div>
-            <h2 className="mt-3 font-display text-3xl leading-[0.98] sm:text-4xl">
-              Spot two of these? Time to rethink your coworking space.
+            <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              Red flags
             </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Spot two of these? Time to rethink your coworking space.
+            </p>
           </div>
           <ul className="grid gap-x-10 sm:grid-cols-2">
             {RED_FLAGS.map((f, i) => (
               <li key={f} className="flex gap-3 border-b border-border py-3 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
-                <span className="tabular-nums text-signal">{String(i + 1).padStart(2, "0")}</span>
+                <span className="tabular-nums text-flare">{String(i + 1).padStart(2, "0")}</span>
                 <span className="leading-snug text-muted-foreground">{f}</span>
               </li>
             ))}
@@ -373,8 +370,11 @@ function MapReveal() {
           className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-y border-border py-8 text-left transition-colors hover:bg-accent/50"
         >
           <div className="min-w-0">
-            <div className="label">India, mapped</div>
-            <div className="mt-2 font-display text-2xl sm:text-4xl">Coworking density across 12 cities</div>
+            <div className="font-display text-2xl leading-none sm:text-[2rem]">
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              India, mapped
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">Coworking density across 12 cities</p>
           </div>
           <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
             Show map <ArrowRight className="h-4 w-4" />
@@ -397,12 +397,13 @@ function NewsletterCTA() {
       <div className="border border-border bg-foreground p-10 text-background sm:p-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
-            <div className="label text-background/60">The Wednesday Dispatch</div>
-            <h2 className="mt-3 font-display text-4xl leading-[0.95] sm:text-6xl">
-              India's coworking week,
-              <br />
-              in five minutes.
+            <h2 className="font-display text-2xl leading-none text-background sm:text-[2rem]">
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              The Wednesday Dispatch
             </h2>
+            <p className="mt-3 max-w-md text-sm text-background/70 sm:text-base">
+              India's coworking week, in five minutes. Every Wednesday.
+            </p>
           </div>
           <form onSubmit={(e) => { e.preventDefault(); mut.mutate(); }} className="flex gap-2">
             <Input
@@ -413,7 +414,7 @@ function NewsletterCTA() {
               onChange={(e) => setEmail(e.target.value)}
               className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-acid px-6 text-[var(--acid-ink)] hover:bg-acid/90">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-flare px-6 text-background hover:bg-flare/90">
               Subscribe
             </Button>
           </form>
