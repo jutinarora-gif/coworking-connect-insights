@@ -85,10 +85,12 @@
   --input: oklch(0.9 0.012 88);
   --ring: oklch(0.5 0.012 70);
   --signal: oklch(0.16 0.004 60);
-  /* flare: sulphur yellow. Only ever used on the near-black ink surface. */
-  --flare: oklch(0.955 0.155 105);
-  --flare-soft: oklch(0.975 0.06 105);
-  --flare-ink: oklch(0.14 0.004 90);
+  /* flare: mint green #8DF688. Always carries near-black ink type on top. */
+  --flare: oklch(0.895 0.176 141);
+  --flare-soft: oklch(0.955 0.07 141);
+  --flare-ink: oklch(0.16 0.008 141);
+  /* mist: warm grey band used for the hero slab only */
+  --mist: oklch(0.874 0.011 106);
   --ink-surface: oklch(0.155 0.004 90);
   --ink-surface-foreground: oklch(0.965 0.008 92);
   --acid: var(--flare);
