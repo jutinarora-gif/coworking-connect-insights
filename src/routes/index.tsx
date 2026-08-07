@@ -55,9 +55,13 @@ function Home() {
 
 function Hero() {
   return (
-    <section className={`${WRAP} pt-8 sm:pt-12`}>
-      <HeroStage />
-      <div className="mt-8 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+    <section>
+      <div className="section-ink">
+        <div className={WRAP}>
+          <HeroStage />
+        </div>
+      </div>
+      <div className=" grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
         <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
           Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
         </p>
@@ -191,7 +195,8 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className={`${WRAP} mt-24`}>
+    <section className="section-ink mt-24 py-16 sm:py-20">
+      <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         {s.cover_url && (
@@ -284,7 +289,7 @@ const RED_FLAGS = [
 function RedFlags() {
   return (
     <section className={`${WRAP} mt-24`}>
-      <div className="border border-border bg-card p-7 sm:p-10">
+      <div className="section-ink p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
@@ -379,14 +384,14 @@ function NewsletterCTA() {
   });
   return (
     <section className={`${WRAP} mt-28`}>
-      <div className="border border-border bg-foreground p-10 text-background sm:p-16">
+      <div className="section-ink p-10 sm:p-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-2xl leading-none text-background sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
+            <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
+              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em]" />
               The Wednesday Dispatch
             </h2>
-            <p className="mt-3 max-w-md text-sm text-background/70 sm:text-base">
+            <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
               India's coworking week, in five minutes. Every Wednesday.
             </p>
           </div>
@@ -397,9 +402,9 @@ function NewsletterCTA() {
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
+              className="h-12 rounded-none border-border bg-transparent"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-flare px-6 text-flare-ink hover:bg-flare/85">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none px-6">
               Subscribe
             </Button>
           </form>
