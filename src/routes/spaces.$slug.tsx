@@ -67,7 +67,7 @@ function SpacePage() {
         <div className="lg:col-span-2 space-y-10">
           {space.description && (
             <section className="glass rounded-2xl p-6">
-              <div className="text-xs uppercase tracking-widest text-iris">Overview</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Overview</div>
               <p className="mt-3 text-lg leading-relaxed">{space.description}</p>
               {space.price_from && (
                 <div className="mt-4 text-sm">
@@ -86,7 +86,7 @@ function SpacePage() {
 
           {agg && (
             <section className="glass rounded-2xl p-6">
-              <div className="text-xs uppercase tracking-widest text-iris">Ratings breakdown</div>
+              <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Ratings breakdown</div>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
                 {[
                   { l: "Wifi", v: agg.wifi, i: Wifi },
@@ -108,7 +108,7 @@ function SpacePage() {
           <section>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xs uppercase tracking-widest text-iris">What coworkers say</div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />What coworkers say</div>
                 <h2 className="font-display text-3xl mt-1">{reviews.length} reviews</h2>
               </div>
             </div>
@@ -121,7 +121,7 @@ function SpacePage() {
                       <div>
                         <div className="text-sm font-medium flex items-center gap-1.5">
                           {r.author?.display_name}
-                          {r.author?.is_verified_coworker && <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded gradient-iris text-primary-foreground">Verified</span>}
+                          {r.author?.is_verified_coworker && <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-flare text-flare-ink">Verified</span>}
                         </div>
                         <div className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</div>
                       </div>
@@ -147,13 +147,13 @@ function SpacePage() {
 
         <aside className="space-y-6">
           <section className="glass rounded-2xl p-6 sticky top-20">
-            <div className="text-xs uppercase tracking-widest text-iris flex items-center gap-1"><ClipboardCheck className="h-3.5 w-3.5" />Ask the salesperson</div>
+            <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><ClipboardCheck className="h-3.5 w-3.5" />Ask the salesperson</div>
             <h3 className="mt-2 font-display text-xl">Before you sign</h3>
             <p className="text-xs text-muted-foreground mt-1">Copy-paste these to your tour email. Community-curated.</p>
             <ol className="mt-4 space-y-2.5">
               {salesQuestions.map((sq: any, i: number) => (
                 <li key={sq.id} className="text-sm flex gap-2">
-                  <span className="text-iris font-display text-lg leading-none">{i + 1}.</span>
+                  <span className="acid-mark font-display text-lg leading-none">{i + 1}.</span>
                   <span>{sq.text}</span>
                 </li>
               ))}

@@ -41,7 +41,7 @@ function DispatchesPage() {
     <div className="mx-auto max-w-7xl px-6 py-12">
       <div className="flex items-end justify-between flex-wrap gap-4">
         <div>
-          <div className="text-xs uppercase tracking-widest text-iris">The wire</div>
+          <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />The wire</div>
           <h1 className="mt-1 font-display text-4xl md:text-5xl">Dispatches</h1>
           <p className="mt-2 text-muted-foreground">Aggregated from {["YourStory","Inc42","ET Startups","Coworker","AllWork.Space"].join(" · ")} and more.</p>
         </div>
@@ -50,7 +50,7 @@ function DispatchesPage() {
             <button
               key={r}
               onClick={() => navigate({ to: ".", search: { region: r } })}
-              className={`px-4 py-1.5 rounded-full text-sm capitalize transition-all ${region === r ? "gradient-iris text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              className={`px-4 py-1.5 rounded-full text-sm capitalize transition-all ${region === r ? "bg-flare text-flare-ink" : "text-muted-foreground hover:text-foreground"}`}
             >
               {r === "india" ? "🇮🇳 India" : r === "global" ? "🌏 Global" : "All"}
             </button>

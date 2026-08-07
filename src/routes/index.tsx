@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
 import { HeroStage } from "@/components/site/hero-stage";
-import { IndiaHeatmap } from "@/components/site/india-heatmap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -47,7 +46,6 @@ function Home() {
       <RedFlags />
       <ReviewCTA />
       <Dispatches items={data.dispatches.slice(0, 6)} />
-      <MapReveal />
       <NewsletterCTA />
     </div>
   );
@@ -141,7 +139,7 @@ function ReviewCTA() {
       <div className="grid items-center gap-6 border-y border-border py-10 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
           <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
+            <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
             Been to a space this month?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -198,7 +196,7 @@ function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: st
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-foreground pb-4">
       <div className="min-w-0">
         <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
+          <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
           {eyebrow}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">{title}</p>
@@ -317,7 +315,7 @@ function RedFlags() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
+              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
               Red flags
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -366,39 +364,6 @@ function Dispatches({ items }: { items: any[] }) {
   );
 }
 
-function MapReveal() {
-  const [open, setOpen] = useState(false);
-  return (
-    <section className={`${WRAP} mt-24`}>
-      {open ? (
-        <>
-          <SectionHead eyebrow="India, mapped" title="Where India works" href="/spaces" cta="All spaces" />
-          <div className="mt-8"><IndiaHeatmap /></div>
-          <button onClick={() => setOpen(false)} className="mx-auto mt-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            Collapse map <ArrowRight className="h-3.5 w-3.5 -rotate-90" />
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={() => setOpen(true)}
-          className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-y border-border py-8 text-left transition-colors hover:bg-accent/50"
-        >
-          <div className="min-w-0">
-            <div className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
-              India, mapped
-            </div>
-            <p className="mt-2 text-sm text-muted-foreground sm:text-base">Coworking density across 12 cities</p>
-          </div>
-          <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
-            Show map <ArrowRight className="h-4 w-4" />
-          </span>
-        </button>
-      )}
-    </section>
-  );
-}
-
 function NewsletterCTA() {
   const [email, setEmail] = useState("");
   const mut = useMutation({
@@ -407,15 +372,12 @@ function NewsletterCTA() {
     onError: (e: Error) => toast.error(e.message),
   });
   return (
-    <section className="section-mist mt-28 py-16 sm:py-20">
-      <div className={WRAP}>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
+    <section className={`${WRAP} mt-28 mb-24`}>
+      <div className="mx-auto max-w-4xl rounded-[2rem] bg-flare px-7 py-12 text-flare-ink sm:px-12 sm:py-14">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
-              The Wednesday Dispatch
-            </h2>
-            <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
+            <h2 className="font-display text-3xl leading-none sm:text-[2.5rem]">The Wednesday Dispatch</h2>
+            <p className="mt-3 max-w-md text-sm opacity-80 sm:text-base">
               India's coworking week, in five minutes. Every Wednesday.
             </p>
           </div>
@@ -426,15 +388,14 @@ function NewsletterCTA() {
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-full border-foreground/20 bg-background/70 px-5"
+              className="h-12 rounded-full border-flare-ink/25 bg-background px-5 text-foreground"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-full px-6">
+            <Button type="submit" disabled={mut.isPending} className="h-12 shrink-0 rounded-full bg-flare-ink px-6 text-flare hover:bg-flare-ink/90">
               Subscribe
             </Button>
           </form>
         </div>
       </div>
-
     </section>
   );
 }
