@@ -34,8 +34,8 @@ Move away from the Kümmerlein reference layout while keeping one borrowed textu
 - No change to Space of the Week, Leaderboard, Red Flags, Sales Questions, or Newsletter sections beyond ensuring they sit on cream as they do now.
 
 ### 5. Cleanup
-- Remove the unused `Broadcast` animation component from `src/components/site/hero-stage.tsx` or replace the hero stage with the new minimal treatment.
-- Delete any leftover orange/flare references if they still exist.
+- Replace the hero stage in `src/components/site/hero-stage.tsx` with the new minimal treatment and drop the `Broadcast` arcs.
+- Swap every sulphur/yellow token in `src/styles.css` for the mint accent, and sweep the codebase for leftover yellow or orange accent classes.
 
 ## Outcome
-A quieter, more original homepage: one warm grey slab at the top with bold type and a single sulphur accent, then the existing editorial cream body below. Distinct from Kümmerlein, but carrying the sophisticated grey texture the user liked.
+A quieter, more original homepage: one warm grey slab at the top with bold type and a single mint accent, then the existing editorial cream body below. It keeps the sophisticated grey texture without borrowing the reference site's yellow.
