@@ -90,7 +90,8 @@ function Console() {
       {/* coffee */}
       <Tile label="Coffee">
         <div className="relative h-14 w-full">
-          <div className="absolute bottom-0 left-1/2 h-7 w-10 -translate-x-1/2 rounded-b-md border-2 border-background" />
+          <div className="absolute bottom-0 left-1/2 h-7 w-10 -translate-x-1/2 rounded-b-lg bg-background" />
+          <div className="absolute bottom-1.5 left-1/2 h-4 w-2.5 translate-x-[22px] rounded-r-full border-2 border-background" />
           {[0, 1, 2].map((n) => (
             <span
               key={n}
