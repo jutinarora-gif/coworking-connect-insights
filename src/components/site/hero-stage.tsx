@@ -16,7 +16,7 @@ export function HeroStage() {
   return (
     <div
       ref={ref}
-      className="relative overflow-hidden border-y border-foreground/15 py-16 sm:py-24"
+      className="relative overflow-hidden py-20 sm:py-28"
     >
       <Broadcast key={pulse} />
 

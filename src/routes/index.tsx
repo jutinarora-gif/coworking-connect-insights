@@ -55,9 +55,13 @@ function Home() {
 
 function Hero() {
   return (
-    <section className={`${WRAP} pt-8 sm:pt-12`}>
-      <HeroStage />
-      <div className="mt-8 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+    <section>
+      <div className="section-ink">
+        <div className={WRAP}>
+          <HeroStage />
+        </div>
+      </div>
+      <div className={`${WRAP} mt-10 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end`}>
         <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
           Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
         </p>
@@ -94,7 +98,7 @@ function Leaderboard({ categories }: { categories: { label: string; leaders: { s
                     params={{ slug: s.slug }}
                     className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
                   >
-                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "bg-flare px-1 text-flare-ink" : "text-muted-foreground"}`}>{i + 1}</span>
+                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "acid-mark" : "text-muted-foreground"}`}>{i + 1}</span>
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
                       <span className="label">{s.city_name}</span>
@@ -118,7 +122,7 @@ function ReviewCTA() {
       <div className="grid items-center gap-6 border-y border-border py-10 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
           <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
+            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
             Been to a space this month?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -173,7 +177,7 @@ function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: st
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-foreground pb-4">
       <div className="min-w-0">
         <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
+          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
           {eyebrow}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">{title}</p>
@@ -191,7 +195,8 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className={`${WRAP} mt-24`}>
+    <section className="section-ink mt-24 py-16 sm:py-20">
+      <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         {s.cover_url && (
@@ -212,7 +217,9 @@ function SpaceOfWeek({ data }: { data: any }) {
           </Link>
         </div>
       </div>
+      </div>
     </section>
+
   );
 }
 
@@ -229,7 +236,7 @@ function Winners({ winners }: { winners: any[] }) {
               params={{ slug: w.space.slug }}
               className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 border-b border-border py-5 transition-colors hover:bg-accent/50"
             >
-              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "bg-flare px-1 text-flare-ink" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
+              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "acid-mark" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
               <div className="flex min-w-0 items-center gap-4">
                 {w.space.cover_url && (
                   <img src={w.space.cover_url} alt="" loading="lazy" className="hidden h-14 w-20 shrink-0 object-cover sm:block" />
@@ -284,11 +291,11 @@ const RED_FLAGS = [
 function RedFlags() {
   return (
     <section className={`${WRAP} mt-24`}>
-      <div className="border border-border bg-card p-7 sm:p-10">
+      <div className="section-ink p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
               Red flags
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -298,7 +305,7 @@ function RedFlags() {
           <ul className="grid gap-x-10 sm:grid-cols-2">
             {RED_FLAGS.map((f, i) => (
               <li key={f} className="flex gap-3 border-b border-border py-3 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
-                <span className="bg-flare px-1 tabular-nums text-flare-ink">{String(i + 1).padStart(2, "0")}</span>
+                <span className="acid-mark tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <span className="leading-snug text-muted-foreground">{f}</span>
               </li>
             ))}
@@ -356,7 +363,7 @@ function MapReveal() {
         >
           <div className="min-w-0">
             <div className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground" />
               India, mapped
             </div>
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">Coworking density across 12 cities</p>
@@ -379,14 +386,14 @@ function NewsletterCTA() {
   });
   return (
     <section className={`${WRAP} mt-28`}>
-      <div className="border border-border bg-foreground p-10 text-background sm:p-16">
+      <div className="section-ink p-10 sm:p-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-2xl leading-none text-background sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
+            <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
+              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em]" />
               The Wednesday Dispatch
             </h2>
-            <p className="mt-3 max-w-md text-sm text-background/70 sm:text-base">
+            <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
               India's coworking week, in five minutes. Every Wednesday.
             </p>
           </div>
@@ -397,9 +404,9 @@ function NewsletterCTA() {
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
+              className="h-12 rounded-none border-border bg-transparent"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-flare px-6 text-flare-ink hover:bg-flare/85">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none px-6">
               Subscribe
             </Button>
           </form>
