@@ -174,7 +174,8 @@
   -webkit-box-decoration-break: clone;
 }
 @utility acid-dot {
-  background-color: var(--flare);
+  background-color: var(--foreground);
+  box-shadow: 0 0 0 2px var(--flare);
 }
 @utility acid-underline {
   background-image: linear-gradient(var(--foreground), var(--foreground));

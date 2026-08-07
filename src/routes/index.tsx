@@ -118,7 +118,7 @@ function ReviewCTA() {
       <div className="grid items-center gap-6 border-y border-border py-10 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="min-w-0">
           <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+            <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
             Been to a space this month?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -188,7 +188,7 @@ function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: st
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-foreground pb-4">
       <div className="min-w-0">
         <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+          <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
           {eyebrow}
         </h2>
         <p className="mt-2 text-sm text-muted-foreground sm:text-base">{title}</p>
@@ -303,7 +303,7 @@ function RedFlags() {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
               Red flags
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -371,7 +371,7 @@ function MapReveal() {
         >
           <div className="min-w-0">
             <div className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
               India, mapped
             </div>
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">Coworking density across 12 cities</p>
@@ -398,7 +398,7 @@ function NewsletterCTA() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
             <h2 className="font-display text-2xl leading-none text-background sm:text-[2rem]">
-              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-flare" />
+              <span className="mr-2 inline-block h-2 w-2 translate-y-[-0.15em] bg-foreground ring-2 ring-flare" />
               The Wednesday Dispatch
             </h2>
             <p className="mt-3 max-w-md text-sm text-background/70 sm:text-base">
