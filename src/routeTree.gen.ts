@@ -18,6 +18,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SpacesIndexRouteImport } from './routes/spaces.index'
 import { Route as DispatchesIndexRouteImport } from './routes/dispatches.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as SpacesSlugRouteImport } from './routes/spaces.$slug'
 import { Route as DispatchesSlugRouteImport } from './routes/dispatches.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -67,6 +68,11 @@ const DispatchesIndexRoute = DispatchesIndexRouteImport.update({
   path: '/dispatches/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
 const SpacesSlugRoute = SpacesSlugRouteImport.update({
   id: '/spaces/$slug',
   path: '/spaces/$slug',
@@ -99,13 +105,13 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/dispatches/': typeof DispatchesIndexRoute
   '/spaces/': typeof SpacesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
   '/careers': typeof CareersRoute
   '/questions': typeof QuestionsRoute
   '/winners': typeof WinnersRoute
@@ -113,6 +119,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/dispatches': typeof DispatchesIndexRoute
   '/spaces': typeof SpacesIndexRoute
 }
@@ -129,6 +136,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/dispatches/$slug': typeof DispatchesSlugRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/dispatches/': typeof DispatchesIndexRoute
   '/spaces/': typeof SpacesIndexRoute
 }
@@ -145,13 +153,13 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
+    | '/blog/'
     | '/dispatches/'
     | '/spaces/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/blog'
     | '/careers'
     | '/questions'
     | '/winners'
@@ -159,6 +167,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
+    | '/blog'
     | '/dispatches'
     | '/spaces'
   id:
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/dispatches/$slug'
     | '/spaces/$slug'
+    | '/blog/'
     | '/dispatches/'
     | '/spaces/'
   fileRoutesById: FileRoutesById
@@ -257,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DispatchesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/spaces/$slug': {
       id: '/spaces/$slug'
       path: '/spaces/$slug'
@@ -301,10 +318,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
@@ -325,3 +344,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
