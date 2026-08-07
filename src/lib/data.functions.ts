@@ -139,6 +139,47 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
     .order("upvotes_denorm", { ascending: false })
     .limit(8);
 
+  // Category leaderboard, top 3 per rating dimension
+  const { data: allSpaces } = await supabase
+    .from("spaces")
+    .select("id,slug,name,city_id")
+    .eq("is_published", true);
+  const { data: allReviews } = await supabase
+    .from("reviews")
+    .select("space_id,rating_overall,rating_wifi,rating_community,rating_quiet,rating_coffee,rating_value")
+    .eq("is_hidden", false);
+
+  const CATS = [
+    { key: "rating_wifi", label: "Best wi-fi" },
+    { key: "rating_community", label: "Best community" },
+    { key: "rating_quiet", label: "Quietest spaces" },
+    { key: "rating_coffee", label: "Best coffee" },
+    { key: "rating_value", label: "Best value" },
+    { key: "rating_overall", label: "Highest rated overall" },
+  ] as const;
+
+  const spaceMeta = new Map(
+    (allSpaces ?? []).map((s) => [s.id, { slug: s.slug, name: s.name, city_name: cityMap.get(s.city_id ?? "") ?? null }]),
+  );
+
+  const categoryLeaders = CATS.map((c) => {
+    const acc = new Map<string, { sum: number; n: number }>();
+    (allReviews ?? []).forEach((r: any) => {
+      const v = r[c.key];
+      if (v == null || !spaceMeta.has(r.space_id)) return;
+      const cur = acc.get(r.space_id) ?? { sum: 0, n: 0 };
+      cur.sum += Number(v);
+      cur.n += 1;
+      acc.set(r.space_id, cur);
+    });
+    const leaders = Array.from(acc.entries())
+      .filter(([, a]) => a.n >= 3)
+      .map(([id, a]) => ({ ...spaceMeta.get(id)!, score: Number((a.sum / a.n).toFixed(1)), reviews: a.n }))
+      .sort((a, b) => b.score - a.score || b.reviews - a.reviews)
+      .slice(0, 3);
+    return { label: c.label, leaders };
+  }).filter((c) => c.leaders.length > 0);
+
   return {
     dispatches: mixed.slice(0, 15),
     spaceOfWeek: sotwSpaceId
@@ -150,6 +191,7 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
       space: spaceById.get(w.space_id) ?? null,
     })).filter((w) => w.space),
     salesQuestions: (salesQs ?? []) as { id: string; text: string; category: string | null }[],
+    categoryLeaders,
   };
 });
 
