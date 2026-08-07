@@ -37,7 +37,6 @@ export function Header() {
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
           <span className="relative grid h-9 w-9 shrink-0 place-items-center bg-foreground transition-colors duration-300 group-hover:bg-flare">
             <span className="font-display text-[13px] font-bold leading-none tracking-[-0.05em] text-background transition-colors duration-300 group-hover:text-flare-ink">TCD</span>
-            <span className="absolute -bottom-[3px] -right-[3px] h-[7px] w-[7px] bg-flare transition-colors duration-300 group-hover:bg-foreground" />
           </span>
           <span className="hidden truncate font-display text-sm font-semibold tracking-[-0.02em] transition-colors group-hover:text-muted-foreground sm:inline">
             The Coworking Dispatch

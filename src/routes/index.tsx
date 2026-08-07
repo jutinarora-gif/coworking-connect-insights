@@ -56,7 +56,7 @@ function Home() {
 function Hero() {
   return (
     <section>
-      <div className="section-ink">
+      <div className="section-mist">
         <div className={WRAP}>
           <HeroStage />
         </div>
@@ -70,7 +70,7 @@ function Hero() {
             <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="rounded-full">
-            <Link to="/spaces" search={{}}>Browse spaces</Link>
+            <Link to="/spaces" search={{ city: undefined }}>Browse spaces</Link>
           </Button>
         </div>
       </div>
@@ -133,7 +133,7 @@ function ReviewCTA() {
           </p>
         </div>
         <Button asChild size="lg" className="rounded-full">
-          <Link to="/spaces" search={{}}>Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
+          <Link to="/spaces" search={{ city: undefined }}>Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
         </Button>
       </div>
     </section>
@@ -195,7 +195,7 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className="section-ink mt-24 py-16 sm:py-20">
+    <section className="mt-24 border-y border-border py-16 sm:py-20">
       <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
@@ -291,7 +291,7 @@ const RED_FLAGS = [
 function RedFlags() {
   return (
     <section className={`${WRAP} mt-24`}>
-      <div className="section-ink p-7 sm:p-10">
+      <div className="border border-border p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
@@ -386,7 +386,7 @@ function NewsletterCTA() {
   });
   return (
     <section className={`${WRAP} mt-28`}>
-      <div className="section-ink p-10 sm:p-16">
+      <div className="border border-border p-10 sm:p-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
