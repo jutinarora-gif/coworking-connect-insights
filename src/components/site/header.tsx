@@ -36,7 +36,7 @@ export function Header() {
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
         <Link to="/" className="group flex min-w-0 items-baseline gap-2">
           <span className="font-display text-lg font-bold tracking-[-0.06em]">
-            TCD<span className="text-flare">.</span>
+            TCD<span className="ml-[2px] inline-block h-[7px] w-[7px] bg-flare align-baseline" />
           </span>
           <span className="hidden truncate border-l border-foreground/20 pl-2 font-display text-sm font-medium tracking-[-0.01em] text-muted-foreground transition-colors group-hover:text-foreground sm:inline">
             The Coworking Dispatch
