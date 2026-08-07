@@ -9,43 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as WinnersRouteImport } from './routes/winners'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as DispatchesIndexRouteImport } from './routes/dispatches.index'
-import { Route as DispatchesSlugRouteImport } from './routes/dispatches.$slug'
+import { Route as QuestionsRouteImport } from './routes/questions'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SpacesIndexRouteImport } from './routes/spaces.index'
+import { Route as DispatchesIndexRouteImport } from './routes/dispatches.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as SpacesSlugRouteImport } from './routes/spaces.$slug'
+import { Route as DispatchesSlugRouteImport } from './routes/dispatches.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
+const WinnersRoute = WinnersRouteImport.update({
+  id: '/winners',
+  path: '/winners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuestionsRoute = QuestionsRouteImport.update({
@@ -53,34 +34,28 @@ const QuestionsRoute = QuestionsRouteImport.update({
   path: '/questions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WinnersRoute = WinnersRouteImport.update({
-  id: '/winners',
-  path: '/winners',
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => BlogRoute,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
-} as any)
-const DispatchesIndexRoute = DispatchesIndexRouteImport.update({
-  id: '/dispatches/',
-  path: '/dispatches/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DispatchesSlugRoute = DispatchesSlugRouteImport.update({
-  id: '/dispatches/$slug',
-  path: '/dispatches/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpacesIndexRoute = SpacesIndexRouteImport.update({
@@ -88,10 +63,35 @@ const SpacesIndexRoute = SpacesIndexRouteImport.update({
   path: '/spaces/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DispatchesIndexRoute = DispatchesIndexRouteImport.update({
+  id: '/dispatches/',
+  path: '/dispatches/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
 const SpacesSlugRoute = SpacesSlugRouteImport.update({
   id: '/spaces/$slug',
   path: '/spaces/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DispatchesSlugRoute = DispatchesSlugRouteImport.update({
+  id: '/dispatches/$slug',
+  path: '/dispatches/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -204,39 +204,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
+    '/winners': {
+      id: '/winners'
+      path: '/winners'
+      fullPath: '/winners'
+      preLoaderRoute: typeof WinnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/questions': {
@@ -246,46 +218,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuestionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/winners': {
-      id: '/winners'
-      path: '/winners'
-      fullPath: '/winners'
-      preLoaderRoute: typeof WinnersRouteImport
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/blog/': {
-      id: '/blog/'
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
       path: '/'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof BlogRoute
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
-    }
-    '/dispatches/': {
-      id: '/dispatches/'
-      path: '/dispatches'
-      fullPath: '/dispatches/'
-      preLoaderRoute: typeof DispatchesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dispatches/$slug': {
-      id: '/dispatches/$slug'
-      path: '/dispatches/$slug'
-      fullPath: '/dispatches/$slug'
-      preLoaderRoute: typeof DispatchesSlugRouteImport
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/spaces/': {
@@ -295,12 +260,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpacesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dispatches/': {
+      id: '/dispatches/'
+      path: '/dispatches'
+      fullPath: '/dispatches/'
+      preLoaderRoute: typeof DispatchesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/spaces/$slug': {
       id: '/spaces/$slug'
       path: '/spaces/$slug'
       fullPath: '/spaces/$slug'
       preLoaderRoute: typeof SpacesSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dispatches/$slug': {
+      id: '/dispatches/$slug'
+      path: '/dispatches/$slug'
+      fullPath: '/dispatches/$slug'
+      preLoaderRoute: typeof DispatchesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
