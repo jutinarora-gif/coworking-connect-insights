@@ -39,7 +39,7 @@ function Home() {
     <div className="pb-32">
       <Hero />
       <ImageStrip items={strip} />
-      <Marquee />
+      
       <Leaderboard categories={data.categoryLeaders} />
       <SpaceOfWeek data={data.spaceOfWeek} />
       <Winners winners={data.winners} />
@@ -66,7 +66,7 @@ function Hero() {
             <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
           </Button>
           <Button asChild size="lg" variant="outline" className="rounded-full">
-            <Link to="/spaces">Browse spaces</Link>
+            <Link to="/spaces" search={{}}>Browse spaces</Link>
           </Button>
         </div>
       </div>
@@ -129,7 +129,7 @@ function ReviewCTA() {
           </p>
         </div>
         <Button asChild size="lg" className="rounded-full">
-          <Link to="/spaces">Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
+          <Link to="/spaces" search={{}}>Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
         </Button>
       </div>
     </section>
@@ -167,21 +167,6 @@ function ImageStrip({ items }: { items: { slug: string; name: string; cover_url:
   );
 }
 
-function Marquee() {
-  const words = ["Hot desks", "Real reviews", "Weekly winners", "Sales-tour questions", "Red flags", "India, mapped"];
-  return (
-    <div className="mt-14 overflow-hidden rule border-b border-border py-4">
-      <div className="flex gap-10 whitespace-nowrap px-5 text-sm uppercase tracking-[0.18em] text-muted-foreground sm:px-8">
-        {words.map((w) => (
-          <span key={w} className="flex items-center gap-10">
-            {w}
-            <span className="h-1.5 w-1.5 rounded-full acid-dot" />
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
   return (

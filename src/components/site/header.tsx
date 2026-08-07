@@ -34,14 +34,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 glass-strong">
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <Link to="/" className="group flex min-w-0 items-baseline gap-2">
-          <span className="font-display text-lg font-bold tracking-[-0.06em]">
-            TCD<span className="ml-[2px] inline-block h-[7px] w-[7px] bg-flare align-baseline" />
+        <Link to="/" className="group flex min-w-0 items-center gap-2.5">
+          <span className="relative grid h-9 w-9 shrink-0 place-items-center bg-foreground transition-colors duration-300 group-hover:bg-flare">
+            <span className="font-display text-[13px] font-bold leading-none tracking-[-0.05em] text-background">TCD</span>
+            <span className="absolute -bottom-[3px] -right-[3px] h-[7px] w-[7px] bg-flare transition-colors duration-300 group-hover:bg-foreground" />
           </span>
-          <span className="hidden truncate border-l border-foreground/20 pl-2 font-display text-sm font-medium tracking-[-0.01em] text-muted-foreground transition-colors group-hover:text-foreground sm:inline">
+          <span className="hidden truncate font-display text-sm font-semibold tracking-[-0.02em] transition-colors group-hover:text-muted-foreground sm:inline">
             The Coworking Dispatch
           </span>
         </Link>
+
 
 
         <nav className="hidden items-center justify-center gap-7 md:flex">
