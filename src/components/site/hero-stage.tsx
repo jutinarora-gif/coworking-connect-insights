@@ -32,7 +32,7 @@ export function HeroStage() {
     setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
   };
 
-  const lens = `circle(clamp(90px, 13vw, 190px) at ${pos.x}% ${pos.y}%)`;
+  const lens = `circle(clamp(80px, 11vw, 160px) at ${pos.x}% ${pos.y}%)`;
 
   return (
     <div
