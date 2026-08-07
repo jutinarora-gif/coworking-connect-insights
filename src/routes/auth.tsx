@@ -66,7 +66,7 @@ function AuthPage() {
         <form onSubmit={submit} className="space-y-3">
           <div><Label>Email</Label><Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
           <div><Label>Password</Label><Input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} /></div>
-          <Button type="submit" disabled={loading} className="w-full rounded-full bg-flare text-flare-ink hover:bg-flare/90">{mode === "signin" ? "Sign in" : "Create account"}</Button>
+          <Button type="submit" disabled={loading} variant="mint" className="w-full h-10">{mode === "signin" ? "Sign in" : "Create account"}</Button>
         </form>
         <div className="mt-4 text-center text-sm text-muted-foreground">
           {mode === "signin" ? "New here?" : "Have an account?"}{" "}

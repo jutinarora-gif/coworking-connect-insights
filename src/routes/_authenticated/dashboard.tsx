@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,8 +17,12 @@ function Dashboard() {
     <div className="mx-auto max-w-4xl px-6 py-16">
       <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Your dashboard</div>
       <h1 className="font-display text-4xl mt-1">Welcome{session?.user?.email ? `, ${session.user.email.split("@")[0]}` : ""}</h1>
+      <span className="mt-3 block h-[3px] w-14 rounded-full bg-flare" />
       <p className="mt-2 text-muted-foreground">More coming soon: your reviews, saved spaces, and question threads.</p>
-      <Button className="mt-6" variant="secondary" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}>Sign out</Button>
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Button variant="mint" size="lg" asChild><Link to="/spaces" search={{ city: undefined }}>Browse spaces</Link></Button>
+        <Button variant="outline" size="lg" className="rounded-full" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}>Sign out</Button>
+      </div>
     </div>
   );
 }
