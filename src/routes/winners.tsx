@@ -23,7 +23,7 @@ function WinnersPage() {
   const { data } = useSuspenseQuery(q);
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
-      <div className="text-xs uppercase tracking-widest text-iris flex items-center gap-1"><Trophy className="h-3.5 w-3.5" />This week's leaderboard</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-1 flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><Trophy className="h-3.5 w-3.5" />This week's leaderboard</div>
       <h1 className="mt-1 font-display text-4xl md:text-5xl">Top winners</h1>
       <p className="mt-2 text-muted-foreground">Weighted by review volume, ratings, and community activity. Refreshed every Monday.</p>
       <ol className="mt-10 space-y-3">

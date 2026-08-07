@@ -41,7 +41,7 @@ function SpacesPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <div className="text-xs uppercase tracking-widest text-iris">The directory</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />The directory</div>
       <h1 className="mt-1 font-display text-4xl md:text-5xl">Coworking spaces</h1>
       <p className="mt-2 text-muted-foreground">{data.length} spaces · {data.reduce((s, x) => s + x.review_count, 0)} reviews from real coworkers</p>
 
@@ -52,7 +52,7 @@ function SpacesPage() {
         </div>
         <div className="inline-flex glass rounded-full p-1">
           {(["all","india","global"] as const).map((r) => (
-            <button key={r} onClick={() => setRegion(r)} className={`px-3 py-1.5 rounded-full text-sm capitalize ${region === r ? "gradient-iris text-primary-foreground" : "text-muted-foreground"}`}>{r === "india" ? "🇮🇳" : r === "global" ? "🌏" : "All"}</button>
+            <button key={r} onClick={() => setRegion(r)} className={`px-3 py-1.5 rounded-full text-sm capitalize ${region === r ? "bg-flare text-flare-ink" : "text-muted-foreground"}`}>{r === "india" ? "🇮🇳" : r === "global" ? "🌏" : "All"}</button>
           ))}
         </div>
         <select value={city} onChange={(e) => setCity(e.target.value)} className="glass rounded-xl px-3 py-2 text-sm bg-transparent">
