@@ -35,10 +35,13 @@ export function Header() {
     <header className="sticky top-0 z-40 glass-strong">
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
-          <span className="relative grid h-9 w-9 shrink-0 place-items-center overflow-hidden bg-flare font-display text-[13px] font-bold leading-none tracking-[-0.02em] text-background transition-transform duration-300 group-hover:-rotate-6">
-            <span className="absolute inset-x-0 top-0 h-1/2 bg-foreground" />
-            <span className="relative z-10 block -translate-y-[1px] text-background">TC</span>
-            <span className="absolute bottom-[3px] right-[4px] z-10 text-[13px] font-bold text-background">D</span>
+          <span className="relative grid h-9 w-9 shrink-0 place-items-center overflow-hidden bg-flare font-display text-[12px] font-bold leading-none tracking-[-0.03em] text-background transition-transform duration-300 group-hover:-rotate-6">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-foreground transition-transform duration-300 group-hover:translate-y-full"
+              style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
+            />
+            <span className="relative z-10">TCD</span>
           </span>
           <span className="truncate font-display text-base font-bold tracking-[-0.02em]">The Coworking Dispatch</span>
         </Link>
