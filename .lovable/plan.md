@@ -23,19 +23,31 @@ Move away from the Kümmerlein reference layout while keeping one borrowed textu
 - One mint marker (block highlight, thick underline, or dot) as the only colour.
 - CTA styled as a text link with a mint underline or a small mint filled square, not a heavy button.
 
-### 3. Header adjustment
+### 3. Logo and header
+- Remove the small accent dot/tick from the logo entirely. The mark becomes a clean "TCD" wordmark only, near-black ink, no coloured element.
 - Header must read cleanly over the warm grey hero.
-- Logo "TCD" wordmark stays black; the accent tick becomes mint.
+- Nav links unchanged: Dispatches, Spaces, Winners, Questions, plus search and sign in.
 - Mobile menu unchanged.
 
-### 4. Rest of page untouched
-- Sections below the hero keep the existing cream paper background and ink type.
-- No warm grey bands elsewhere.
-- No change to Space of the Week, Leaderboard, Red Flags, Sales Questions, or Newsletter sections beyond ensuring they sit on cream as they do now.
+### 4. Existing structure stays intact
+The homepage keeps every section currently live, in this order, all on cream below the hero:
+1. Hero (now warm grey, minimal type)
+2. India Leaderboard, top 3 per category (Best Wifi, Best Community, Cleanest Spaces, Best On-Ground Support, Most Consistent AC, Most Private Meeting Rooms)
+3. Space of the Week
+4. Top winners this week, ranked five
+5. Questions to ask the salesperson, numbered checklist with category tags
+6. Red flags, seven numbered points
+7. Leave a review prompt
+8. Latest dispatches, India and Global mix
+9. The Wednesday Dispatch newsletter signup
+10. Footer, unchanged links and "Made in India, by coworkers, for coworkers."
+
+No sections are added, removed, or reordered. Only the hero band and the accent colour change.
 
 ### 5. Cleanup
 - Replace the hero stage in `src/components/site/hero-stage.tsx` with the new minimal treatment and drop the `Broadcast` arcs.
 - Swap every sulphur/yellow token in `src/styles.css` for the mint accent, and sweep the codebase for leftover yellow or orange accent classes.
+- Remove the logo dot markup from `src/components/site/header.tsx`.
 
 ## Outcome
-A quieter, more original homepage: one warm grey slab at the top with bold type and a single mint accent, then the existing editorial cream body below. It keeps the sophisticated grey texture without borrowing the reference site's yellow.
+A quieter, more original homepage: one warm grey slab at the top with bold type and a single mint accent, a clean wordmark logo, then the full existing editorial cream body below, unchanged in structure.
