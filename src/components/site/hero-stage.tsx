@@ -81,19 +81,20 @@ export function HeroStage() {
 }
 
 function Type({ inverted, className = "" }: { inverted?: boolean; className?: string }) {
+  const H = (inverted ? "div" : "h1") as "div" | "h1";
   return (
     <div className={`px-5 py-14 sm:px-10 sm:py-20 ${className}`}>
       <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em]">
-        <span className={`h-1.5 w-1.5 rounded-full ${inverted ? "bg-flare" : "bg-flare"}`} />
+        <span className="h-1.5 w-1.5 rounded-full bg-flare" />
         Live , 70% India, 30% world
       </div>
-      <h1 className="mt-7 font-display text-[11.5vw] leading-[0.88] tracking-[-0.045em] sm:text-[8vw] lg:text-[6.2vw]">
+      <H className="mt-7 font-display text-[11.5vw] leading-[0.88] tracking-[-0.045em] sm:text-[8vw] lg:text-[6.2vw]">
         {LINES.map((l) => (
           <span key={l} className="block">
             {l}
           </span>
         ))}
-      </h1>
+      </H>
     </div>
   );
 }
