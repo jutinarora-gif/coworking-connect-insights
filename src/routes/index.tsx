@@ -36,7 +36,7 @@ function Home() {
   ].filter(Boolean).slice(0, 5) as { slug: string; name: string; cover_url: string | null; city_name: string | null }[];
 
   return (
-    <div className="pb-32">
+    <div className="pb-0">
       <Hero />
       <ImageStrip items={strip} />
       
