@@ -62,15 +62,15 @@
 :root {
   --radius: 0.25rem;
 
-  /* Editorial: warm cream paper, near-black ink, one burnt-orange signal */
+  /* Editorial: warm cream paper, near-black ink, one sulphur accent used on black */
   --paper: oklch(0.977 0.011 92);
   --background: oklch(0.977 0.011 92);
-  --foreground: oklch(0.19 0.008 60);
+  --foreground: oklch(0.16 0.004 60);
   --card: oklch(0.992 0.006 92);
-  --card-foreground: oklch(0.19 0.008 60);
+  --card-foreground: oklch(0.16 0.004 60);
   --popover: oklch(0.992 0.006 92);
-  --popover-foreground: oklch(0.19 0.008 60);
-  --primary: oklch(0.19 0.008 60);
+  --popover-foreground: oklch(0.16 0.004 60);
+  --primary: oklch(0.16 0.004 60);
   --primary-foreground: oklch(0.98 0.008 92);
   --secondary: oklch(0.95 0.012 92);
   --secondary-foreground: oklch(0.22 0.008 60);
@@ -83,13 +83,16 @@
   --border: oklch(0.885 0.012 88);
   --input: oklch(0.9 0.012 88);
   --ring: oklch(0.5 0.012 70);
-  --signal: oklch(0.66 0.21 44);
-  /* flare: burnt orange signal, white ink on top of filled blocks */
-  --flare: oklch(0.665 0.212 44);
-  --flare-soft: oklch(0.945 0.055 96);
-  --flare-ink: oklch(0.99 0.005 92);
+  --signal: oklch(0.16 0.004 60);
+  /* flare: sulphur yellow. Only ever used on the near-black ink surface. */
+  --flare: oklch(0.955 0.155 105);
+  --flare-soft: oklch(0.975 0.06 105);
+  --flare-ink: oklch(0.14 0.004 90);
+  --ink-surface: oklch(0.155 0.004 90);
+  --ink-surface-foreground: oklch(0.965 0.008 92);
   --acid: var(--flare);
   --acid-ink: var(--flare-ink);
+
 
 
 
