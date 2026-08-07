@@ -35,7 +35,7 @@ export function Header() {
     <header className="sticky top-0 z-40 glass-strong">
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
         <Link to="/" className="group flex min-w-0 items-center gap-2.5">
-          <span className="relative grid h-9 w-9 shrink-0 place-items-center bg-foreground transition-colors duration-300 group-hover:bg-flare">
+          <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-foreground transition-colors duration-300 group-hover:bg-flare">
             <span className="font-display text-[13px] font-bold leading-none tracking-[-0.05em] text-background transition-colors duration-300 group-hover:text-flare-ink">TCD</span>
           </span>
           <span className="hidden truncate font-display text-sm font-semibold tracking-[-0.02em] transition-colors group-hover:text-muted-foreground sm:inline">
