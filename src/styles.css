@@ -50,6 +50,7 @@
   --color-signal: var(--signal);
   --color-acid: var(--acid);
   --color-flare: var(--flare);
+  --color-flare-ink: var(--flare-ink);
   --color-paper: var(--paper);
   --font-display: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
@@ -61,12 +62,12 @@
   /* Editorial monochrome: paper, ink, one signal accent */
   --paper: oklch(0.975 0.003 90);
   --background: oklch(0.975 0.003 90);
-  --foreground: oklch(0.18 0.005 285);
+  --foreground: oklch(0.235 0.014 220);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.005 285);
+  --card-foreground: oklch(0.235 0.014 220);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.005 285);
-  --primary: oklch(0.18 0.005 285);
+  --popover-foreground: oklch(0.235 0.014 220);
+  --primary: oklch(0.235 0.014 220);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.945 0.003 90);
   --secondary-foreground: oklch(0.22 0.005 285);
@@ -89,19 +90,19 @@
 
 
   /* legacy accent tokens kept neutral so older pages stay on-brand */
-  --iris-1: oklch(0.18 0.005 285);
+  --iris-1: oklch(0.235 0.014 220);
   --iris-2: oklch(0.30 0.005 285);
   --iris-3: oklch(0.45 0.006 285);
   --iris-4: oklch(0.60 0.006 285);
 
-  --chart-1: oklch(0.18 0.005 285);
+  --chart-1: oklch(0.235 0.014 220);
   --chart-2: oklch(0.38 0.006 285);
   --chart-3: oklch(0.55 0.006 285);
   --chart-4: oklch(0.70 0.005 285);
   --chart-5: var(--signal);
   --sidebar: oklch(0.975 0.003 90);
-  --sidebar-foreground: oklch(0.18 0.005 285);
-  --sidebar-primary: oklch(0.18 0.005 285);
+  --sidebar-foreground: oklch(0.235 0.014 220);
+  --sidebar-primary: oklch(0.235 0.014 220);
   --sidebar-primary-foreground: oklch(0.98 0 0);
   --sidebar-accent: oklch(0.93 0.004 90);
   --sidebar-accent-foreground: oklch(0.2 0.005 285);
@@ -162,12 +163,13 @@
   border-top: 1px solid var(--border);
 }
 
-::selection { background: var(--flare-soft); color: var(--foreground); }
+::selection { background: var(--flare); color: var(--flare-ink); }
 
 /* no highlighter blocks: emphasis is a hairline flare rule under the words */
 @utility acid-mark {
-  color: var(--flare);
-  box-shadow: inset 0 -0.08em 0 color-mix(in oklab, var(--flare) 45%, transparent);
+  background-color: var(--flare);
+  color: var(--flare-ink);
+  padding: 0 0.18em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -175,7 +177,7 @@
   background-color: var(--flare);
 }
 @utility acid-underline {
-  background-image: linear-gradient(var(--flare), var(--flare));
+  background-image: linear-gradient(var(--foreground), var(--foreground));
   background-repeat: no-repeat;
   background-size: 0% 2px;
   background-position: 0 100%;
