@@ -59,34 +59,35 @@
 :root {
   --radius: 0.25rem;
 
-  /* Editorial monochrome: paper, ink, one signal accent */
-  --paper: oklch(0.975 0.003 90);
-  --background: oklch(0.975 0.003 90);
-  --foreground: oklch(0.235 0.014 220);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.014 220);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.014 220);
-  --primary: oklch(0.235 0.014 220);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.945 0.003 90);
-  --secondary-foreground: oklch(0.22 0.005 285);
-  --muted: oklch(0.945 0.003 90);
-  --muted-foreground: oklch(0.52 0.006 285);
-  --accent: oklch(0.93 0.004 90);
-  --accent-foreground: oklch(0.2 0.005 285);
+  /* Editorial: warm cream paper, near-black ink, one burnt-orange signal */
+  --paper: oklch(0.977 0.011 92);
+  --background: oklch(0.977 0.011 92);
+  --foreground: oklch(0.19 0.008 60);
+  --card: oklch(0.992 0.006 92);
+  --card-foreground: oklch(0.19 0.008 60);
+  --popover: oklch(0.992 0.006 92);
+  --popover-foreground: oklch(0.19 0.008 60);
+  --primary: oklch(0.19 0.008 60);
+  --primary-foreground: oklch(0.98 0.008 92);
+  --secondary: oklch(0.95 0.012 92);
+  --secondary-foreground: oklch(0.22 0.008 60);
+  --muted: oklch(0.95 0.012 92);
+  --muted-foreground: oklch(0.5 0.012 70);
+  --accent: oklch(0.935 0.016 92);
+  --accent-foreground: oklch(0.2 0.008 60);
   --destructive: oklch(0.52 0.17 28);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.88 0.004 90);
-  --input: oklch(0.9 0.004 90);
-  --ring: oklch(0.5 0.006 285);
-  --signal: oklch(0.55 0.18 28);
-  /* flare: electric lime, only ever used as a filled block behind near-black ink */
-  --flare: oklch(0.855 0.245 122);
-  --flare-soft: oklch(0.94 0.10 122);
-  --flare-ink: oklch(0.16 0.012 200);
+  --border: oklch(0.885 0.012 88);
+  --input: oklch(0.9 0.012 88);
+  --ring: oklch(0.5 0.012 70);
+  --signal: oklch(0.66 0.21 44);
+  /* flare: burnt orange signal, white ink on top of filled blocks */
+  --flare: oklch(0.665 0.212 44);
+  --flare-soft: oklch(0.945 0.055 96);
+  --flare-ink: oklch(0.99 0.005 92);
   --acid: var(--flare);
-  --acid-ink: oklch(0.16 0.012 200);
+  --acid-ink: var(--flare-ink);
+
 
 
   /* legacy accent tokens kept neutral so older pages stay on-brand */
