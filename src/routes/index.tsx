@@ -94,7 +94,7 @@ function Leaderboard({ categories }: { categories: { label: string; leaders: { s
                     params={{ slug: s.slug }}
                     className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
                   >
-                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "bg-flare px-1 text-foreground" : "text-muted-foreground"}`}>{i + 1}</span>
+                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "bg-flare px-1 text-flare-ink" : "text-muted-foreground"}`}>{i + 1}</span>
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
                       <span className="label">{s.city_name}</span>
@@ -244,7 +244,7 @@ function Winners({ winners }: { winners: any[] }) {
               params={{ slug: w.space.slug }}
               className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 border-b border-border py-5 transition-colors hover:bg-accent/50"
             >
-              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "bg-flare px-1 text-foreground" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
+              <span className={`w-9 font-display text-sm tabular-nums ${w.rank === 1 ? "bg-flare px-1 text-flare-ink" : "text-muted-foreground"}`}>{String(w.rank).padStart(2, "0")}</span>
               <div className="flex min-w-0 items-center gap-4">
                 {w.space.cover_url && (
                   <img src={w.space.cover_url} alt="" loading="lazy" className="hidden h-14 w-20 shrink-0 object-cover sm:block" />
@@ -313,7 +313,7 @@ function RedFlags() {
           <ul className="grid gap-x-10 sm:grid-cols-2">
             {RED_FLAGS.map((f, i) => (
               <li key={f} className="flex gap-3 border-b border-border py-3 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
-                <span className="bg-flare px-1 tabular-nums text-foreground">{String(i + 1).padStart(2, "0")}</span>
+                <span className="bg-flare px-1 tabular-nums text-flare-ink">{String(i + 1).padStart(2, "0")}</span>
                 <span className="leading-snug text-muted-foreground">{f}</span>
               </li>
             ))}
@@ -414,7 +414,7 @@ function NewsletterCTA() {
               onChange={(e) => setEmail(e.target.value)}
               className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-flare px-6 text-foreground hover:bg-flare/85">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none bg-flare px-6 text-flare-ink hover:bg-flare/85">
               Subscribe
             </Button>
           </form>
