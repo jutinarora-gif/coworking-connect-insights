@@ -166,17 +166,18 @@
 
 ::selection { background: var(--flare); color: var(--flare-ink); }
 
-/* no highlighter blocks: emphasis is a hairline flare rule under the words */
+/* emphasis is a thick flare rule under the words, never a highlighter block */
 @utility acid-mark {
-  background-color: var(--flare);
-  color: var(--flare-ink);
-  padding: 0 0.18em;
+  background-image: linear-gradient(var(--flare), var(--flare));
+  background-repeat: no-repeat;
+  background-size: 100% 0.14em;
+  background-position: 0 100%;
+  padding-bottom: 0.06em;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 @utility acid-dot {
-  background-color: var(--foreground);
-  box-shadow: 0 0 0 2px var(--flare);
+  background-color: var(--flare);
 }
 @utility acid-underline {
   background-image: linear-gradient(var(--foreground), var(--foreground));
@@ -189,13 +190,14 @@
   background-size: 100% 2px;
 }
 
-@keyframes hero-steam {
-  0% { opacity: 0; transform: translateY(6px) scaleY(0.6); }
-  40% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-18px) scaleY(1.2); }
+@keyframes hero-broadcast {
+  0% { opacity: 0; transform: scale(0.55); }
+  35% { opacity: 1; }
+  100% { opacity: 0.9; transform: scale(1); }
 }
-@keyframes hero-page {
-  0% { transform: translate(-50%, 26px); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translate(-50%, -14px); opacity: 0; }
+@keyframes hero-rule {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
 }
