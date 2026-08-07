@@ -2,11 +2,11 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40">
+    <footer className="border-t-2 border-[var(--flare)]">
       <div className="mx-auto max-w-7xl px-6 py-12 grid gap-8 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-foreground">
+            <span className="group grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-foreground">
               <span className="font-display text-[13px] font-bold leading-none tracking-[-0.05em] text-background">TCD</span>
             </span>
             <span className="font-display text-sm font-semibold tracking-[-0.02em]">The Coworking Dispatch</span>
@@ -19,18 +19,18 @@ export function Footer() {
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Explore</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/dispatches" className="hover:text-primary">Dispatches</Link></li>
-            <li><Link to="/spaces" search={{ city: undefined }} className="hover:text-primary">Spaces</Link></li>
-            <li><Link to="/winners" className="hover:text-primary">Winners</Link></li>
-            <li><Link to="/questions" className="hover:text-primary">Q&A</Link></li>
+            <li><Link to="/dispatches" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Dispatches</Link></li>
+            <li><Link to="/spaces" search={{ city: undefined }} className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Spaces</Link></li>
+            <li><Link to="/winners" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Winners</Link></li>
+            <li><Link to="/questions" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Q&A</Link></li>
           </ul>
         </div>
         <div>
           <div className="text-xs uppercase tracking-widest text-muted-foreground mb-3">Community</div>
           <ul className="space-y-2 text-sm">
-            <li><Link to="/auth" className="hover:text-primary">Sign in / Join</Link></li>
-            <li><a href="#" className="hover:text-primary">Suggest a feed</a></li>
-            <li><a href="#" className="hover:text-primary">Submit a space</a></li>
+            <li><Link to="/auth" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Sign in / Join</Link></li>
+            <li><a href="#" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Suggest a feed</a></li>
+            <li><a href="#" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Submit a space</a></li>
           </ul>
         </div>
         <div>
