@@ -25,7 +25,18 @@ export const Route = createFileRoute("/blog/$slug")({
   component: BlogPostPage,
 });
 
-const posts = [
+type Post = {
+  slug: string;
+  title: string;
+  category: string;
+  date: string;
+  read: string;
+  excerpt: string;
+  featured?: boolean;
+  image: string;
+};
+
+const posts: Post[] = [
   {
     slug: "the-real-cost-of-a-hot-desk-in-bengaluru",
     title: "The real cost of a hot desk in Bengaluru",
