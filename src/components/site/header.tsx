@@ -34,16 +34,13 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 glass-strong">
       <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <Link to="/" className="group flex min-w-0 items-center gap-2.5">
-          <span className="relative grid h-9 w-9 shrink-0 place-items-center overflow-hidden bg-flare font-display text-[12px] font-bold leading-none tracking-[-0.03em] text-background transition-transform duration-300 group-hover:-rotate-6">
-            <span
-              aria-hidden
-              className="absolute inset-0 bg-foreground transition-transform duration-300 group-hover:translate-y-full"
-              style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
-            />
-            <span className="relative z-10">TCD</span>
+        <Link to="/" className="group flex min-w-0 items-baseline gap-2">
+          <span className="font-display text-lg font-bold tracking-[-0.06em]">
+            TCD<span className="text-flare">.</span>
           </span>
-          <span className="truncate font-display text-base font-bold tracking-[-0.02em]">The Coworking Dispatch</span>
+          <span className="hidden truncate border-l border-foreground/20 pl-2 font-display text-sm font-medium tracking-[-0.01em] text-muted-foreground transition-colors group-hover:text-foreground sm:inline">
+            The Coworking Dispatch
+          </span>
         </Link>
 
 
