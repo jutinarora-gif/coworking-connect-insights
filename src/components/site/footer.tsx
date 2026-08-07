@@ -23,6 +23,7 @@ export function Footer() {
             <li><Link to="/spaces" search={{ city: undefined }} className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Spaces</Link></li>
             <li><Link to="/winners" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Winners</Link></li>
             <li><Link to="/questions" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Q&A</Link></li>
+            <li><Link to="/blog" className="hover:text-foreground hover:underline hover:decoration-[var(--flare)] hover:decoration-2 hover:underline-offset-4">Blog</Link></li>
           </ul>
         </div>
         <div>

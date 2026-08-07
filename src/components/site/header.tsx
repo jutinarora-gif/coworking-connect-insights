@@ -10,6 +10,7 @@ const nav = [
   { to: "/spaces", label: "Spaces" },
   { to: "/winners", label: "Winners" },
   { to: "/questions", label: "Q&A" },
+  { to: "/blog", label: "Blog" },
 ];
 
 export function Header() {
