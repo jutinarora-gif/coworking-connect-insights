@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
 import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
-import { DispatchCard } from "@/components/site/dispatch-card";
 import { IndiaHeatmap } from "@/components/site/india-heatmap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Sparkles, Trophy, Search, MapPin, HelpCircle, AlertTriangle } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { formatDistanceToNow } from "date-fns";
 
 const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData() });
 
@@ -25,175 +25,186 @@ export const Route = createFileRoute("/")({
   errorComponent: ({ error }) => <div className="p-8 text-destructive">{error.message}</div>,
 });
 
+const WRAP = "mx-auto w-full max-w-[1400px] px-5 sm:px-8";
+
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
+  const strip = [
+    data.spaceOfWeek?.space,
+    ...data.winners.map((w) => w.space),
+  ].filter(Boolean).slice(0, 5) as { slug: string; name: string; cover_url: string | null; city_name: string | null }[];
+
   return (
-    <div>
+    <div className="pb-32">
       <Hero />
-
-      <section className="mx-auto max-w-7xl px-6 mt-16">
-        <MapReveal />
-      </section>
-
-      {data.spaceOfWeek?.space && (
-        <section className="mx-auto max-w-7xl px-6 mt-20">
-          <SectionHeader eyebrow="Space of the week" icon={<Sparkles className="h-4 w-4" />} title={`${data.spaceOfWeek.space.name}, ${data.spaceOfWeek.space.city_name ?? ""}`} href="/spaces" />
-          <div className="mt-6 glass rounded-3xl overflow-hidden grid md:grid-cols-2">
-            {data.spaceOfWeek.space.cover_url && (
-              <div className="relative aspect-[4/3] md:aspect-auto">
-                <img src={data.spaceOfWeek.space.cover_url} alt={data.spaceOfWeek.space.name} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background/40 md:to-background/60" />
-              </div>
-            )}
-            <div className="p-8 md:p-10 flex flex-col justify-center">
-              <div className="text-xs uppercase tracking-widest text-iris">This week's pick</div>
-              <h3 className="font-display text-3xl md:text-4xl mt-2">{data.spaceOfWeek.space.name}</h3>
-              <div className="text-sm text-muted-foreground mt-1">{data.spaceOfWeek.space.city_name}</div>
-              <p className="mt-4 text-muted-foreground leading-relaxed italic">"{data.spaceOfWeek.note}"</p>
-              <div className="mt-6">
-                <Button asChild className="gradient-iris text-primary-foreground">
-                  <Link to="/spaces/$slug" params={{ slug: data.spaceOfWeek.space.slug }}>
-                    Visit the profile <ArrowRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {data.winners.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 mt-20">
-          <SectionHeader eyebrow="Top winners this week" icon={<Trophy className="h-4 w-4" />} title="The five spaces India is talking about" href="/winners" />
-          <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
-            {data.winners.map((w) => (
-              <Link key={w.rank} to="/spaces/$slug" params={{ slug: w.space!.slug }} className="group glass rounded-2xl overflow-hidden hover-glow hover:hover-glow-hover relative">
-                <div className="absolute top-3 left-3 z-10 h-10 w-10 rounded-xl gradient-iris flex items-center justify-center font-display text-xl text-primary-foreground shadow-[0_0_24px_-4px_var(--iris-2)]">#{w.rank}</div>
-                {w.space!.cover_url && (
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={w.space!.cover_url} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                  </div>
-                )}
-                <div className="p-4">
-                  <div className="font-display text-lg">{w.space!.name}</div>
-                  <div className="text-xs text-muted-foreground">{w.space!.city_name}</div>
-                  <div className="text-xs mt-2 text-iris">Score {w.score.toFixed(1)}</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
+      <ImageStrip items={strip} />
+      <Marquee />
+      <SpaceOfWeek data={data.spaceOfWeek} />
+      <Winners winners={data.winners} />
       <SalesQuestions items={data.salesQuestions} />
-
       <RedFlags />
-
-      <section className="mx-auto max-w-7xl px-6 mt-20">
-        <SectionHeader eyebrow="Latest dispatches" title="Fresh from the wire" href="/dispatches" />
-        <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {data.dispatches.slice(0, 9).map((d, i) => (
-            <DispatchCard key={d.id} d={d} featured={i === 0} />
-          ))}
-        </div>
-      </section>
-
+      <Dispatches items={data.dispatches.slice(0, 6)} />
+      <MapReveal />
       <NewsletterCTA />
     </div>
   );
 }
 
-const ROTATING_WORDS = ["coworking", "coffee culture", "founder scene", "hybrid week", "hot desk hunt"];
-
 function Hero() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 50, y: 40 });
-  const [wordIdx, setWordIdx] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => setWordIdx((i) => (i + 1) % ROTATING_WORDS.length), 2200);
-    return () => clearInterval(t);
-  }, []);
-
-  const onMove = (e: React.MouseEvent) => {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
-  };
-
   return (
-    <section
-      ref={ref}
-      onMouseMove={onMove}
-      className="relative overflow-hidden pt-20 pb-20 cursor-crosshair"
-    >
-      <div
-        className="absolute inset-0 -z-10 transition-[background-position] duration-300 ease-out"
-        style={{
-          background: `radial-gradient(600px 400px at ${pos.x}% ${pos.y}%, oklch(0.78 0.14 340 / 0.45), transparent 60%),
-                       radial-gradient(500px 350px at ${100 - pos.x}% ${100 - pos.y}%, oklch(0.75 0.15 220 / 0.40), transparent 60%),
-                       radial-gradient(700px 500px at 50% 0%, oklch(0.68 0.18 295 / 0.25), transparent 65%)`,
-        }}
-      />
-
-      <div className="mx-auto max-w-5xl px-6 text-center relative">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-xs uppercase tracking-widest text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" /> Live, 70% India, 30% world
+    <section className={`${WRAP} pt-16 sm:pt-24 pb-10`}>
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+        <div className="min-w-0">
+          <div className="label">India-first coworking desk , since 2026</div>
+          <h1 className="mt-5 font-display text-[13vw] leading-[0.88] tracking-[-0.045em] sm:text-[9vw] lg:text-[7.2vw]">
+            Coworking,
+            <br />
+            reported from
+            <br />
+            the inside.
+          </h1>
         </div>
-        <h1 className="mt-6 font-display text-5xl md:text-7xl leading-[1.05]">
-          The pulse of India's{" "}
-          <span key={wordIdx} className="text-iris inline-block animate-in fade-in slide-in-from-bottom-2 duration-500">
-            {ROTATING_WORDS[wordIdx]}
-          </span>
-          .
-        </h1>
-        <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Aggregated news, real reviews from real coworkers, weekly winners, and the questions you should actually ask the salesperson before you sign.
-        </p>
-        <form onSubmit={(e) => e.preventDefault()} className="mt-8 max-w-xl mx-auto flex items-center gap-2 glass rounded-2xl p-2 relative z-10">
-          <Search className="h-5 w-5 ml-3 text-muted-foreground" />
-          <Input placeholder="Search 'WeWork Galaxy', 'Koramangala', 'quiet'…" className="border-0 bg-transparent focus-visible:ring-0 text-base" onFocus={(e) => { (e.target as HTMLInputElement).blur(); document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true })); }} />
-          <Button className="gradient-iris text-primary-foreground">Search</Button>
-        </form>
-        <div className="mt-4 text-xs text-muted-foreground">Press <kbd className="rounded bg-muted px-1.5 py-0.5">⌘K</kbd> anywhere, or wiggle your cursor.</div>
+        <div className="max-w-sm lg:pb-3">
+          <p className="text-base leading-relaxed text-muted-foreground">
+            The news, the receipts, the honest reviews. 70% India, 30% world, written by people who actually pay for the desk.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild size="lg" className="rounded-full">
+              <Link to="/dispatches">Read the dispatches <ArrowUpRight className="ml-1 h-4 w-4" /></Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="rounded-full">
+              <Link to="/spaces">Browse spaces</Link>
+            </Button>
+          </div>
+        </div>
       </div>
-
     </section>
   );
 }
 
-function SectionHeader({ eyebrow, title, href, icon }: { eyebrow: string; title: string; href?: string; icon?: React.ReactNode }) {
+function ImageStrip({ items }: { items: { slug: string; name: string; cover_url: string | null; city_name: string | null }[] }) {
+  if (!items.length) return null;
   return (
-    <div className="flex items-end justify-between">
-      <div>
-        <div className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-iris">{icon}{eyebrow}</div>
-        <h2 className="mt-1 font-display text-3xl md:text-4xl">{title}</h2>
+    <section className={`${WRAP} mt-6`}>
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-5">
+        {items.map((s, i) => (
+          <Link
+            key={s.slug}
+            to="/spaces/$slug"
+            params={{ slug: s.slug }}
+            className={`group relative overflow-hidden bg-muted ${i === 0 ? "col-span-2 md:col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
+          >
+            {s.cover_url && (
+              <img
+                src={s.cover_url}
+                alt={s.name}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+            )}
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-foreground/70 to-transparent p-3">
+              <span className="truncate text-xs font-medium text-background">{s.name}</span>
+              <span className="shrink-0 text-[10px] uppercase tracking-widest text-background/70">{s.city_name}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Marquee() {
+  const words = ["Hot desks", "Real reviews", "Weekly winners", "Sales-tour questions", "Red flags", "India, mapped"];
+  return (
+    <div className="mt-14 overflow-hidden rule border-b border-border py-4">
+      <div className="flex gap-10 whitespace-nowrap px-5 text-sm uppercase tracking-[0.18em] text-muted-foreground sm:px-8">
+        {words.map((w) => (
+          <span key={w} className="flex items-center gap-10">
+            {w}
+            <span className="h-1 w-1 rounded-full bg-border" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 border-b border-border pb-5">
+      <div className="min-w-0">
+        <div className="label">{eyebrow}</div>
+        <h2 className="mt-2 font-display text-3xl leading-none sm:text-5xl">{title}</h2>
       </div>
       {href && (
-        <Link to={href} className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1">View all <ArrowRight className="h-3 w-3" /></Link>
+        <Link to={href} className="shrink-0 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline">
+          {cta ?? "View all"}
+        </Link>
       )}
     </div>
   );
 }
 
-function NewsletterCTA() {
-  const [email, setEmail] = useState("");
-  const mut = useMutation({
-    mutationFn: () => subscribeNewsletter({ data: { email } }),
-    onSuccess: () => { toast.success("You're in. Watch for the Wednesday Dispatch."); setEmail(""); },
-    onError: (e: Error) => toast.error(e.message),
-  });
+function SpaceOfWeek({ data }: { data: any }) {
+  if (!data?.space) return null;
+  const s = data.space;
   return (
-    <section className="mx-auto max-w-4xl px-6 mt-24">
-      <div className="glass-strong rounded-3xl p-10 text-center overflow-hidden relative">
-        <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full blur-3xl opacity-40 gradient-iris" />
-        <div className="text-xs uppercase tracking-widest text-iris">The Wednesday Dispatch</div>
-        <h3 className="mt-2 font-display text-3xl md:text-4xl">One email. Every Wednesday. India's coworking week in five minutes.</h3>
-        <form onSubmit={(e) => { e.preventDefault(); mut.mutate(); }} className="mt-6 max-w-md mx-auto flex gap-2">
-          <Input type="email" required placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Button type="submit" disabled={mut.isPending} className="gradient-iris text-primary-foreground">Subscribe</Button>
-        </form>
+    <section className={`${WRAP} mt-24`}>
+      <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
+        {s.cover_url && (
+          <div className="aspect-[16/11] overflow-hidden bg-muted">
+            <img src={s.cover_url} alt={s.name} className="h-full w-full object-cover" />
+          </div>
+        )}
+        <div className="max-w-xl">
+          <h3 className="font-display text-4xl leading-[0.95] sm:text-6xl">{s.name}</h3>
+          <div className="label mt-3">{s.city_name}</div>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">{data.note}</p>
+          <Link
+            to="/spaces/$slug"
+            params={{ slug: s.slug }}
+            className="mt-8 inline-flex items-center gap-2 border-b border-foreground pb-1 text-sm font-medium"
+          >
+            Visit the profile <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
+    </section>
+  );
+}
+
+function Winners({ winners }: { winners: any[] }) {
+  if (!winners?.length) return null;
+  return (
+    <section className={`${WRAP} mt-24`}>
+      <SectionHead eyebrow="Weekly winners" title="Five spaces India is talking about" href="/winners" cta="Full leaderboard" />
+      <ul className="mt-2">
+        {winners.map((w) => (
+          <li key={w.rank}>
+            <Link
+              to="/spaces/$slug"
+              params={{ slug: w.space.slug }}
+              className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 border-b border-border py-5 transition-colors hover:bg-accent/50"
+            >
+              <span className="w-8 font-display text-sm tabular-nums text-muted-foreground">{String(w.rank).padStart(2, "0")}</span>
+              <div className="flex min-w-0 items-center gap-4">
+                {w.space.cover_url && (
+                  <img src={w.space.cover_url} alt="" loading="lazy" className="hidden h-14 w-20 shrink-0 object-cover sm:block" />
+                )}
+                <div className="min-w-0">
+                  <div className="truncate font-display text-xl sm:text-2xl">{w.space.name}</div>
+                  <div className="label mt-0.5">{w.space.city_name}</div>
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-4">
+                <span className="text-sm tabular-nums text-muted-foreground">{w.score.toFixed(1)}</span>
+                <ArrowUpRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -201,35 +212,19 @@ function NewsletterCTA() {
 function SalesQuestions({ items }: { items: { id: string; text: string; category: string | null }[] }) {
   if (!items?.length) return null;
   return (
-    <section className="mx-auto max-w-7xl px-6 mt-20">
-      <SectionHeader
-        eyebrow="Before you sign"
-        icon={<HelpCircle className="h-4 w-4" />}
-        title="Questions to ask the salesperson"
-        href="/questions"
-      />
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+    <section className={`${WRAP} mt-24`}>
+      <SectionHead eyebrow="Before you sign" title="Ask the salesperson this" href="/questions" cta="Full checklist" />
+      <div className="mt-2 grid md:grid-cols-2 md:gap-x-12">
         {items.map((q, i) => (
-          <Link
-            key={q.id}
-            to="/questions"
-            className="glass rounded-2xl p-5 flex gap-4 hover-glow hover:hover-glow-hover group"
-          >
-            <div className="h-9 w-9 shrink-0 rounded-xl gradient-iris flex items-center justify-center font-display text-primary-foreground">
-              {String(i + 1).padStart(2, "0")}
-            </div>
-            <div>
-              <p className="font-display text-lg leading-snug group-hover:text-iris transition-colors">{q.text}</p>
-              {q.category && (
-                <div className="mt-1 text-xs uppercase tracking-widest text-iris">{q.category}</div>
-              )}
+          <Link key={q.id} to="/questions" className="group flex gap-5 border-b border-border py-5">
+            <span className="font-display text-sm tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+            <div className="min-w-0">
+              <p className="text-lg leading-snug transition-colors group-hover:text-muted-foreground">{q.text}</p>
+              {q.category && <div className="label mt-1.5">{q.category}</div>}
             </div>
           </Link>
         ))}
       </div>
-      <p className="mt-4 text-sm text-muted-foreground">
-        Save the full checklist on any space page before your tour.
-      </p>
     </section>
   );
 }
@@ -246,21 +241,52 @@ const RED_FLAGS = [
 
 function RedFlags() {
   return (
-    <section className="mx-auto max-w-6xl px-6 mt-16">
-      <div className="glass rounded-2xl p-6 md:p-8 border border-destructive/20">
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-4 w-4 text-destructive" />
-          <div className="text-xs uppercase tracking-widest text-destructive font-semibold">Red flags</div>
+    <section className={`${WRAP} mt-24`}>
+      <div className="border border-border bg-card p-7 sm:p-10">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+          <div>
+            <div className="label text-signal">Red flags</div>
+            <h2 className="mt-3 font-display text-3xl leading-[0.98] sm:text-4xl">
+              Spot two of these? Time to rethink your coworking space.
+            </h2>
+          </div>
+          <ul className="grid gap-x-10 sm:grid-cols-2">
+            {RED_FLAGS.map((f, i) => (
+              <li key={f} className="flex gap-3 border-b border-border py-3 text-sm last:border-0 sm:[&:nth-last-child(2)]:border-0">
+                <span className="tabular-nums text-signal">{String(i + 1).padStart(2, "0")}</span>
+                <span className="leading-snug text-muted-foreground">{f}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <h2 className="mt-2 font-display text-2xl md:text-3xl text-iris">Spot two of these? Time to rethink your coworking space</h2>
-        <ul className="mt-5 grid gap-x-6 gap-y-2 md:grid-cols-2 text-sm">
-          {RED_FLAGS.map((f, i) => (
-            <li key={f} className="flex gap-2.5 items-baseline py-1.5 border-b border-border/40 last:border-0 md:[&:nth-last-child(2)]:border-0">
-              <span className="text-xs font-display text-destructive/70 tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-              <span className="text-muted-foreground leading-snug">{f}</span>
-            </li>
-          ))}
-        </ul>
+      </div>
+    </section>
+  );
+}
+
+function Dispatches({ items }: { items: any[] }) {
+  if (!items?.length) return null;
+  return (
+    <section className={`${WRAP} mt-24`}>
+      <SectionHead eyebrow="Latest dispatches" title="Fresh from the wire" href="/dispatches" />
+      <div className="mt-8 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((d) => (
+          <Link key={d.id} to="/dispatches/$slug" params={{ slug: d.slug }} className="group block">
+            {d.cover_url && (
+              <div className="aspect-[4/3] overflow-hidden bg-muted">
+                <img src={d.cover_url} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              </div>
+            )}
+            <div className="label mt-4 flex items-center gap-2">
+              <span>{d.region === "india" ? "India" : "Global"}</span>
+              <span>/</span>
+              <span className="truncate">{d.source_name}</span>
+            </div>
+            <h3 className="mt-2 font-display text-xl leading-snug">{d.title}</h3>
+            {d.excerpt && <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{d.excerpt}</p>}
+            <div className="label mt-3">{formatDistanceToNow(new Date(d.published_at), { addSuffix: true })}</div>
+          </Link>
+        ))}
       </div>
     </section>
   );
@@ -268,38 +294,68 @@ function RedFlags() {
 
 function MapReveal() {
   const [open, setOpen] = useState(false);
-  if (open) {
-    return (
-      <>
-        <SectionHeader eyebrow="India, mapped" icon={<MapPin className="h-4 w-4" />} title="Where India works" href="/spaces" />
-        <div className="mt-6"><IndiaHeatmap /></div>
-        <button
-          onClick={() => setOpen(false)}
-          className="mt-4 mx-auto flex items-center gap-1.5 text-sm text-muted-foreground hover:text-iris transition-colors"
-        >
-          Collapse map <ArrowRight className="h-3.5 w-3.5 rotate-[-90deg]" />
-        </button>
-      </>
-    );
-  }
   return (
-    <button
-      onClick={() => setOpen(true)}
-      className="w-full glass rounded-2xl px-6 py-5 flex items-center justify-between hover-glow hover:hover-glow-hover text-left group"
-    >
-      <div className="flex items-center gap-4">
-        <div className="h-10 w-10 rounded-xl gradient-iris flex items-center justify-center">
-          <MapPin className="h-5 w-5 text-primary-foreground" />
-        </div>
-        <div>
-          <div className="text-xs uppercase tracking-widest text-iris">India, mapped</div>
-          <div className="font-display text-lg md:text-xl">Explore coworking density across 12 cities</div>
-        </div>
-      </div>
-      <span className="text-sm text-muted-foreground group-hover:text-iris flex items-center gap-1">
-        Show map <ArrowRight className="h-4 w-4" />
-      </span>
-    </button>
+    <section className={`${WRAP} mt-24`}>
+      {open ? (
+        <>
+          <SectionHead eyebrow="India, mapped" title="Where India works" href="/spaces" cta="All spaces" />
+          <div className="mt-8"><IndiaHeatmap /></div>
+          <button onClick={() => setOpen(false)} className="mx-auto mt-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+            Collapse map <ArrowRight className="h-3.5 w-3.5 -rotate-90" />
+          </button>
+        </>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-y border-border py-8 text-left transition-colors hover:bg-accent/50"
+        >
+          <div className="min-w-0">
+            <div className="label">India, mapped</div>
+            <div className="mt-2 font-display text-2xl sm:text-4xl">Coworking density across 12 cities</div>
+          </div>
+          <span className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
+            Show map <ArrowRight className="h-4 w-4" />
+          </span>
+        </button>
+      )}
+    </section>
   );
 }
 
+function NewsletterCTA() {
+  const [email, setEmail] = useState("");
+  const mut = useMutation({
+    mutationFn: () => subscribeNewsletter({ data: { email } }),
+    onSuccess: () => { toast.success("You're in. Watch for the Wednesday Dispatch."); setEmail(""); },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  return (
+    <section className={`${WRAP} mt-28`}>
+      <div className="border border-border bg-foreground p-10 text-background sm:p-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
+          <div className="min-w-0">
+            <div className="label text-background/60">The Wednesday Dispatch</div>
+            <h2 className="mt-3 font-display text-4xl leading-[0.95] sm:text-6xl">
+              India's coworking week,
+              <br />
+              in five minutes.
+            </h2>
+          </div>
+          <form onSubmit={(e) => { e.preventDefault(); mut.mutate(); }} className="flex gap-2">
+            <Input
+              type="email"
+              required
+              placeholder="you@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12 rounded-none border-background/30 bg-transparent text-background placeholder:text-background/50"
+            />
+            <Button type="submit" disabled={mut.isPending} variant="secondary" className="h-12 rounded-none px-6">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}

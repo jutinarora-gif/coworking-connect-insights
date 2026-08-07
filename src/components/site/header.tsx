@@ -1,15 +1,15 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Search, LogIn, Newspaper, Building2, Trophy, MessagesSquare } from "lucide-react";
+import { Search, LogIn } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SearchDialog } from "./search-dialog";
 import { Button } from "@/components/ui/button";
 
 const nav = [
-  { to: "/dispatches", label: "Dispatches", icon: Newspaper },
-  { to: "/spaces", label: "Spaces", icon: Building2 },
-  { to: "/winners", label: "Winners", icon: Trophy },
-  { to: "/questions", label: "Q&A", icon: MessagesSquare },
+  { to: "/dispatches", label: "Dispatches" },
+  { to: "/spaces", label: "Spaces" },
+  { to: "/winners", label: "Winners" },
+  { to: "/questions", label: "Q&A" },
 ];
 
 export function Header() {
@@ -33,45 +33,44 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 glass-strong">
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6">
-        <Link to="/" className="group flex items-center gap-2 shrink-0">
-          <div className="h-8 w-8 rounded-lg gradient-iris shadow-[0_0_24px_-4px_var(--iris-2)]" />
-          <div className="leading-tight">
-            <div className="font-display text-lg">The Coworking Dispatch</div>
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">India-first · since 2026</div>
-          </div>
+      <div className="mx-auto grid h-16 w-full max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-6 px-5 sm:px-8 md:grid-cols-[auto_minmax(0,1fr)_auto]">
+        <Link to="/" className="flex min-w-0 items-center gap-2">
+          <span className="h-3 w-3 shrink-0 bg-foreground" />
+          <span className="truncate font-display text-base tracking-tight">The Coworking Dispatch</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1 ml-2">
+
+        <nav className="hidden items-center justify-center gap-7 md:flex">
           {nav.map((n) => {
             const active = path.startsWith(n.to);
             return (
               <Link
                 key={n.to}
                 to={n.to}
-                className={`px-3 py-1.5 rounded-md text-sm transition-colors ${active ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent/60"}`}
+                className={`text-sm transition-colors ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 {n.label}
               </Link>
             );
           })}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+
+        <div className="flex shrink-0 items-center gap-2">
           <button
             onClick={() => setOpen(true)}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-md glass text-sm text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Search"
+            className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <Search className="h-4 w-4" />
-            <span>Search spaces, dispatches…</span>
-            <kbd className="ml-4 rounded bg-muted px-1.5 py-0.5 text-[10px]">⌘K</kbd>
+            <span className="hidden lg:inline">Search</span>
+            <kbd className="ml-2 hidden rounded bg-muted px-1.5 py-0.5 text-[10px] lg:inline">⌘K</kbd>
           </button>
-          <button onClick={() => setOpen(true)} className="sm:hidden p-2 rounded-md glass"><Search className="h-4 w-4" /></button>
           {session ? (
-            <Button asChild variant="secondary" size="sm">
+            <Button asChild variant="outline" size="sm" className="rounded-full">
               <Link to="/dashboard">Dashboard</Link>
             </Button>
           ) : (
-            <Button asChild size="sm" className="gradient-iris text-primary-foreground font-medium">
-              <Link to="/auth"><LogIn className="h-4 w-4 mr-1" />Sign in</Link>
+            <Button asChild size="sm" className="rounded-full">
+              <Link to="/auth"><LogIn className="mr-1 h-4 w-4" />Sign in</Link>
             </Button>
           )}
         </div>
