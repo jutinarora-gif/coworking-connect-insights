@@ -15,7 +15,7 @@ function Dashboard() {
   useEffect(() => { supabase.auth.getSession().then(({ data }) => setSession(data.session)); }, []);
   return (
     <div className="mx-auto max-w-4xl px-6 py-16">
-      <div className="text-xs uppercase tracking-widest text-iris">Your dashboard</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Your dashboard</div>
       <h1 className="font-display text-4xl mt-1">Welcome{session?.user?.email ? `, ${session.user.email.split("@")[0]}` : ""}</h1>
       <p className="mt-2 text-muted-foreground">More coming soon: your reviews, saved spaces, and question threads.</p>
       <Button className="mt-6" variant="secondary" onClick={async () => { await supabase.auth.signOut(); navigate({ to: "/" }); }}>Sign out</Button>

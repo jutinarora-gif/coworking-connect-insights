@@ -24,7 +24,7 @@ function QuestionsPage() {
   const { data } = useSuspenseQuery(q);
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
-      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-1 flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><MessagesSquare className="h-3.5 w-3.5" />Community</div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><MessagesSquare className="h-3.5 w-3.5" />Community</div>
       <h1 className="mt-1 font-display text-4xl md:text-5xl">Questions & AMAs</h1>
       <p className="mt-2 text-muted-foreground">Real coworkers. Real answers. No affiliate links.</p>
       <div className="mt-10 space-y-4">
@@ -40,21 +40,21 @@ function QuestionsPage() {
                 <h3 className="font-display text-xl">{qq.title}</h3>
                 <div className="mt-1 text-xs text-muted-foreground">
                   {qq.author?.display_name} · {formatDistanceToNow(new Date(qq.created_at), { addSuffix: true })}
-                  {qq.space && <> · <Link to="/spaces/$slug" params={{ slug: qq.space.slug }} className="text-iris hover:underline">{qq.space.name}</Link></>}
+                  {qq.space && <> · <Link to="/spaces/$slug" params={{ slug: qq.space.slug }} className="underline underline-offset-2 decoration-[var(--flare)] decoration-2 hover:text-foreground">{qq.space.name}</Link></>}
                 </div>
                 {qq.body && <p className="mt-2 text-sm text-muted-foreground">{qq.body}</p>}
 
                 {qq.answers.length > 0 && (
-                  <div className="mt-4 space-y-3 border-l-2 border-iris/20 pl-4">
+                  <div className="mt-4 space-y-3 border-l-2 border-[var(--flare)] pl-4">
                     {qq.answers.map((a: any) => (
                       <div key={a.id} className="flex gap-2.5">
-                        <CornerDownRight className="h-3.5 w-3.5 mt-1 text-iris/60 shrink-0" />
+                        <CornerDownRight className="h-3.5 w-3.5 mt-1 text-muted-foreground shrink-0" />
                         <div className="flex-1">
                           <p className="text-sm leading-relaxed">{a.body}</p>
                           <div className="mt-1 text-[11px] text-muted-foreground flex items-center gap-1">
                             <span className="font-medium text-foreground/80">{a.author?.display_name ?? "Anonymous"}</span>
                             {a.is_founder_reply && (
-                              <span className="inline-flex items-center gap-0.5 text-iris">
+                              <span className="inline-flex items-center gap-0.5 rounded-full bg-flare px-1.5 text-flare-ink">
                                 <BadgeCheck className="h-3 w-3" />founder
                               </span>
                             )}

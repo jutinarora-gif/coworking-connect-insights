@@ -147,13 +147,13 @@ function SpacePage() {
 
         <aside className="space-y-6">
           <section className="glass rounded-2xl p-6 sticky top-20">
-            <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-1 flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><ClipboardCheck className="h-3.5 w-3.5" />Ask the salesperson</div>
+            <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><ClipboardCheck className="h-3.5 w-3.5" />Ask the salesperson</div>
             <h3 className="mt-2 font-display text-xl">Before you sign</h3>
             <p className="text-xs text-muted-foreground mt-1">Copy-paste these to your tour email. Community-curated.</p>
             <ol className="mt-4 space-y-2.5">
               {salesQuestions.map((sq: any, i: number) => (
                 <li key={sq.id} className="text-sm flex gap-2">
-                  <span className="text-iris font-display text-lg leading-none">{i + 1}.</span>
+                  <span className="acid-mark font-display text-lg leading-none">{i + 1}.</span>
                   <span>{sq.text}</span>
                 </li>
               ))}
