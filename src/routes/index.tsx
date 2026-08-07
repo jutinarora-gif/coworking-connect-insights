@@ -39,10 +39,12 @@ function Home() {
       <Hero />
       <ImageStrip items={strip} />
       <Marquee />
+      <Leaderboard categories={data.categoryLeaders} />
       <SpaceOfWeek data={data.spaceOfWeek} />
       <Winners winners={data.winners} />
       <SalesQuestions items={data.salesQuestions} />
       <RedFlags />
+      <ReviewCTA />
       <Dispatches items={data.dispatches.slice(0, 6)} />
       <MapReveal />
       <NewsletterCTA />
@@ -52,21 +54,23 @@ function Home() {
 
 function Hero() {
   return (
-    <section className={`${WRAP} pt-16 sm:pt-24 pb-10`}>
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+    <section className={`${WRAP} pt-14 sm:pt-20 pb-10`}>
+      <div className="inline-flex items-center gap-2 border border-border px-3 py-1 text-[11px] uppercase tracking-[0.14em]">
+        <span className="h-1.5 w-1.5 acid-dot rounded-full" /> Live , 70% India, 30% world
+      </div>
+      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
         <div className="min-w-0">
-          <div className="label">India-first coworking desk , since 2026</div>
-          <h1 className="mt-5 font-display text-[13vw] leading-[0.88] tracking-[-0.045em] sm:text-[9vw] lg:text-[7.2vw]">
-            Coworking,
+          <h1 className="font-display text-[12vw] leading-[0.9] tracking-[-0.045em] sm:text-[8vw] lg:text-[6.4vw]">
+            Coworking news, reviews,
             <br />
-            reported from
+            and <span className="acid-mark px-2">real talk</span> from
             <br />
-            the inside.
+            everywhere.
           </h1>
         </div>
         <div className="max-w-sm lg:pb-3">
           <p className="text-base leading-relaxed text-muted-foreground">
-            The news, the receipts, the honest reviews. 70% India, 30% world, written by people who actually pay for the desk.
+            Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild size="lg" className="rounded-full">
@@ -77,6 +81,65 @@ function Hero() {
             </Button>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Leaderboard({ categories }: { categories: { label: string; leaders: { slug: string; name: string; city_name: string | null; score: number; reviews: number }[] }[] }) {
+  if (!categories?.length) return null;
+  return (
+    <section className={`${WRAP} mt-20`}>
+      <SectionHead eyebrow="India leaderboard" title="Who's actually winning, by category" href="/winners" cta="All winners" />
+      <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((c) => (
+          <div key={c.label}>
+            <div className="flex items-center gap-2 border-b border-foreground pb-2">
+              <span className="h-2 w-2 acid-dot" />
+              <h3 className="font-display text-lg">{c.label}</h3>
+            </div>
+            <ol className="mt-1">
+              {c.leaders.map((s, i) => (
+                <li key={s.slug}>
+                  <Link
+                    to="/spaces/$slug"
+                    params={{ slug: s.slug }}
+                    className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
+                  >
+                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "acid-mark px-1" : "text-muted-foreground"}`}>{i + 1}</span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
+                      <span className="label">{s.city_name}</span>
+                    </span>
+                    <span className="text-xs tabular-nums text-muted-foreground">{s.score.toFixed(1)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+      <p className="label mt-6">Based on community reviews on The Coworking Dispatch. Rankings update as more reviews come in.</p>
+    </section>
+  );
+}
+
+function ReviewCTA() {
+  return (
+    <section className={`${WRAP} mt-20`}>
+      <div className="grid items-center gap-6 border-y border-border py-10 md:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="min-w-0">
+          <div className="label">Been to a space this month?</div>
+          <h2 className="mt-2 font-display text-3xl leading-tight sm:text-4xl">
+            Leave a review. It takes <span className="acid-mark px-1.5">under two minutes.</span>
+          </h2>
+          <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+            The more coworkers who weigh in, the more useful this gets for the next person choosing a desk.
+          </p>
+        </div>
+        <Button asChild size="lg" className="rounded-full">
+          <Link to="/spaces">Find your space <ArrowRight className="ml-1 h-4 w-4" /></Link>
+        </Button>
       </div>
     </section>
   );
