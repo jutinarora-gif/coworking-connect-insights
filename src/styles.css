@@ -61,7 +61,7 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.875rem;
 
   /* Editorial: warm cream paper, near-black ink, one sulphur accent used on black */
   --paper: oklch(0.977 0.011 92);

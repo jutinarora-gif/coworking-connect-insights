@@ -36,7 +36,7 @@ function Home() {
   ].filter(Boolean).slice(0, 5) as { slug: string; name: string; cover_url: string | null; city_name: string | null }[];
 
   return (
-    <div className="pb-32">
+    <div className="pb-0">
       <Hero />
       <ImageStrip items={strip} />
       
@@ -78,43 +78,62 @@ function Hero() {
   );
 }
 
-function Leaderboard({ categories }: { categories: { label: string; leaders: { slug: string; name: string; city_name: string | null; score: number; reviews: number }[] }[] }) {
+type Leader = { slug: string; name: string; city_name: string | null; score: number; reviews: number };
+
+function Leaderboard({ categories }: { categories: { label: string; leaders: Leader[] }[] }) {
+  const [active, setActive] = useState(0);
   if (!categories?.length) return null;
+  const current = categories[Math.min(active, categories.length - 1)];
+
   return (
     <section className={`${WRAP} mt-20`}>
-      <SectionHead eyebrow="India leaderboard" title="Who's actually winning, by category" href="/winners" cta="All winners" />
-      <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((c) => (
-          <div key={c.label}>
-            <div className="flex items-center gap-2 border-b border-foreground pb-2">
-              <span className="h-2 w-2 acid-dot" />
-              <h3 className="font-display text-lg">{c.label}</h3>
-            </div>
-            <ol className="mt-1">
-              {c.leaders.map((s, i) => (
-                <li key={s.slug}>
-                  <Link
-                    to="/spaces/$slug"
-                    params={{ slug: s.slug }}
-                    className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-border py-3"
-                  >
-                    <span className={`font-display text-sm tabular-nums ${i === 0 ? "acid-mark" : "text-muted-foreground"}`}>{i + 1}</span>
-                    <span className="min-w-0">
-                      <span className="block truncate text-sm font-medium acid-underline group-hover:acid-underline-hover">{s.name}</span>
-                      <span className="label">{s.city_name}</span>
-                    </span>
-                    <span className="text-xs tabular-nums text-muted-foreground">{s.score.toFixed(1)}</span>
-                  </Link>
-                </li>
-              ))}
-            </ol>
-          </div>
+      <SectionHead eyebrow="India leaderboard" title="Pick a category. See who wins." href="/winners" cta="All winners" />
+
+      <div className="mt-6 flex flex-wrap gap-2">
+        {categories.map((c, i) => (
+          <button
+            key={c.label}
+            onClick={() => setActive(i)}
+            className={`rounded-full border px-4 py-2 text-sm transition-colors ${
+              i === active
+                ? "border-foreground bg-foreground text-background"
+                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+            }`}
+          >
+            {c.label}
+          </button>
         ))}
       </div>
-      <p className="label mt-6">Based on community reviews on The Coworking Dispatch. Rankings update as more reviews come in.</p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        {current.leaders.map((s, i) => (
+          <Link
+            key={s.slug}
+            to="/spaces/$slug"
+            params={{ slug: s.slug }}
+            className={`group relative overflow-hidden rounded-2xl border border-border p-6 transition-all hover:-translate-y-0.5 hover:border-foreground ${
+              i === 0 ? "bg-flare text-flare-ink" : "bg-card"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span className="font-display text-5xl font-bold leading-none tabular-nums opacity-90">{i + 1}</span>
+              <span className="rounded-full border border-current/25 px-3 py-1 text-xs tabular-nums opacity-80">
+                {s.score.toFixed(1)}
+              </span>
+            </div>
+            <div className="mt-8 font-display text-xl leading-tight">{s.name}</div>
+            <div className={`mt-1 text-xs uppercase tracking-widest ${i === 0 ? "opacity-70" : "text-muted-foreground"}`}>
+              {s.city_name} · {s.reviews} reviews
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <p className="label mt-6">Based on community reviews. Rankings update as more reviews come in.</p>
     </section>
   );
 }
+
 
 function ReviewCTA() {
   return (
@@ -143,15 +162,17 @@ function ReviewCTA() {
 function ImageStrip({ items }: { items: { slug: string; name: string; cover_url: string | null; city_name: string | null }[] }) {
   if (!items.length) return null;
   return (
-    <section className={`${WRAP} mt-6`}>
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-6">
+    <section className={`${WRAP} mt-12`}>
+      <SectionHead eyebrow="Talk of the week" title="Five spaces people are talking about" href="/spaces" cta="All spaces" />
+      <div className="mt-6 grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-6">
         {items.map((s, i) => (
           <Link
             key={s.slug}
             to="/spaces/$slug"
             params={{ slug: s.slug }}
-            className={`group relative overflow-hidden bg-muted ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
+            className={`group relative overflow-hidden rounded-2xl bg-muted ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-[4/5]"}`}
           >
+
             {s.cover_url && (
               <img
                 src={s.cover_url}
@@ -195,12 +216,12 @@ function SpaceOfWeek({ data }: { data: any }) {
   if (!data?.space) return null;
   const s = data.space;
   return (
-    <section className="mt-24 border-y border-border py-16 sm:py-20">
+    <section className="section-ink mt-24 py-16 sm:py-20">
       <div className={WRAP}>
       <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         {s.cover_url && (
-          <div className="aspect-[16/11] overflow-hidden bg-muted">
+          <div className="aspect-[16/11] overflow-hidden rounded-3xl bg-muted">
             <img src={s.cover_url} alt={s.name} className="h-full w-full object-cover" />
           </div>
         )}
@@ -211,12 +232,13 @@ function SpaceOfWeek({ data }: { data: any }) {
           <Link
             to="/spaces/$slug"
             params={{ slug: s.slug }}
-            className="mt-8 inline-flex items-center gap-2 border-b border-foreground pb-1 text-sm font-medium"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-flare px-5 py-2.5 text-sm font-medium text-flare-ink transition-transform hover:-translate-y-0.5"
           >
             Visit the profile <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
+
       </div>
     </section>
 
@@ -291,7 +313,7 @@ const RED_FLAGS = [
 function RedFlags() {
   return (
     <section className={`${WRAP} mt-24`}>
-      <div className="border border-border p-7 sm:p-10">
+      <div className="rounded-3xl border border-border p-7 sm:p-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
           <div>
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
@@ -385,12 +407,12 @@ function NewsletterCTA() {
     onError: (e: Error) => toast.error(e.message),
   });
   return (
-    <section className={`${WRAP} mt-28`}>
-      <div className="border border-border p-10 sm:p-16">
+    <section className="section-mist mt-28 py-16 sm:py-20">
+      <div className={WRAP}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em]" />
+              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
               The Wednesday Dispatch
             </h2>
             <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
@@ -404,14 +426,15 @@ function NewsletterCTA() {
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-none border-border bg-transparent"
+              className="h-12 rounded-full border-foreground/20 bg-background/70 px-5"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none px-6">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-full px-6">
               Subscribe
             </Button>
           </form>
         </div>
       </div>
+
     </section>
   );
 }

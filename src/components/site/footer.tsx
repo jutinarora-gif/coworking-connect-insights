@@ -2,13 +2,16 @@ import { Link } from "@tanstack/react-router";
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border/40">
+    <footer className="border-t border-border/40">
       <div className="mx-auto max-w-7xl px-6 py-12 grid gap-8 md:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2">
-            <div className="h-6 w-6 rounded gradient-iris" />
-            <span className="font-display text-lg">The Coworking Dispatch</span>
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-foreground">
+              <span className="font-display text-[13px] font-bold leading-none tracking-[-0.05em] text-background">TCD</span>
+            </span>
+            <span className="font-display text-sm font-semibold tracking-[-0.02em]">The Coworking Dispatch</span>
           </div>
+
           <p className="mt-3 text-sm text-muted-foreground">
             India-first coworking news, reviews and community. 70% India, 30% the rest of the world.
           </p>
