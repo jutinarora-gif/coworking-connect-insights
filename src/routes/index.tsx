@@ -407,12 +407,12 @@ function NewsletterCTA() {
     onError: (e: Error) => toast.error(e.message),
   });
   return (
-    <section className={`${WRAP} mt-28`}>
-      <div className="border border-border p-10 sm:p-16">
+    <section className="section-mist mt-28 py-16 sm:py-20">
+      <div className={WRAP}>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-end">
           <div className="min-w-0">
             <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
-              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em]" />
+              <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
               The Wednesday Dispatch
             </h2>
             <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
@@ -426,14 +426,15 @@ function NewsletterCTA() {
               placeholder="you@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-none border-border bg-transparent"
+              className="h-12 rounded-full border-foreground/20 bg-background/70 px-5"
             />
-            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-none px-6">
+            <Button type="submit" disabled={mut.isPending} className="h-12 rounded-full px-6">
               Subscribe
             </Button>
           </form>
         </div>
       </div>
+
     </section>
   );
 }
