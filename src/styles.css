@@ -52,6 +52,9 @@
   --color-flare: var(--flare);
   --color-flare-ink: var(--flare-ink);
   --color-paper: var(--paper);
+  --color-ink-surface: var(--ink-surface);
+  --color-ink-surface-foreground: var(--ink-surface-foreground);
+
   --font-display: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
 }
