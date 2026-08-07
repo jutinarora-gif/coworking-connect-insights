@@ -45,7 +45,7 @@ function Broadcast() {
     <svg
       viewBox="0 0 400 400"
       aria-hidden
-      className="pointer-events-none absolute -right-24 -top-24 h-[130%] w-auto opacity-[0.55] sm:-right-10"
+      className="pointer-events-none absolute bottom-[-34%] right-[-6%] aspect-square h-[175%] opacity-70"
       preserveAspectRatio="xMidYMid meet"
     >
       <g fill="none" stroke="var(--flare)" strokeLinecap="round">
