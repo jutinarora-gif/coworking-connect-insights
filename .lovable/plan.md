@@ -1,70 +1,65 @@
-# Property pages without fake reviews
+# Make the space page a tool, not a review page
 
-Fair pushback. Most of my earlier list needed data neither of us has for 200 spaces. This version only uses things that are either already true, computable, or genuinely user-generated.
+Reviews are content. Content needs 200 people who have been there. We don't have them. Tools need nothing except the visitor, and they are what keeps someone on a site for ten minutes instead of eight seconds.
 
-## What we actually have per space today
-Checked the database: 20 published spaces, and every one has name, city, address, cover image, description, price_from, amenities and vibe tags. None have lat/lng, and only one has a website URL.
+Everything below is authentic by construction: it is either the visitor's own input, real arithmetic on real numbers, or an anonymous aggregate that shows its own sample size honestly.
 
-Worth flagging: the descriptions and prices came from the same seeding pass as the reviews. If they were invented too, they carry the same trust risk and should be re-sourced from each space's own website or listing before launch. Everything below assumes facts are copied from the operator's public page, not written by us.
+## The five that carry the page
 
-## Principle
-No voice on the page pretends to be a person. Anything subjective is either labelled as the operator's own claim, or computed from real data, or clearly editorial and signed by TCD as an outsider view.
+### 1. Compare tray
+A persistent "Compare" button on every space card and space page. Pick up to three, get a side-by-side table: price, city, amenities, tags, distance apart. Sticky bar at the bottom shows what's in the tray as you browse.
 
-## What replaces reviews
+This is the single biggest time-on-site lever in any directory. Nobody picks a coworking space by reading one page. They open four tabs. We replace the four tabs.
 
-### 1. Honest empty state, front and centre
-Where reviews sat: "No verified reviews yet." Plus a one-line explanation that TCD refuses to seed reviews, and that ratings appear only after real coworkers submit them. This is a differentiator, not an apology. Everyone else fakes it.
+### 2. Space matchmaker
+Six taps: city, budget, team size, what matters most (quiet / community / late nights / calls), how often you'd go, and one vibe. Out comes a ranked shortlist with a one-line reason each: "Matches your ₹8k budget and quiet-first preference."
 
-### 2. 30-second rating, not a review
-Point 7 is correct, Indian users won't write paragraphs. So don't ask for paragraphs. Ask for five taps: wifi, quiet, coffee, value, community, on a 5-point scale, no text field, no login wall until submit. Optional one-line comment. This is the only realistic path to real data at 200-space scale, and it's what actually fills the page over time.
+Runs entirely on data we already hold. Every answer is the user's own, so nothing is fabricated. It also gives us the single most valuable thing we could collect right now: what people are actually looking for, city by city, which becomes dispatch material.
 
-### 3. Rating unlocks at a threshold
-Hide the score until a space has, say, 5 ratings. Below that show "3 of 5 ratings needed to unlock this score" with a progress bar. Turns the empty state into a nudge and stops one angry ex-member defining a space.
+### 3. What did you actually pay
+The one thing Indian users will absolutely submit. Not a review, one number: "I paid ₹X/month for a hot desk here, in <month>." Anonymous, no login until submit, ten seconds.
 
-### 4. Price in context (computed, not claimed)
-"₹8,500/mo hot desk. That is 12% below the Bengaluru median of ₹9,650 across 14 listed spaces." Pure arithmetic on data we already hold, useful, and impossible to fake. Needs prices to be real, see the flag above.
+The page then shows: listed price vs what people report paying, and the gap. "Listed ₹9,000. Three people report paying ₹7,500 after negotiating." That is information no other site in India has, it is genuinely user-generated, and it is the strongest reason to come back and contribute. Sample size is always shown, so three reports read as three reports.
 
-### 5. The facts strip, sourced not invented
-Only fields we can copy verbatim from the operator's own site: address, hot desk price, amenities, official website, map link. Each carries a "Listed by the operator, last checked <date>" line. Honest about provenance, cheap to maintain, no site visit needed.
+### 4. Would you work here
+One tap, yes or no, on every space page. Live result bar with the vote count next to it. No text, no account, no fabrication possible.
 
-### 6. Ask the salesperson (keep, promote)
-Already real and already curated. Move it from a sidebar afterthought to a primary block. It is the most useful thing on the page for someone about to tour, and it costs no per-space data.
+Low-friction voting is how you get a cold directory warm. Once a space has 40 votes, the page has real social proof without a single written review.
 
-### 7. Tour checklist, printable
-The red flags idea, reframed as a checkable list the user takes on their tour. Generic across all spaces so it scales to 200. Not forced if it is presented as a tool rather than as content padding.
+### 5. Tour planner
+The user shortlists spaces, picks a day, and gets a printable or WhatsApp-able plan: order of visits, the salesperson questions to ask at each, and the tour checklist. Ends with a place to jot what they thought.
 
-### 8. Dispatches mentioning this space
-Auto-linked from the news we already aggregate. Real coverage, zero manual work, and it grows on its own.
+This turns the existing sales-questions asset into the reason someone bookmarks us. It also brings them back after the tour, which is exactly when they might leave that first real rating.
 
-### 9. Also in this city
-Two or three other spaces at a similar price point. Keeps the page useful when we have little to say about this one, and pushes users deeper into the directory.
+## Supporting, cheap to add
+- **Cost reality calculator.** Desk price plus commute plus coffee, monthly, against working from home or a café. Pure arithmetic, endlessly fiddled with.
+- **Price in context.** "12% below the Bengaluru median across 14 listed spaces." Computed, not claimed.
+- **Trending this week.** Most compared, most voted, most matched. Real behaviour, updates itself, gives the homepage a live pulse.
+- **Also in this city** at a similar price, to keep the browse loop going.
 
-## Q&A on the space page
-Point 6 stands: seeded questions are fabricated and should go. Keep the block only as an empty invitation, "Worked here? Answer a question", with real submissions surfacing as they arrive. If that stays empty for weeks, we drop it.
+## What goes away
+Seeded reviews, questions and answers get hidden from public view, not deleted. Ratings, review counts and the leaderboard recompute from real rows only, which means they show nothing until they show something true. Space cards and the homepage leaderboard need the same treatment.
 
-## Seeded data
-Reviews, questions and answers get hidden from public display rather than deleted, so the tables and any future real rows stay intact. Ratings, review counts and the leaderboard all recompute from real rows only, which means they show nothing at first. The homepage leaderboard and space cards need the same treatment or the fabrication just moves elsewhere.
-
-## Page order after the change
-1. Hero: name, city, tags, cover
-2. Facts strip with source and last-checked date
-3. Price in context
-4. Ratings, unlocked or progress bar
-5. Rate this space, the five-tap widget
-6. Ask the salesperson
-7. Tour checklist
-8. Dispatches mentioning this space
-9. Also in this city
+## Space page order after the change
+1. Hero, with Compare and Would-you-work-here in reach
+2. Facts strip, sourced from the operator, with a last-checked date
+3. Price in context and what people report paying
+4. Vote result
+5. Ask the salesperson, promoted from the sidebar
+6. Add to tour plan
+7. Also in this city
+8. Trending nearby
 
 ## Technical notes
-- Hide seeded rows via `is_hidden` on `reviews`, `questions`, `answers`, no schema change needed.
-- Add `verified_at` to `spaces` for the last-checked date.
-- New server functions: city price stats, dispatches by linked space, nearby spaces.
-- New rating submission server function plus a compact `SpaceRating` component; auth required at submit only.
+- New tables: `space_votes` (anonymous, IP or device-hashed, one per space), `price_reports` (space, amount, desk type, month, optional profile), `shortlists` (device or profile scoped).
+- Compare tray and shortlist live in local storage for signed-out users, sync to the profile on sign-in.
+- Matchmaker is pure client-side scoring over the existing spaces query, no new data needed.
+- Trending reads from vote and compare counts, with a minimum threshold before anything is shown.
+- Hide seeded rows with `is_hidden`, no schema change.
 - Strip `avg_rating` and `review_count` from `SpaceCard` and the spaces index until real counts exist.
-- Homepage leaderboard needs a real-data threshold or a temporary hide.
 
-## Before building
-1. Are the current descriptions and prices real, or seeded like the reviews?
-2. Where do the 200 spaces live, the database has 20. A CSV or sheet import changes the shape of this work.
-3. Ratings threshold before a score shows, 5 feels right, your call.
+## Build order
+Compare tray and Would-you-work-here first, they are the fastest path to a page that does something. Matchmaker second, it is the shareable one. Price reports third, tour planner fourth.
+
+## One question before building
+The database holds 20 published spaces, you mentioned 200. Where do the other 180 live? A sheet or CSV import changes the shape of this work, and the compare and matchmaker features get much better with the full set.
