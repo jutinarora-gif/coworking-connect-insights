@@ -1,79 +1,71 @@
-# Plan: Build and send the first Wednesday Dispatch newsletter
+# Plan: A standalone emailer for The Wednesday Dispatch
 
-## Goal
-Create a branded newsletter email template ("The Wednesday Dispatch") and a one-click send path that delivers it to every email in the `newsletter_subscribers` table. You will supply the actual issue content; the system handles rendering and delivery.
+## What you asked for
+A self-contained newsletter codebase, separate from the website, that auto-pulls live data (Space of the Week, Winners, Latest Dispatches, Guides) and outputs a finished HTML email you can paste into whatever tool you send from. No sending logic, no admin UI, no database changes.
 
-## Current state
-- Homepage has 9 content sections: Hero, India Leaderboard, Space of the Week, Weekly Winners, Sales Questions, Red Flags, Review CTA, Latest Dispatches, Newsletter signup.
-- The published site also has a **Guides** section at `/guides` with guides for coworkers and operators.
-- The current navbar code is missing the **Guides** link (it shows Dispatches, Spaces, Winners, Q&A, Blog).
-- `newsletter_subscribers` table exists with `id`, `email`, `source`, `created_at`.
-- No sender domain is configured, so emails cannot be sent yet.
-- No email templates or send helpers exist in the project.
+## What gets built
 
-## Plan
+A new top-level `emailer/` folder that stands on its own. It does not import site components, does not touch site routes, and can be zipped or moved into its own repo at any time.
 
-### 1. Sync the navbar with the published site
-- Add **Guides** to the header nav between Q&A and Blog.
-- Verify the route `/guides` exists in the codebase; if not, create the guides index route to match the live page.
+```text
+emailer/
+  package.json          own deps, own scripts
+  .env.example          read-only database credentials
+  src/
+    fetch-data.ts       pulls the week's content from the live database
+    template.tsx        the Wednesday Dispatch email, React Email
+    components/         reusable blocks (header, story, space card, footer)
+    build.ts            fetch -> render -> write HTML
+  out/
+    wednesday-dispatch-YYYY-MM-DD.html   the file you paste into your sender
+    wednesday-dispatch-YYYY-MM-DD.txt    plain-text fallback
+```
 
-### 2. Configure a sender domain (your action)
-Emails must come from a domain you own (e.g. `notify.yourdomain.com`).
-- Open the email domain setup dialog and add your domain.
-- Add the NS records shown in Cloud -> Emails at your registrar.
-- Wait for DNS verification (usually minutes to a few hours).
+### 1. Auto-pull the week's content
+`fetch-data.ts` connects read-only using the public key and pulls:
+- **Space of the Week** with its editorial note
+- **Top 3 Weekly Winners** with rank and score
+- **5 latest Dispatches**, respecting the 70/30 India-to-global split
+- **One sales question** and **one red flag** from the live question set
+- **One featured guide** from the guides list
 
-### 3. Scaffold Lovable transactional email infrastructure
-- Run the transactional email scaffold to create `src/lib/email-templates/` (registry, send helper, preview route).
-- This gives the project a reusable, brandable email system.
+Every block degrades gracefully. If a week has no winners, that section drops out instead of rendering an empty box.
 
-### 4. Design the newsletter email template
-Create `src/lib/email-templates/wednesday-dispatch.tsx` with:
-- Editorial look matching the site: cream paper background, near-black ink type, mint (#8DF688) accent dots and CTA.
-- Header: "The Wednesday Dispatch" wordmark + issue date.
-- Body blocks you can fill per issue:
-  - Lead story / editor's note
-  - Space of the Week feature block
-  - Weekly Winners top 3 list
-  - Latest Dispatches 3-item grid
-  - Featured guide from `/guides`
-  - One red flag or one question to ask the salesperson
-- Footer: unsubscribe link (managed by Lovable), website link, address placeholder.
-- Mobile-first, table-based layout for email client compatibility.
+### 2. The template
+Built with React Email so it renders reliably in Gmail, Outlook, and Apple Mail. Styling matches the site: cream paper, near-black ink, mint accent, Work Sans style headings, generous whitespace, single column, mobile first.
 
-### 5. Build the send path
-- Create `src/routes/api/public/send-newsletter.ts` as a POST server route.
-- The route:
-  - Reads the request body for issue metadata (subject line, issue date, content blocks, optional featured image URLs).
-  - Validates a simple secret/API key check or admin session (to prevent public abuse).
-  - Fetches all subscriber emails from `newsletter_subscribers`.
-  - Sends one email per subscriber using the scaffolded `sendTemplateEmail` helper.
-  - Records the send in a new `newsletter_sends` table (issue slug, sent_at, recipient_count) to prevent duplicate sends and give you a history log.
-  - Returns `{ sent: number, failed: number }`.
+Blocks, top to bottom:
+- Masthead: The Coworking Dispatch wordmark, issue date, issue number
+- Editor's note: the one hand-written slot, edited in a single file per issue
+- Space of the Week: cover image, name, city, editorial note, link
+- This week's winners: ranked 1 to 3, clean numbered list, no clutter
+- Latest dispatches: five headlines with source and one-line excerpt
+- One guide: title, promise, link
+- Ask your salesperson this: one question, mint block
+- Red flag of the week: one warning, ink block
+- Footer: site link, socials, address placeholder, unsubscribe placeholder your sender fills in
 
-### 6. Create the send history table
-Migration adds `public.newsletter_sends`:
-- `id uuid primary key`
-- `issue_slug text not null`
-- `subject text not null`
-- `recipient_count integer`
-- `sent_at timestamptz default now()`
-- `created_by uuid references auth.users(id)`
-- GRANTs and RLS so only service_role/admin can insert/read.
+### 3. Build and preview
+Two commands:
+- `npm run dev` opens a live local preview at `localhost:3030` so you can see the email as you edit
+- `npm run build` writes the finished HTML and plain-text files into `out/`
 
-### 7. Add a minimal admin UI for you to compose and send
-Create `src/routes/admin/newsletter.tsx` (or reuse an admin area if one exists):
-- Form fields: Issue slug, Subject, Date, Lead story, Space of the Week, Winners, Dispatches, Featured guide, Red flag / Question.
-- "Preview" button renders the email in a modal/iframe using the template preview route.
-- "Send to all subscribers" button POSTs to `/api/public/send-newsletter`.
-- Shows last send history from `newsletter_sends`.
+The HTML is fully inlined and self-contained. Paste it into Mailchimp, Brevo, Beehiiv, Resend broadcasts, or anything else that accepts raw HTML.
 
-### 8. Test the first send
-- Subscribe a test email via the homepage form.
-- Send a test issue to yourself first (optional `test_email` field in the admin form).
-- Verify delivery, links, and mobile rendering.
+### 4. Per-issue workflow
+1. Open `emailer/src/issue.ts`, write the editor's note and the subject line
+2. Run `npm run build`
+3. Grab the HTML from `out/`, paste into your sender, hit send
 
-## What I need from you
-1. Do you own a domain we can use as the sender domain? If yes, what is it?
-2. Should the admin send UI be password-protected or admin-role-only, or is a simple secret-token check enough for now?
-3. For the first issue, do you want the template to auto-pull live data from the database (Space of the Week, Winners, Dispatches), or do you want to paste the content manually each week?
+Everything else fills itself in from live data.
+
+## Notes
+- Nothing in the website codebase changes, except one small fix: the navbar is missing the **Guides** link that is live on coworkingdispatch.com. I will add it unless you want it left alone.
+- Sender domain: since you are sending from your own tool, no domain setup is needed inside this project. You will point `coworkingdispatch.com` at whichever sender you choose.
+- The emailer reads the database with the public read-only key, so it can only see published, public content. Same as any site visitor.
+
+## Technical detail
+- `emailer/` has its own `package.json` with `react-email`, `@react-email/components`, `@supabase/supabase-js`, and `tsx`. It shares no build config with the site.
+- `build.ts` uses `render()` from `@react-email/render` with `pretty: true` and a plain-text pass for the fallback file.
+- Database reads go through the publishable key against existing public RLS policies. No migrations, no new tables, no service-role key anywhere in the folder.
+- Images are referenced by absolute URL from the live site so they resolve in inboxes.
