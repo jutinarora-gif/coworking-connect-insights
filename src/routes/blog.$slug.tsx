@@ -101,7 +101,8 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
-  const { post, related } = Route.useLoaderData();
+  const { post, related } = Route.useLoaderData() as { post: Post; related: Post[] };
+
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
