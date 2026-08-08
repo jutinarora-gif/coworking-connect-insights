@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Star, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 export function SpaceCard({ s }: { s: any }) {
   return (
@@ -24,15 +24,6 @@ export function SpaceCard({ s }: { s: any }) {
               </div>
             )}
           </div>
-          {s.avg_rating != null && (
-            <div className="text-right shrink-0">
-              <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg glass">
-                <Star className="h-3.5 w-3.5 fill-primary text-primary" />
-                <span className="text-sm font-medium">{s.avg_rating}</span>
-              </div>
-              <div className="text-[10px] text-muted-foreground mt-1">{s.review_count} reviews</div>
-            </div>
-          )}
         </div>
         {s.description && <p className="mt-3 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
         <div className="mt-4 flex items-center justify-between">
