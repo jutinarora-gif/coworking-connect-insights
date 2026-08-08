@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
-import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
+import { getHomeData, getHomePriceStats, subscribeNewsletter } from "@/lib/data.functions";
 import { HeroStage } from "@/components/site/hero-stage";
+import { PriceShowstopper } from "@/components/site/price-showstopper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -10,6 +11,11 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
 const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData() });
+const priceStatsQuery = queryOptions({
+  queryKey: ["home-price-stats"],
+  queryFn: () => getHomePriceStats(),
+  staleTime: 5 * 60 * 1000,
+});
 
 export const Route = createFileRoute("/")({
   head: () => ({
