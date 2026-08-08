@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { getWinners } from "@/lib/data.functions";
-import { Trophy } from "lucide-react";
+import { IndianRupee } from "lucide-react";
 import { PageHeading } from "@/components/site/page-heading";
 
 const q = queryOptions({ queryKey: ["winners"], queryFn: () => getWinners() });
@@ -9,10 +9,10 @@ const q = queryOptions({ queryKey: ["winners"], queryFn: () => getWinners() });
 export const Route = createFileRoute("/winners")({
   head: () => ({
     meta: [
-      { title: "Top Winners , The Coworking Dispatch" },
-      { name: "description", content: "This week's top coworking spaces in India, ranked by reviews, community activity, and mentions." },
-      { property: "og:title", content: "Top Coworking Spaces this week" },
-      { property: "og:description", content: "The five spaces India is talking about." },
+      { title: "Best Value , The Coworking Dispatch" },
+      { name: "description", content: "Coworking spaces in India ranked by price-to-amenity value, not paid placements." },
+      { property: "og:title", content: "Best Value Coworking Spaces" },
+      { property: "og:description", content: "Price-intelligent picks from The Coworking Dispatch." },
     ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(q),
@@ -25,10 +25,10 @@ function WinnersPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <PageHeading
-        eyebrow="This week's leaderboard"
-        icon={<Trophy className="h-3.5 w-3.5" />}
-        title="Top winners"
-        sub="Weighted by review volume, ratings, and community activity. Refreshed every Monday."
+        eyebrow="Price intelligence"
+        icon={<IndianRupee className="h-3.5 w-3.5" />}
+        title="Best value"
+        sub="Ranked by price-to-amenity value. No reviews needed, no paid placements. Refreshed every Monday."
       />
       <ol className="mt-10 space-y-3">
         {data.map((w) => (
@@ -41,8 +41,8 @@ function WinnersPage() {
                 <div className="text-xs text-muted-foreground">{w.space!.city_name}</div>
               </div>
               <div className="text-right">
-                <div className="font-display text-2xl">{w.score.toFixed(1)}</div>
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Score</div>
+                <div className="font-display text-2xl">{w.score.toFixed(0)}</div>
+                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Value score</div>
               </div>
             </Link>
           </li>

@@ -33,7 +33,7 @@ function Home() {
   return (
     <div className="pb-0">
       <Hero />
-      <Leaderboard categories={data.categoryLeaders} />
+      <BestValue winners={data.winners} />
       <SpaceOfWeek data={data.spaceOfWeek} />
       <Winners winners={data.winners} />
       <SalesQuestions items={data.salesQuestions} />
@@ -55,7 +55,7 @@ function Hero() {
       </div>
       <div className={`${WRAP} mt-10 grid gap-6 border-b border-border pb-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-end`}>
         <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
-          Aggregated news, member reviews, weekly winners, and the questions you should actually ask the salesperson before you sign.
+          Aggregated news, price intelligence, and the questions you should actually ask the salesperson before you sign.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button asChild size="lg" className="rounded-full">
@@ -70,58 +70,39 @@ function Hero() {
   );
 }
 
-type Leader = { slug: string; name: string; city_name: string | null; score: number; reviews: number };
-
-function Leaderboard({ categories }: { categories: { label: string; leaders: Leader[] }[] }) {
-  const [active, setActive] = useState(0);
-  if (!categories?.length) return null;
-  const current = categories[Math.min(active, categories.length - 1)];
-
+function BestValue({ winners }: { winners: { rank: number; score: number; space: any }[] }) {
+  if (!winners?.length) return null;
+  const top = winners.slice(0, 3);
   return (
     <section className={`${WRAP} mt-20`}>
-      <SectionHead eyebrow="India leaderboard" title="Pick a category. See who wins." href="/winners" cta="All winners" />
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        {categories.map((c, i) => (
-          <button
-            key={c.label}
-            onClick={() => setActive(i)}
-            className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-              i === active
-                ? "border-foreground bg-foreground text-background"
-                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
-            }`}
-          >
-            {c.label}
-          </button>
-        ))}
-      </div>
-
+      <SectionHead eyebrow="Best value" title="Spaces that stretch your budget further" href="/winners" cta="All winners" />
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        {current.leaders.map((s, i) => (
-          <Link
-            key={s.slug}
-            to="/spaces/$slug"
-            params={{ slug: s.slug }}
-            className={`group relative overflow-hidden rounded-2xl border border-border p-6 transition-all hover:-translate-y-0.5 hover:border-foreground ${
-              i === 0 ? "bg-flare text-flare-ink" : "bg-card"
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-display text-5xl font-bold leading-none tabular-nums opacity-90">{i + 1}</span>
-              <span className="rounded-full border border-current/25 px-3 py-1 text-xs tabular-nums opacity-80">
-                {s.score.toFixed(1)}
-              </span>
-            </div>
-            <div className="mt-8 font-display text-xl leading-tight">{s.name}</div>
-            <div className={`mt-1 text-xs uppercase tracking-widest ${i === 0 ? "opacity-70" : "text-muted-foreground"}`}>
-              {s.city_name} · {s.reviews} reviews
-            </div>
-          </Link>
-        ))}
+        {top.map((w, i) => {
+          const s = w.space;
+          return (
+            <Link
+              key={s.slug}
+              to="/spaces/$slug"
+              params={{ slug: s.slug }}
+              className={`group relative overflow-hidden rounded-2xl border border-border p-6 transition-all hover:-translate-y-0.5 hover:border-foreground ${
+                i === 0 ? "bg-flare text-flare-ink" : "bg-card"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-display text-5xl font-bold leading-none tabular-nums opacity-90">{w.rank}</span>
+                <span className="rounded-full border border-current/25 px-3 py-1 text-xs tabular-nums opacity-80">
+                  value score {w.score.toFixed(0)}
+                </span>
+              </div>
+              <div className="mt-8 font-display text-xl leading-tight">{s.name}</div>
+              <div className={`mt-1 text-xs uppercase tracking-widest ${i === 0 ? "opacity-70" : "text-muted-foreground"}`}>
+                {s.city_name}
+              </div>
+            </Link>
+          );
+        })}
       </div>
-
-      <p className="label mt-6">Based on community reviews. Rankings update as more reviews come in.</p>
+      <p className="label mt-6">Ranked by price-to-amenity value. No paid placements.</p>
     </section>
   );
 }
@@ -134,13 +115,13 @@ function ReviewCTA() {
         <div className="min-w-0">
           <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
             <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
-            Been to a space this month?
+            Spot a price that has changed?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Leave a review. It takes <span className="acid-mark">under two minutes.</span>
+            Flag it. We verify every update. <span className="acid-mark">No fake data.</span>
           </p>
           <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-            The more coworkers who weigh in, the more useful this gets for the next person choosing a desk.
+            Help us keep the directory honest for the next person choosing a desk.
           </p>
         </div>
         <Button asChild size="lg" className="rounded-full">
@@ -178,7 +159,7 @@ function SpaceOfWeek({ data }: { data: any }) {
   return (
     <section className="section-ink mt-24 py-16 sm:py-20">
       <div className={WRAP}>
-      <SectionHead eyebrow="Space of the week" title="This week's pick" href="/spaces" cta="All spaces" />
+      <SectionHead eyebrow="Editor's choice" title="This week's pick" href="/spaces" cta="All spaces" />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         {s.cover_url && (
           <div className="aspect-[16/11] overflow-hidden rounded-3xl bg-muted">
@@ -209,7 +190,7 @@ function Winners({ winners }: { winners: any[] }) {
   if (!winners?.length) return null;
   return (
     <section className={`${WRAP} mt-24`}>
-      <SectionHead eyebrow="Weekly winners" title="Five spaces India is talking about" href="/winners" cta="Full leaderboard" />
+      <SectionHead eyebrow="Best value" title="Five spaces that stretch your budget" href="/winners" cta="Full list" />
       <ul className="mt-2">
         {winners.map((w) => (
           <li key={w.rank}>
@@ -229,7 +210,7 @@ function Winners({ winners }: { winners: any[] }) {
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-4">
-                <span className="text-sm tabular-nums text-muted-foreground">{w.score.toFixed(1)}</span>
+                <span className="text-sm tabular-nums text-muted-foreground">{w.score.toFixed(0)}</span>
                 <ArrowUpRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
               </div>
             </Link>

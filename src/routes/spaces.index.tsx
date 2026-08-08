@@ -45,7 +45,7 @@ function SpacesPage() {
       <PageHeading
         eyebrow="The directory"
         title="Coworking spaces"
-        sub={`${data.length} spaces · ${data.reduce((s, x) => s + x.review_count, 0)} reviews from real coworkers`}
+        sub={`${data.length} spaces · price-checked across India`}
       />
 
       <div className="mt-8 flex flex-wrap items-center gap-3">

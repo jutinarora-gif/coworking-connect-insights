@@ -42,8 +42,6 @@ export type SpaceCard = {
   currency: string;
   vibe_tags: string[];
   city_name: string | null;
-  avg_rating: number | null;
-  review_count: number;
 };
 
 export const getHomeData = createServerFn({ method: "GET" }).handler(async () => {
@@ -100,20 +98,8 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
   const { data: cities } = await supabase.from("cities").select("id,name");
   const cityMap = new Map((cities ?? []).map((c) => [c.id, c.name]));
 
-  const { data: reviewAgg } = await supabase
-    .from("reviews")
-    .select("space_id,rating_overall")
-    .in("space_id", spaceIds.length ? spaceIds : ["00000000-0000-0000-0000-000000000000"]);
-  const aggMap = new Map<string, { sum: number; n: number }>();
-  (reviewAgg ?? []).forEach((r) => {
-    const cur = aggMap.get(r.space_id) ?? { sum: 0, n: 0 };
-    cur.sum += Number(r.rating_overall);
-    cur.n += 1;
-    aggMap.set(r.space_id, cur);
-  });
   const spaceById = new Map(
     (spaces ?? []).map((s) => {
-      const agg = aggMap.get(s.id);
       const card: SpaceCard = {
         id: s.id,
         slug: s.slug,
@@ -124,8 +110,6 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
         currency: s.currency,
         vibe_tags: s.vibe_tags ?? [],
         city_name: cityMap.get(s.city_id ?? "") ?? null,
-        avg_rating: agg ? Number((agg.sum / agg.n).toFixed(1)) : null,
-        review_count: agg?.n ?? 0,
       };
       return [s.id, card];
     }),
@@ -139,47 +123,6 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
     .order("upvotes_denorm", { ascending: false })
     .limit(8);
 
-  // Category leaderboard, top 3 per rating dimension
-  const { data: allSpaces } = await supabase
-    .from("spaces")
-    .select("id,slug,name,city_id")
-    .eq("is_published", true);
-  const { data: allReviews } = await supabase
-    .from("reviews")
-    .select("space_id,rating_overall,rating_wifi,rating_community,rating_quiet,rating_coffee,rating_value")
-    .eq("is_hidden", false);
-
-  const CATS = [
-    { key: "rating_wifi", label: "Best wi-fi" },
-    { key: "rating_community", label: "Best community" },
-    { key: "rating_quiet", label: "Quietest spaces" },
-    { key: "rating_coffee", label: "Best coffee" },
-    { key: "rating_value", label: "Best value" },
-    { key: "rating_overall", label: "Highest rated overall" },
-  ] as const;
-
-  const spaceMeta = new Map(
-    (allSpaces ?? []).map((s) => [s.id, { slug: s.slug, name: s.name, city_name: cityMap.get(s.city_id ?? "") ?? null }]),
-  );
-
-  const categoryLeaders = CATS.map((c) => {
-    const acc = new Map<string, { sum: number; n: number }>();
-    (allReviews ?? []).forEach((r: any) => {
-      const v = r[c.key];
-      if (v == null || !spaceMeta.has(r.space_id)) return;
-      const cur = acc.get(r.space_id) ?? { sum: 0, n: 0 };
-      cur.sum += Number(v);
-      cur.n += 1;
-      acc.set(r.space_id, cur);
-    });
-    const leaders = Array.from(acc.entries())
-      .filter(([, a]) => a.n >= 3)
-      .map(([id, a]) => ({ ...spaceMeta.get(id)!, score: Number((a.sum / a.n).toFixed(1)), reviews: a.n }))
-      .sort((a, b) => b.score - a.score || b.reviews - a.reviews)
-      .slice(0, 3);
-    return { label: c.label, leaders };
-  }).filter((c) => c.leaders.length > 0);
-
   return {
     dispatches: mixed.slice(0, 15),
     spaceOfWeek: sotwSpaceId
@@ -191,7 +134,6 @@ export const getHomeData = createServerFn({ method: "GET" }).handler(async () =>
       space: spaceById.get(w.space_id) ?? null,
     })).filter((w) => w.space),
     salesQuestions: (salesQs ?? []) as { id: string; text: string; category: string | null }[],
-    categoryLeaders,
   };
 });
 
@@ -230,21 +172,12 @@ export const getSpaces = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = makePublicClient();
   const { data: spaces } = await supabase
     .from("spaces")
-    .select("id,slug,name,cover_url,description,price_from,currency,vibe_tags,city_id,lat,lng")
+    .select("id,slug,name,cover_url,description,price_from,currency,vibe_tags,city_id,lat,lng,verified_at")
     .eq("is_published", true)
     .order("name");
   const { data: cities } = await supabase.from("cities").select("id,name,region");
   const cityMap = new Map((cities ?? []).map((c) => [c.id, c]));
-  const { data: reviewAgg } = await supabase.from("reviews").select("space_id,rating_overall");
-  const aggMap = new Map<string, { sum: number; n: number }>();
-  (reviewAgg ?? []).forEach((r) => {
-    const cur = aggMap.get(r.space_id) ?? { sum: 0, n: 0 };
-    cur.sum += Number(r.rating_overall);
-    cur.n += 1;
-    aggMap.set(r.space_id, cur);
-  });
   return (spaces ?? []).map((s) => {
-    const agg = aggMap.get(s.id);
     const c = cityMap.get(s.city_id ?? "");
     return {
       id: s.id,
@@ -259,11 +192,73 @@ export const getSpaces = createServerFn({ method: "GET" }).handler(async () => {
       city_region: c?.region ?? null,
       lat: s.lat,
       lng: s.lng,
-      avg_rating: agg ? Number((agg.sum / agg.n).toFixed(1)) : null,
-      review_count: agg?.n ?? 0,
+      verified_at: s.verified_at,
     };
   });
 });
+
+export type PriceStats = {
+  city: {
+    median: number;
+    min: number;
+    max: number;
+    count: number;
+  };
+  sameCity: SpaceCard[];
+  cheaperCount: number;
+  pricierCount: number;
+};
+
+export const getPriceStats = createServerFn({ method: "GET" })
+  .inputValidator((data: { slug: string }) => data)
+  .handler(async ({ data }) => {
+    const supabase = makePublicClient();
+    const { data: space } = await supabase
+      .from("spaces")
+      .select("id,city_id,price_from")
+      .eq("slug", data.slug)
+      .eq("is_published", true)
+      .maybeSingle();
+    if (!space?.city_id || !space.price_from) return null;
+
+    const { data: sameCity } = await supabase
+      .from("spaces")
+      .select("id,slug,name,cover_url,description,price_from,currency,vibe_tags,city_id")
+      .eq("city_id", space.city_id)
+      .eq("is_published", true)
+      .not("price_from", "is", null);
+
+    const prices = (sameCity ?? []).map((s) => Number(s.price_from)).filter((p) => p > 0).sort((a, b) => a - b);
+    if (!prices.length) return null;
+
+    const mid = Math.floor(prices.length / 2);
+    const median = prices.length % 2 === 0 ? (prices[mid - 1] + prices[mid]) / 2 : prices[mid];
+    const cheaperCount = prices.filter((p) => p < space.price_from!).length;
+    const pricierCount = prices.filter((p) => p > space.price_from!).length;
+
+    const { data: cities } = await supabase.from("cities").select("id,name");
+    const cityMap = new Map((cities ?? []).map((c) => [c.id, c.name]));
+
+    return {
+      city: { median, min: prices[0], max: prices[prices.length - 1], count: prices.length },
+      sameCity: (sameCity ?? [])
+        .filter((s) => s.id !== space.id)
+        .map((s) => ({
+          id: s.id,
+          slug: s.slug,
+          name: s.name,
+          cover_url: s.cover_url,
+          description: s.description,
+          price_from: s.price_from,
+          currency: s.currency,
+          vibe_tags: s.vibe_tags ?? [],
+          city_name: cityMap.get(s.city_id ?? "") ?? null,
+        }))
+        .sort((a, b) => (a.price_from ?? 0) - (b.price_from ?? 0)),
+      cheaperCount,
+      pricierCount,
+    } as PriceStats;
+  });
 
 export const getSpace = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => data)
@@ -277,13 +272,7 @@ export const getSpace = createServerFn({ method: "GET" })
       .maybeSingle();
     if (!space) return null;
 
-    const [{ data: reviews }, { data: cityRow }, { data: salesQs }, { data: questions }] = await Promise.all([
-      supabase
-        .from("reviews")
-        .select("id,rating_overall,rating_wifi,rating_quiet,rating_community,rating_coffee,rating_value,title,body,pros,cons,photos,created_at,profile_id")
-        .eq("space_id", space.id)
-        .eq("is_hidden", false)
-        .order("created_at", { ascending: false }),
+    const [{ data: cityRow }, { data: salesQs }] = await Promise.all([
       space.city_id
         ? supabase.from("cities").select("id,name,region").eq("id", space.city_id).maybeSingle()
         : Promise.resolve({ data: null }),
@@ -294,51 +283,13 @@ export const getSpace = createServerFn({ method: "GET" })
         .or(`space_id.eq.${space.id},is_global.eq.true`)
         .order("upvotes_denorm", { ascending: false })
         .limit(20),
-      supabase
-        .from("questions")
-        .select("id,title,body,is_ama,created_at,profile_id")
-        .eq("space_id", space.id)
-        .eq("is_hidden", false)
-        .order("created_at", { ascending: false })
-        .limit(10),
     ]);
-
-    const profileIds = Array.from(new Set([
-      ...(reviews ?? []).map((r) => r.profile_id),
-      ...(questions ?? []).map((q) => q.profile_id),
-    ]));
-    const { data: profs } = profileIds.length
-      ? await supabase.from("profiles").select("id,display_name,avatar_url,is_verified_coworker,city").in("id", profileIds)
-      : { data: [] as any[] };
-    const profMap = new Map((profs ?? []).map((p) => [p.id, p]));
-
-    const revList = reviews ?? [];
-    const agg = revList.length
-      ? {
-          avg: Number((revList.reduce((s, r) => s + Number(r.rating_overall), 0) / revList.length).toFixed(1)),
-          n: revList.length,
-          wifi: avg(revList.map((r) => r.rating_wifi)),
-          quiet: avg(revList.map((r) => r.rating_quiet)),
-          community: avg(revList.map((r) => r.rating_community)),
-          coffee: avg(revList.map((r) => r.rating_coffee)),
-          value: avg(revList.map((r) => r.rating_value)),
-        }
-      : null;
 
     return {
       space: { ...space, city_name: cityRow?.name ?? null, city_region: cityRow?.region ?? null },
-      reviews: revList.map((r) => ({ ...r, author: profMap.get(r.profile_id) ?? null })),
-      agg,
       salesQuestions: salesQs ?? [],
-      questions: (questions ?? []).map((q) => ({ ...q, author: profMap.get(q.profile_id) ?? null })),
     };
   });
-
-function avg(arr: (number | null)[]) {
-  const clean = arr.filter((n): n is number => typeof n === "number");
-  if (!clean.length) return null;
-  return Number((clean.reduce((a, b) => a + b, 0) / clean.length).toFixed(1));
-}
 
 export const getWinners = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = makePublicClient();

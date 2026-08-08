@@ -555,6 +555,7 @@ export type Database = {
           price_from: number | null
           slug: string
           updated_at: string
+          verified_at: string | null
           vibe_tags: string[]
           website_url: string | null
         }
@@ -576,6 +577,7 @@ export type Database = {
           price_from?: number | null
           slug: string
           updated_at?: string
+          verified_at?: string | null
           vibe_tags?: string[]
           website_url?: string | null
         }
@@ -597,6 +599,7 @@ export type Database = {
           price_from?: number | null
           slug?: string
           updated_at?: string
+          verified_at?: string | null
           vibe_tags?: string[]
           website_url?: string | null
         }

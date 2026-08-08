@@ -13,7 +13,7 @@ export function Footer() {
           </div>
 
           <p className="mt-3 text-sm text-muted-foreground">
-            India-first coworking news, reviews and community. 70% India, 30% the rest of the world.
+            India-first coworking news, price intelligence and honest directories. 70% India, 30% the rest of the world.
           </p>
         </div>
         <div>
