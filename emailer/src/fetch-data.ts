@@ -53,7 +53,7 @@ function pick<T>(list: T[], issueNumber: number): T {
 }
 
 async function getSpaceOfWeek(): Promise<SpaceCardData | null> {
-  const { data } = await db
+  const { data } = await db()
     .from("space_of_week")
     .select(
       "editorial_note, spaces:space_id(name, slug, cover_url, price_from, currency, cities:city_id(name))",
@@ -77,7 +77,7 @@ async function getSpaceOfWeek(): Promise<SpaceCardData | null> {
 }
 
 async function getWinners(): Promise<WinnerData[]> {
-  const { data: latest } = await db
+  const { data: latest } = await db()
     .from("weekly_winners")
     .select("week_start")
     .order("week_start", { ascending: false })
@@ -86,7 +86,7 @@ async function getWinners(): Promise<WinnerData[]> {
 
   if (!latest) return [];
 
-  const { data } = await db
+  const { data } = await db()
     .from("weekly_winners")
     .select("rank, score, spaces:space_id(name, slug, cities:city_id(name))")
     .eq("week_start", (latest as any).week_start)
@@ -118,14 +118,14 @@ async function getDispatches(): Promise<DispatchData[]> {
   const select = "title, slug, excerpt, source_name, region, published_at";
 
   const [india, global] = await Promise.all([
-    db
+    db()
       .from("dispatches")
       .select(select)
       .eq("region", "india")
       .eq("is_hidden", false)
       .order("published_at", { ascending: false })
       .limit(4),
-    db
+    db()
       .from("dispatches")
       .select(select)
       .eq("region", "global")
@@ -150,7 +150,7 @@ async function getDispatches(): Promise<DispatchData[]> {
 }
 
 async function getSalesQuestion(issueNumber: number): Promise<string> {
-  const { data } = await db
+  const { data } = await db()
     .from("sales_questions")
     .select("text")
     .eq("approved", true)
