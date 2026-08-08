@@ -92,7 +92,7 @@ export const Route = createFileRoute("/blog/$slug")({
       ],
     };
   },
-  loader: ({ params }) => {
+  loader: ({ params }): { post: (typeof posts)[number]; related: typeof posts } => {
     const post = posts.find((p) => p.slug === params.slug);
     if (!post) throw notFound();
     return { post, related: posts.filter((p) => p.slug !== post.slug).slice(0, 2) };
