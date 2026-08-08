@@ -209,6 +209,27 @@ export type PriceStats = {
   pricierCount: number;
 };
 
+export type HomePriceStats = {
+  national: {
+    median: number;
+    min: number;
+    max: number;
+    count: number;
+  };
+  cities: {
+    name: string;
+    slug: string;
+    region: "india" | "global" | null;
+    median: number;
+    min: number;
+    max: number;
+    count: number;
+    cheapest: { slug: string; name: string; price_from: number; currency: string } | null;
+  }[];
+  newest: SpaceCard[];
+  lastUpdated: string | null;
+};
+
 export const getPriceStats = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => data)
   .handler(async ({ data }) => {
