@@ -39,10 +39,12 @@ const WRAP = "mx-auto w-full max-w-[1400px] px-5 sm:px-8";
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
+  const { data: priceStats } = useSuspenseQuery(priceStatsQuery);
 
   return (
     <div className="pb-0">
       <Hero />
+      {priceStats && <PriceShowstopper stats={priceStats} />}
       <BestValue winners={data.winners} />
       <SpaceOfWeek data={data.spaceOfWeek} />
       <Winners winners={data.winners} />
