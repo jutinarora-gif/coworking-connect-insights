@@ -26,7 +26,11 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "India-first coworking news & community." },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(homeQuery),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(homeQuery),
+      context.queryClient.ensureQueryData(priceStatsQuery),
+    ]),
   component: Home,
   errorComponent: ({ error }) => <div className="p-8 text-destructive">{error.message}</div>,
 });
