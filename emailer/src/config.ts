@@ -21,17 +21,25 @@ export const type = {
     "'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
 } as const;
 
-export const siteUrl = (
-  process.env["SITE_URL"] ?? "https://www.coworkingdispatch.com"
-).replace(/\/$/, "");
+/**
+ * Read lazily, so a .env loaded at startup is always respected.
+ * The fallbacks are the public production values.
+ */
+export function siteUrl() {
+  return (process.env["SITE_URL"] ?? "https://www.coworkingdispatch.com").replace(/\/$/, "");
+}
 
-export const supabaseUrl =
-  process.env["SUPABASE_URL"] ?? "https://jacwhhujqcubmovpuwhj.supabase.co";
+export function supabaseUrl() {
+  return process.env["SUPABASE_URL"] ?? "https://jacwhhujqcubmovpuwhj.supabase.co";
+}
 
-export const supabaseKey =
-  process.env["SUPABASE_PUBLISHABLE_KEY"] ??
-  "sb_publishable_xKniXXHg1TYZ2uh_G_AFFg_l-620XRr";
+export function supabaseKey() {
+  return (
+    process.env["SUPABASE_PUBLISHABLE_KEY"] ??
+    "sb_publishable_xKniXXHg1TYZ2uh_G_AFFg_l-620XRr"
+  );
+}
 
 export function url(path: string) {
-  return `${siteUrl}${path.startsWith("/") ? path : `/${path}`}`;
+  return `${siteUrl()}${path.startsWith("/") ? path : `/${path}`}`;
 }

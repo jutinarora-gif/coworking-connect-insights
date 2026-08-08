@@ -1,10 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { supabaseKey, supabaseUrl } from "./config";
 import { fallbackQuestions, guides, redFlags, type Guide, type RedFlag } from "./static-content";
 
-const db = createClient(supabaseUrl, supabaseKey, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
+let client: SupabaseClient | null = null;
+function db() {
+  if (!client) {
+    client = createClient(supabaseUrl(), supabaseKey(), {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+  }
+  return client;
+}
 
 export type SpaceCardData = {
   name: string;
