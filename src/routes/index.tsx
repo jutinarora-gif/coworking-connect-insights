@@ -190,7 +190,7 @@ function Winners({ winners }: { winners: any[] }) {
   if (!winners?.length) return null;
   return (
     <section className={`${WRAP} mt-24`}>
-      <SectionHead eyebrow="Weekly winners" title="Five spaces India is talking about" href="/winners" cta="Full leaderboard" />
+      <SectionHead eyebrow="Best value" title="Five spaces that stretch your budget" href="/winners" cta="Full list" />
       <ul className="mt-2">
         {winners.map((w) => (
           <li key={w.rank}>
@@ -210,7 +210,7 @@ function Winners({ winners }: { winners: any[] }) {
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-4">
-                <span className="text-sm tabular-nums text-muted-foreground">{w.score.toFixed(1)}</span>
+                <span className="text-sm tabular-nums text-muted-foreground">{w.score.toFixed(0)}</span>
                 <ArrowUpRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
               </div>
             </Link>
