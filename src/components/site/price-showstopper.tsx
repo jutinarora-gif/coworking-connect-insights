@@ -73,21 +73,21 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
             </div>
 
             <div className="mt-6 flex-1">
-              <div className="relative h-[280px] sm:h-[340px]">
+              <div className="relative h-[300px] sm:h-[360px]">
                 <svg
-                  viewBox={`0 0 ${stats.cities.length * 56 + 24} 340`}
+                  viewBox={`0 0 ${stats.cities.length * 72 + 32} 360`}
                   preserveAspectRatio="xMinYMid meet"
                   className="h-full w-full overflow-visible"
                 >
                   {/* Grid lines */}
                   {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-                    const y = 320 - ratio * 280;
+                    const y = 300 - ratio * 260;
                     return (
                       <line
                         key={ratio}
-                        x1={12}
+                        x1={16}
                         y1={y}
-                        x2={stats.cities.length * 56 + 12}
+                        x2={stats.cities.length * 72 + 16}
                         y2={y}
                         stroke="currentColor"
                         strokeOpacity={0.12}
@@ -97,9 +97,9 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
                   })}
 
                   {stats.cities.map((city, i) => {
-                    const barHeight = (city.median / maxMedian) * 280;
-                    const x = i * 56 + 24;
-                    const y = 320 - barHeight;
+                    const barHeight = (city.median / maxMedian) * 260;
+                    const x = i * 72 + 28;
+                    const y = 300 - barHeight;
                     const isHovered = hovered === city.name;
                     const isActive = hovered === null || isHovered;
 
@@ -114,8 +114,8 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
                           <rect
                             x={x}
                             y={y}
-                            width={32}
-                            rx={8}
+                            width={36}
+                            rx={10}
                             height={barHeight}
                             fill={isHovered ? "var(--flare)" : "var(--foreground)"}
                             opacity={isActive ? 1 : 0.35}
@@ -123,8 +123,8 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
                           />
                           {/* Median label on top */}
                           <text
-                            x={x + 16}
-                            y={y - 10}
+                            x={x + 18}
+                            y={y - 12}
                             textAnchor="middle"
                             className="font-display text-[13px] tabular-nums"
                             fill="currentColor"
@@ -132,11 +132,12 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
                           >
                             {formatCurrency(city.median, "INR").replace("₹", "")}
                           </text>
-                          {/* City name below */}
+                          {/* City name below, rotated */}
                           <text
-                            x={x + 16}
-                            y={338}
-                            textAnchor="middle"
+                            x={x + 18}
+                            y={328}
+                            textAnchor="start"
+                            transform={`rotate(35, ${x + 18}, 328)`}
                             className="text-[11px] uppercase tracking-wider"
                             fill="currentColor"
                             opacity={isActive ? 1 : 0.5}
@@ -151,7 +152,7 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
               </div>
 
               {/* Hover detail card */}
-              <div className="mt-4 min-h-[80px]">
+              <div className="mt-6 min-h-[80px]">
                 {hovered ? (
                   <HoveredCity city={stats.cities.find((c) => c.name === hovered)!} />
                 ) : (
