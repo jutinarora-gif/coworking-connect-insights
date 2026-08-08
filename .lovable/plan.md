@@ -48,7 +48,13 @@ A permanent line on space pages and in the footer: no paid placement, no seeded 
 ## What goes away
 Seeded reviews, questions and answers get hidden from public view, not deleted. Ratings, review counts and the ratings breakdown disappear from space pages, space cards and the spaces index until real ones exist.
 
-Weekly winners and space of the week currently rank on those fabricated ratings, so they need a new basis: an editorial pick signed by TCD and clearly framed as one, plus a computed "best value in <city>" based on price against amenities. Both honest, neither needs users.
+## Editor's Choice replaces Space of the Week
+Yes, and it solves the problem cleanly. Rebrand it **Editor's Choice**, signed by TCD, so the claim is "we picked this" rather than "users rated this". No reviews needed, no scores implied, and one clearly-labelled opinion a week is entirely defensible.
+
+To keep it from reading as arbitrary, each pick carries a short "why this one" note anchored to facts we hold: price against the city median, the amenity or location that stands out, who it suits. So it's an opinion built on real numbers, not a vibe.
+
+Same move for the weekly leaderboard, which currently ranks on fabricated ratings. Replace it with **Best value in <city>**, computed purely on price against amenities. No opinion, no users, just arithmetic on the directory.
+
 
 ## Space page after the change
 1. Hero, with Compare
