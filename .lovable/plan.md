@@ -2,6 +2,20 @@
 
 With no traffic, anything that depends on users is dead on arrival, and right now there's no honest reason to make an account. So we don't fix the sign-up prompt. We take sign-up off the critical path and make the site useful to a total stranger on their first visit.
 
+## Differentiation from myhq.in and cofynd.com
+
+Both are transaction marketplaces. Their business model is lead generation: put a user in touch with a space operator, take a cut or a fee. That shapes everything they publish. They can't rank spaces honestly, they can't flag bad deals, and every page is designed to convert a visit into a tour booking.
+
+The Coworking Dispatch is not a marketplace. It is an independent information layer: price intelligence, editorial picks, news, and tools that help someone choose before they ever contact an operator. The incentive is the reader's trust, not a commission from the space.
+
+That gives us three things they cannot copy without breaking their own model:
+
+1. **Independent price data.** They list prices, but they don't benchmark them. We can say "this is 18% below the Noida median" because we are not paid by Noida operators.
+2. **Honest negatives.** Red flags, what to negotiate, and "skip this if you need parking" are only possible when the space is not your customer.
+3. **Editorial voice.** A weekly pick, a Wednesday newsletter, and dispatches that treat coworking as a beat, not a catalog.
+
+The risk is drifting back toward being a directory with nicer copy. We avoid that by making the tools and the price intelligence the destination, and the space pages secondary proof of the dataset.
+
 ## What we actually have
 
 I pulled the live site: **151 spaces**, growing 10-20 a day. Each carries city, area, address, hot-desk price, amenities and vibe tags. That's a real, fast-growing dataset.
