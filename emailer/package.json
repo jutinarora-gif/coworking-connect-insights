@@ -6,7 +6,7 @@
   "description": "Standalone builder for The Wednesday Dispatch newsletter. Pulls live data, renders HTML you can paste into any sender.",
   "scripts": {
     "dev": "email dev --dir src/emails --port 3030",
-    "build": "tsx src/build.ts"
+    "build": "tsx src/build.tsx"
   },
   "dependencies": {
     "@react-email/components": "0.0.31",
