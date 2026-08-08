@@ -3,6 +3,10 @@
  *   npm run build
  */
 import * as React from "react";
+import { loadEnv } from "./load-env";
+
+loadEnv();
+
 import { mkdir, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
