@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useMutation } from "@tanstack/react-query";
-import { getHomeData, subscribeNewsletter } from "@/lib/data.functions";
+import { getHomeData, getHomePriceStats, subscribeNewsletter } from "@/lib/data.functions";
 import { HeroStage } from "@/components/site/hero-stage";
+import { PriceShowstopper } from "@/components/site/price-showstopper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
@@ -10,6 +11,11 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 
 const homeQuery = queryOptions({ queryKey: ["home"], queryFn: () => getHomeData() });
+const priceStatsQuery = queryOptions({
+  queryKey: ["home-price-stats"],
+  queryFn: () => getHomePriceStats(),
+  staleTime: 5 * 60 * 1000,
+});
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +26,11 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "India-first coworking news & community." },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(homeQuery),
+  loader: ({ context }) =>
+    Promise.all([
+      context.queryClient.ensureQueryData(homeQuery),
+      context.queryClient.ensureQueryData(priceStatsQuery),
+    ]),
   component: Home,
   errorComponent: ({ error }) => <div className="p-8 text-destructive">{error.message}</div>,
 });
@@ -29,10 +39,12 @@ const WRAP = "mx-auto w-full max-w-[1400px] px-5 sm:px-8";
 
 function Home() {
   const { data } = useSuspenseQuery(homeQuery);
+  const { data: priceStats } = useSuspenseQuery(priceStatsQuery);
 
   return (
     <div className="pb-0">
       <Hero />
+      {priceStats && <PriceShowstopper stats={priceStats} />}
       <BestValue winners={data.winners} />
       <SpaceOfWeek data={data.spaceOfWeek} />
       <Winners winners={data.winners} />
