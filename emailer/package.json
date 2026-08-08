@@ -1,0 +1,25 @@
+{
+  "name": "tcd-emailer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone builder for The Wednesday Dispatch newsletter. Pulls live data, renders HTML you can paste into any sender.",
+  "scripts": {
+    "dev": "email dev --dir src/emails --port 3030",
+    "build": "tsx src/build.ts"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.31",
+    "@react-email/render": "1.0.3",
+    "@supabase/supabase-js": "^2.45.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.1",
+    "react-email": "3.0.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
