@@ -115,13 +115,13 @@ function ReviewCTA() {
         <div className="min-w-0">
           <h2 className="font-display text-2xl leading-none sm:text-[2rem]">
             <span className="acid-dot mr-2 inline-block h-2 w-2 translate-y-[-0.15em] rounded-full" />
-            Been to a space this month?
+            Spot a price that has changed?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Leave a review. It takes <span className="acid-mark">under two minutes.</span>
+            Flag it. We verify every update. <span className="acid-mark">No fake data.</span>
           </p>
           <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-            The more coworkers who weigh in, the more useful this gets for the next person choosing a desk.
+            Help us keep the directory honest for the next person choosing a desk.
           </p>
         </div>
         <Button asChild size="lg" className="rounded-full">
