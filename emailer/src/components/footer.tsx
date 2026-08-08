@@ -11,7 +11,7 @@ export function Footer() {
         The Coworking Dispatch. Real desks, real reviews, India first.
       </Text>
       <Text style={links}>
-        <Link href={siteUrl} style={link}>
+        <Link href={siteUrl()} style={link}>
           coworkingdispatch.com
         </Link>
         {"  \u00b7  "}
