@@ -32,7 +32,7 @@ export function PriceShowstopper({ stats }: { stats: HomePriceStats }) {
               Price intelligence
             </div>
             <h2 className="mt-5 font-display text-4xl leading-[0.92] tracking-[-0.04em] sm:text-5xl lg:text-[3.25rem]">
-              The price of a hot desk in India
+              The price of a hot desk
             </h2>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">
               Median monthly desk price across every space we track. No paid placements, no invented reviews.
