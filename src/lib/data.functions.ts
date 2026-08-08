@@ -281,6 +281,117 @@ export const getPriceStats = createServerFn({ method: "GET" })
     } as PriceStats;
   });
 
+export const getHomePriceStats = createServerFn({ method: "GET" }).handler(async () => {
+  const supabase = makePublicClient();
+
+  const { data: spaces } = await supabase
+    .from("spaces")
+    .select("id,slug,name,price_from,currency,city_id,created_at,verified_at")
+    .eq("is_published", true)
+    .not("price_from", "is", null)
+    .gt("price_from", 0)
+    .order("created_at", { ascending: false });
+
+  const { data: cities } = await supabase.from("cities").select("id,name,slug,region");
+  const cityMap = new Map((cities ?? []).map((c) => [c.id, c]));
+
+  const pricedSpaces = (spaces ?? []).map((s) => ({
+    ...s,
+    price_from: Number(s.price_from),
+    city: cityMap.get(s.city_id ?? ""),
+  }));
+
+  const prices = pricedSpaces.map((s) => s.price_from).sort((a, b) => a - b);
+  const median = (arr: number[]) => {
+    if (!arr.length) return 0;
+    const mid = Math.floor(arr.length / 2);
+    return arr.length % 2 === 0 ? (arr[mid - 1] + arr[mid]) / 2 : arr[mid];
+  };
+
+  const byCity = new Map<
+    string,
+    {
+      name: string;
+      slug: string;
+      region: "india" | "global" | null;
+      prices: number[];
+      spaces: typeof pricedSpaces;
+    }
+  >();
+
+  for (const s of pricedSpaces) {
+    if (!s.city) continue;
+    const existing = byCity.get(s.city.id);
+    if (existing) {
+      existing.prices.push(s.price_from);
+      existing.spaces.push(s);
+    } else {
+      byCity.set(s.city.id, {
+        name: s.city.name,
+        slug: s.city.slug,
+        region: s.city.region as "india" | "global" | null,
+        prices: [s.price_from],
+        spaces: [s],
+      });
+    }
+  }
+
+  const cityStats = Array.from(byCity.values())
+    .map((c) => {
+      const sorted = [...c.prices].sort((a, b) => a - b);
+      const cheapestSpace = c.spaces.sort((a, b) => a.price_from - b.price_from)[0];
+      return {
+        name: c.name,
+        slug: c.slug,
+        region: c.region,
+        median: median(sorted),
+        min: sorted[0],
+        max: sorted[sorted.length - 1],
+        count: sorted.length,
+        cheapest: cheapestSpace
+          ? {
+              slug: cheapestSpace.slug,
+              name: cheapestSpace.name,
+              price_from: cheapestSpace.price_from,
+              currency: cheapestSpace.currency,
+            }
+          : null,
+      };
+    })
+    .sort((a, b) => b.count - a.count || a.median - b.median)
+    .slice(0, 10);
+
+  const newest = pricedSpaces.slice(0, 5).map((s) => ({
+    id: s.id,
+    slug: s.slug,
+    name: s.name,
+    cover_url: null as string | null,
+    description: null as string | null,
+    price_from: s.price_from,
+    currency: s.currency,
+    vibe_tags: [] as string[],
+    city_name: s.city?.name ?? null,
+  }));
+
+  const lastVerified = pricedSpaces
+    .map((s) => s.verified_at)
+    .filter(Boolean)
+    .sort()
+    .pop() as string | null;
+
+  return {
+    national: {
+      median: median(prices),
+      min: prices[0] ?? 0,
+      max: prices[prices.length - 1] ?? 0,
+      count: pricedSpaces.length,
+    },
+    cities: cityStats,
+    newest,
+    lastUpdated: lastVerified,
+  } as HomePriceStats;
+});
+
 export const getSpace = createServerFn({ method: "GET" })
   .inputValidator((data: { slug: string }) => data)
   .handler(async ({ data }) => {
