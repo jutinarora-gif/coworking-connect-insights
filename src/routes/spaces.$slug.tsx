@@ -1,23 +1,23 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { getSpace } from "@/lib/data.functions";
-import { Star, MapPin, Wifi, Volume2, Users, Coffee, IndianRupee, ClipboardCheck, ArrowLeft } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatDistanceToNow } from "date-fns";
+import { getSpace, getPriceStats, type PriceStats } from "@/lib/data.functions";
+import { MapPin, ClipboardCheck, ArrowLeft, IndianRupee, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const q = (slug: string) => queryOptions({ queryKey: ["space", slug], queryFn: () => getSpace({ data: { slug } }) });
+const priceQ = (slug: string) => queryOptions({ queryKey: ["space-price", slug], queryFn: () => getPriceStats({ data: { slug } }) });
 
 export const Route = createFileRoute("/spaces/$slug")({
   loader: async ({ context, params }) => {
     const d = await context.queryClient.ensureQueryData(q(params.slug));
     if (!d) throw notFound();
+    await context.queryClient.ensureQueryData(priceQ(params.slug));
     return d;
   },
   head: ({ loaderData }) => ({
     meta: loaderData ? [
-      { title: `${loaderData.space.name} , Reviews & pricing | The Coworking Dispatch` },
-      { name: "description", content: loaderData.space.description ?? `Reviews and details for ${loaderData.space.name}` },
+      { title: `${loaderData.space.name} , Pricing & details | The Coworking Dispatch` },
+      { name: "description", content: loaderData.space.description ?? `Pricing and details for ${loaderData.space.name}` },
       { property: "og:title", content: `${loaderData.space.name} , The Coworking Dispatch` },
       { property: "og:description", content: loaderData.space.description ?? "" },
       ...(loaderData.space.cover_url ? [{ property: "og:image", content: loaderData.space.cover_url }, { name: "twitter:image", content: loaderData.space.cover_url }] : []),
@@ -31,8 +31,9 @@ export const Route = createFileRoute("/spaces/$slug")({
 function SpacePage() {
   const { slug } = Route.useParams();
   const { data } = useSuspenseQuery(q(slug));
+  const { data: price } = useSuspenseQuery(priceQ(slug));
   if (!data) return null;
-  const { space, reviews, agg, salesQuestions } = data;
+  const { space, salesQuestions } = data;
   return (
     <div>
       <div className="relative h-[45vh] min-h-[380px] overflow-hidden">
@@ -50,15 +51,6 @@ function SpacePage() {
                 {space.vibe_tags?.map((t: string) => <span key={t} className="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full glass">{t}</span>)}
               </div>
             </div>
-            {agg && (
-              <div className="glass rounded-2xl px-6 py-4 text-center">
-                <div className="flex items-center gap-1 justify-center">
-                  <Star className="h-6 w-6 fill-primary text-primary" />
-                  <span className="font-display text-4xl">{agg.avg}</span>
-                </div>
-                <div className="text-xs text-muted-foreground mt-1">{agg.n} reviews</div>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -84,77 +76,9 @@ function SpacePage() {
             </section>
           )}
 
-          {agg && (
-            <section className="glass rounded-2xl p-6">
-              <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />Ratings breakdown</div>
-              {(() => {
-                const rows = [
-                  { l: "Wifi", v: agg.wifi, i: Wifi },
-                  { l: "Quiet", v: agg.quiet, i: Volume2 },
-                  { l: "Community", v: agg.community, i: Users },
-                  { l: "Coffee", v: agg.coffee, i: Coffee },
-                  { l: "Value", v: agg.value, i: IndianRupee },
-                ];
-                const best = Math.max(...rows.map((r) => Number(r.v ?? 0)));
-                return (
-                  <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
-                    {rows.map(({ l, v, i: Icon }) => {
-                      const top = v != null && Number(v) === best && best > 0;
-                      return (
-                        <div key={l} className="text-center">
-                          <Icon className={`h-5 w-5 mx-auto ${top ? "text-foreground" : "text-muted-foreground"}`} />
-                          <div className="mt-2 font-display text-2xl">{v ?? "-"}</div>
-                          <div className="mx-auto mt-2 h-1.5 w-full max-w-[72px] overflow-hidden rounded-full bg-muted">
-                            <span className={`block h-full rounded-full ${top ? "bg-flare" : "bg-foreground/25"}`} style={{ width: `${((Number(v ?? 0)) / 5) * 100}%` }} />
-                          </div>
-                          <div className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground">{l}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })()}
-            </section>
-          )}
+          <PriceContext price={price ?? null} space={space} />
 
-          <section>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" />What coworkers say</div>
-                <h2 className="font-display text-3xl mt-1">{reviews.length} reviews</h2>
-              </div>
-            </div>
-            <div className="mt-6 space-y-4">
-              {reviews.slice(0, 20).map((r: any) => (
-                <div key={r.id} className="glass rounded-2xl p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-9 w-9"><AvatarImage src={r.author?.avatar_url} /><AvatarFallback>{r.author?.display_name?.[0] ?? "?"}</AvatarFallback></Avatar>
-                      <div>
-                        <div className="text-sm font-medium flex items-center gap-1.5">
-                          {r.author?.display_name}
-                          {r.author?.is_verified_coworker && <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-flare text-flare-ink">Verified</span>}
-                        </div>
-                        <div className="text-xs text-muted-foreground">{formatDistanceToNow(new Date(r.created_at), { addSuffix: true })}</div>
-                      </div>
-                    </div>
-                    <div className="inline-flex items-center gap-1 px-2 py-1 rounded-lg glass">
-                      <Star className="h-3.5 w-3.5 fill-primary text-primary" />
-                      <span className="text-sm font-medium">{r.rating_overall}</span>
-                    </div>
-                  </div>
-                  {r.title && <div className="mt-3 font-display text-lg">{r.title}</div>}
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{r.body}</p>
-                  {(r.pros || r.cons) && (
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                      {r.pros && <div className="text-xs"><span className="text-primary">Pros</span><div className="mt-1 text-muted-foreground whitespace-pre-line">{r.pros}</div></div>}
-                      {r.cons && <div className="text-xs"><span className="text-destructive">Cons</span><div className="mt-1 text-muted-foreground whitespace-pre-line">{r.cons}</div></div>}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
+          <TrustLine verifiedAt={space.verified_at} />
         </div>
 
         <aside className="space-y-6">
@@ -178,5 +102,67 @@ function SpacePage() {
         </aside>
       </div>
     </div>
+  );
+}
+
+function TrustLine({ verifiedAt }: { verifiedAt: string | null }) {
+  return (
+    <section className="rounded-2xl border border-border p-6">
+      <div className="flex items-start gap-3">
+        <ShieldCheck className="h-5 w-5 shrink-0 text-flare" />
+        <div>
+          <h3 className="font-display text-lg">No paid placement. No seeded reviews.</h3>
+          <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
+            Prices, amenities and addresses are sourced from each operator's own listing. We do not invent reviews or quality claims we cannot verify.
+          </p>
+          {verifiedAt && (
+            <p className="mt-2 text-xs text-muted-foreground">Last checked: {new Date(verifiedAt).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}</p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PriceContext({ price, space }: { price: PriceStats | null; space: any }) {
+  if (!price || !space.price_from) return null;
+  const currency = space.currency === "INR" ? "₹" : "$";
+  const diff = space.price_from - price.city.median;
+  const pct = price.city.median > 0 ? Math.round((diff / price.city.median) * 100) : 0;
+  const below = diff < 0;
+  return (
+    <section className="glass rounded-2xl p-6">
+      <div className="text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2"><span className="acid-dot inline-block h-1.5 w-1.5 rounded-full" /><IndianRupee className="h-3.5 w-3.5" />Price in context</div>
+      <div className="mt-4 grid gap-6 sm:grid-cols-2">
+        <div>
+          <div className="font-display text-4xl">{currency}{space.price_from.toLocaleString()}</div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            That's <span className={`font-medium ${below ? "text-flare" : "text-foreground"}`}>{below ? "" : "+"}{pct}% {below ? "below" : "above"}</span> the {space.city_name} median across {price.city.count} listed spaces.
+          </p>
+        </div>
+        <div className="space-y-2 text-sm">
+          <div className="flex justify-between"><span className="text-muted-foreground">Median</span><span className="font-medium">{currency}{Math.round(price.city.median).toLocaleString()}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Range</span><span className="font-medium">{currency}{price.city.min.toLocaleString()} – {currency}{price.city.max.toLocaleString()}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Spaces cheaper</span><span className="font-medium">{price.cheaperCount}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Spaces pricier</span><span className="font-medium">{price.pricierCount}</span></div>
+        </div>
+      </div>
+
+      {price.sameCity.length > 0 && (
+        <div className="mt-6 border-t border-border pt-6">
+          <h4 className="text-xs uppercase tracking-widest text-muted-foreground">Also in {space.city_name}</h4>
+          <ul className="mt-3 space-y-2">
+            {price.sameCity.slice(0, 4).map((s: any) => (
+              <li key={s.id}>
+                <Link to="/spaces/$slug" params={{ slug: s.slug }} className="group flex items-center justify-between rounded-xl p-2 hover:bg-accent/50">
+                  <span className="font-medium group-hover:text-muted-foreground transition-colors">{s.name}</span>
+                  <span className="text-sm tabular-nums">{currency}{s.price_from?.toLocaleString()}<span className="text-muted-foreground text-xs">/mo</span></span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
