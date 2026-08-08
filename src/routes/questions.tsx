@@ -33,52 +33,65 @@ function QuestionsPage() {
         sub="Real coworkers. Real answers. No affiliate links."
         right={<Button variant="mint" size="lg" asChild><Link to="/auth">Ask a question</Link></Button>}
       />
-      <div className="mt-10 space-y-4">
-        {data.map((qq) => (
-          <div key={qq.id} className="glass rounded-2xl p-5 md:p-6 hover-glow hover:hover-glow-hover">
-            <div className="flex items-start gap-3">
-              {qq.is_ama && (
-                <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-flare text-flare-ink">
-                  <Sparkles className="h-3 w-3" />AMA
-                </span>
-              )}
-              <div className="flex-1 min-w-0">
-                <h3 className="font-display text-xl">{qq.title}</h3>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  {qq.author?.display_name} · {formatDistanceToNow(new Date(qq.created_at), { addSuffix: true })}
-                  {qq.space && <> · <Link to="/spaces/$slug" params={{ slug: qq.space.slug }} className="underline underline-offset-2 decoration-[var(--flare)] decoration-2 hover:text-foreground">{qq.space.name}</Link></>}
-                </div>
-                {qq.body && <p className="mt-2 text-sm text-muted-foreground">{qq.body}</p>}
+      {data.length === 0 ? (
+        <div className="mt-10 rounded-2xl border border-border p-10 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-flare text-flare-ink">
+            <MessagesSquare className="h-5 w-5" />
+          </div>
+          <h3 className="mt-4 font-display text-xl">No questions yet</h3>
+          <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">
+            We are not seeding fake Q&A. The first real questions will appear here once the community starts asking.
+          </p>
+          <Button variant="mint" size="lg" asChild className="mt-5"><Link to="/auth">Ask the first question</Link></Button>
+        </div>
+      ) : (
+        <div className="mt-10 space-y-4">
+          {data.map((qq) => (
+            <div key={qq.id} className="glass rounded-2xl p-5 md:p-6 hover-glow hover:hover-glow-hover">
+              <div className="flex items-start gap-3">
+                {qq.is_ama && (
+                  <span className="mt-1 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-flare text-flare-ink">
+                    <Sparkles className="h-3 w-3" />AMA
+                  </span>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-display text-xl">{qq.title}</h3>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {qq.author?.display_name} · {formatDistanceToNow(new Date(qq.created_at), { addSuffix: true })}
+                    {qq.space && <> · <Link to="/spaces/$slug" params={{ slug: qq.space.slug }} className="underline underline-offset-2 decoration-[var(--flare)] decoration-2 hover:text-foreground">{qq.space.name}</Link></>}
+                  </div>
+                  {qq.body && <p className="mt-2 text-sm text-muted-foreground">{qq.body}</p>}
 
-                {qq.answers.length > 0 && (
-                  <div className="mt-4 space-y-3 border-l-2 border-[var(--flare)] pl-4">
-                    {qq.answers.map((a: any) => (
-                      <div key={a.id} className="flex gap-2.5">
-                        <CornerDownRight className="h-3.5 w-3.5 mt-1 text-muted-foreground shrink-0" />
-                        <div className="flex-1">
-                          <p className="text-sm leading-relaxed">{a.body}</p>
-                          <div className="mt-1 text-[11px] text-muted-foreground flex items-center gap-1">
-                            <span className="font-medium text-foreground/80">{a.author?.display_name ?? "Anonymous"}</span>
-                            {a.is_founder_reply && (
-                              <span className="inline-flex items-center gap-0.5 rounded-full bg-flare px-1.5 text-flare-ink">
-                                <BadgeCheck className="h-3 w-3" />founder
-                              </span>
-                            )}
-                            <span>· {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}</span>
+                  {qq.answers.length > 0 && (
+                    <div className="mt-4 space-y-3 border-l-2 border-[var(--flare)] pl-4">
+                      {qq.answers.map((a: any) => (
+                        <div key={a.id} className="flex gap-2.5">
+                          <CornerDownRight className="h-3.5 w-3.5 mt-1 text-muted-foreground shrink-0" />
+                          <div className="flex-1">
+                            <p className="text-sm leading-relaxed">{a.body}</p>
+                            <div className="mt-1 text-[11px] text-muted-foreground flex items-center gap-1">
+                              <span className="font-medium text-foreground/80">{a.author?.display_name ?? "Anonymous"}</span>
+                              {a.is_founder_reply && (
+                                <span className="inline-flex items-center gap-0.5 rounded-full bg-flare px-1.5 text-flare-ink">
+                                  <BadgeCheck className="h-3 w-3" />founder
+                                </span>
+                              )}
+                              <span>· {formatDistanceToNow(new Date(a.created_at), { addSuffix: true })}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {qq.answers.length === 0 && (
-                  <div className="mt-3 text-xs text-muted-foreground">No answers yet. Be the first.</div>
-                )}
+                      ))}
+                    </div>
+                  )}
+                  {qq.answers.length === 0 && (
+                    <div className="mt-3 text-xs text-muted-foreground">No answers yet. Be the first.</div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
