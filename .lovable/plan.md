@@ -77,7 +77,8 @@ Same language as the rest of the site.
 - HTML5 Canvas with `requestAnimationFrame`. No game library.
 - Grid-based collision, per-monster simple AI: drift, patrol path, and chase-within-radius.
 - Canvas sized by container with device pixel ratio scaling so it stays crisp.
-- Best score, best floor, and total escapes persisted in `localStorage`.
+- Timer driven off the animation loop's accumulated delta, not wall clock, so pausing and tab blur never inflate the run.
+- Best total time, best per-floor splits, and total escapes persisted in `localStorage`.
 - Pause on tab blur. Keyboard events scoped so arrow keys do not scroll the page.
 
 ## Site integration
