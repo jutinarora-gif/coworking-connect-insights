@@ -39,12 +39,26 @@ Each monster is a coworking pain point given a form. All are killable.
 - Clearing a floor opens the Wonderland door. Stepping through advances to the next floor.
 - Beating floor 3 shows a Wonderland end screen: perfect wifi, hot coffee, an empty phone booth.
 
+## The clock: fastest escape wins
+
+Time is the score. Everything else is a modifier.
+
+- A timer starts on the first keypress and runs to hundredths of a second. It is the biggest number in the HUD.
+- Per-floor splits are recorded and shown at each floor transition, green if faster than your best split, muted if slower.
+- A "Time to beat" line sits under the clock: your personal best for that floor, plus a fixed par time set per floor.
+- A ghost pace bar shows whether you are currently ahead or behind your best run, updating live.
+- Deaths cost time rather than ending the run: each hit adds a 3 second penalty to the clock instead of burning a life outright. Lives still exist as a hard fail at zero.
+- Fix tokens dropped by killed monsters shave 1 second each, so fighting is a real choice against running past.
+- End screen shows total time, per-floor splits, penalty seconds, and whether it is a new personal best.
+- Persist best total time and best per-floor splits in `localStorage`. Best run replaces the old "best score" idea entirely.
+
 ## HUD and layout
 
 - Left / top half: the maze canvas in a rounded card on the greige `--mist` band.
-- Right / bottom half: score, lives, floor number, monsters remaining, a compact legend of monster types, and controls.
-- Below the board: a start / pause / restart control row and the local best score.
+- Right / bottom half: the running clock, time to beat, ahead/behind pace, lives, floor number, monsters remaining, a compact legend of monster types, and controls.
+- Below the board: a start / pause / restart control row and your best escape time.
 - On mobile the board sits on top and the HUD stacks beneath. On-screen d-pad plus an attack button appear on touch devices.
+
 
 ## Visual design
 
@@ -63,7 +77,8 @@ Same language as the rest of the site.
 - HTML5 Canvas with `requestAnimationFrame`. No game library.
 - Grid-based collision, per-monster simple AI: drift, patrol path, and chase-within-radius.
 - Canvas sized by container with device pixel ratio scaling so it stays crisp.
-- Best score, best floor, and total escapes persisted in `localStorage`.
+- Timer driven off the animation loop's accumulated delta, not wall clock, so pausing and tab blur never inflate the run.
+- Best total time, best per-floor splits, and total escapes persisted in `localStorage`.
 - Pause on tab blur. Keyboard events scoped so arrow keys do not scroll the page.
 
 ## Site integration
@@ -75,12 +90,13 @@ Same language as the rest of the site.
 
 1. Route + page shell + HUD layout.
 2. Grid, walls, player movement, and rendering.
-3. Exit door, floor completion, and floor progression.
-4. Monsters one at a time, starting with Dead Zone and Burnt Brew.
-5. Attack, hit detection, lives, and kill effects.
-6. Mobile touch controls and responsive board sizing.
-7. localStorage persistence, end screen, header and homepage links.
-8. Playtest on desktop and mobile for frame rate and control feel.
+3. Timer, splits, and time to beat.
+4. Exit door, floor completion, and floor progression.
+5. Monsters one at a time, starting with Dead Zone and Burnt Brew.
+6. Attack, hit detection, time penalties, fix tokens, and kill effects.
+7. Mobile touch controls and responsive board sizing.
+8. localStorage best times, end screen with splits, header and homepage links.
+9. Playtest on desktop and mobile for frame rate, control feel, and par times.
 
 ## Out of scope for now
 
