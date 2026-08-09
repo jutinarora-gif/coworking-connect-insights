@@ -90,12 +90,13 @@ Same language as the rest of the site.
 
 1. Route + page shell + HUD layout.
 2. Grid, walls, player movement, and rendering.
-3. Exit door, floor completion, and floor progression.
-4. Monsters one at a time, starting with Dead Zone and Burnt Brew.
-5. Attack, hit detection, lives, and kill effects.
-6. Mobile touch controls and responsive board sizing.
-7. localStorage persistence, end screen, header and homepage links.
-8. Playtest on desktop and mobile for frame rate and control feel.
+3. Timer, splits, and time to beat.
+4. Exit door, floor completion, and floor progression.
+5. Monsters one at a time, starting with Dead Zone and Burnt Brew.
+6. Attack, hit detection, time penalties, fix tokens, and kill effects.
+7. Mobile touch controls and responsive board sizing.
+8. localStorage best times, end screen with splits, header and homepage links.
+9. Playtest on desktop and mobile for frame rate, control feel, and par times.
 
 ## Out of scope for now
 
